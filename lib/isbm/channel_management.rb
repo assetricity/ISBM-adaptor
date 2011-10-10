@@ -49,11 +49,6 @@ module Isbm
     def self.get_all_channels
       response = isbm_channel_man.request :wsdl, "GetAllChannels"
       channel_ids = response.to_hash[:get_all_channels_response][:channel_id]
-      if channel_ids.nil?
-        puts "IS NIL"
-        return []
-      end
-      puts "Not NIL #{channel_ids}"
       channel_ids.is_a?(Array) ? channel_ids.compact : [channel_ids].compact
     end
 
