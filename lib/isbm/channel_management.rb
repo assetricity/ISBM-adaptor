@@ -35,7 +35,7 @@ module Isbm
       response = isbm_channel_man.request :wsdl, "CreateTopic" do
         soap.body = {
           "channelID" => attributes[:channel_id],
-          "topic" => attributes[:topic_name],
+          "topic" => attributes[:topic],
           "description" => attributes[:description],
           "xpathDefinition" => attributes[:xpath_definition]
         }
