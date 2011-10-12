@@ -8,6 +8,10 @@ RSpec::Core::RakeTask.new do |t|
   t.rspec_opts = %w(--color)
 end
 
-task :delete_channels do
-  Isbm::ChannelManagement.delete_all
+namespace :isbm do
+  desc "Delete all channels on the ISBM"
+  task :delete_channels do
+    Isbm::ChannelManagement.delete_all
+  end
+
 end
