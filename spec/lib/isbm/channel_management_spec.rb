@@ -10,7 +10,7 @@ describe Isbm::ChannelManagement, :external_service => true do
       Given(:chtype) {"1"}
       Given(:channel_name) {"Test#{Time.now.to_i}"}
       Given(:id) { @response[:channel_id] }
-      Given(:info) { Isbm::ChannelManagement.get_info id }
+      Given ( :info ) { Isbm::ChannelManagement.get_channel_info :channel_id => id }
       When { @response = Isbm::ChannelManagement.create_channel(:channel_name => channel_name, :channel_type => chtype) }
 
       Scenario "create channel responds with success" do
@@ -22,7 +22,6 @@ describe Isbm::ChannelManagement, :external_service => true do
       end
 
       Scenario "channel info can be collected" do
-        Given ( :info ) { Isbm::ChannelManagement.get_channel_info id }
         Then { info[:channel_name].should == channel_name }
         Then { info[:channel_type].should == chtype }
         Then { info[:topic].should == nil }
@@ -30,11 +29,10 @@ describe Isbm::ChannelManagement, :external_service => true do
 
       describe "with a topic" do
         Given (:topic_name) {"Spec Test Topic"}
-        When { @topic = Isbm::ChannelManagement.create_topic(:channel_id => id, :topic_name => topic_name) }
-        When { @channel_info = Isbm::ChannelManagement.get_channel_info id }
+        When { @topic = Isbm::ChannelManagement.create_topic(:channel_id => id, :topic => topic_name) }
 
         Scenario "returns that topic in the channel info" do
-          Then { @channel_info[:topic].should include(topic_name) }
+          Then { info[:topic].should include(topic_name) }
         end
 
         Scenario "topics can be gathered for that channel" do

@@ -11,6 +11,10 @@ describe Isbm::ProviderPublication, :external_service => true do
       @channel = @create_channel_response[:channel_id]
     end
 
+    it "raises error when no channel_id is given" do
+      lambda{ Isbm::ProviderPublication.create_channel }.should raise_error
+    end
+
     it "created successfully" do
       Isbm::ChannelManagement.was_successful @create_channel_response
     end
@@ -31,6 +35,10 @@ describe Isbm::ProviderPublication, :external_service => true do
         before do
           @create_topic_response = Isbm::ChannelManagement.create_topic(:channel_id => @channel, :topic => topic_name)
           @post_publication_response = Isbm::ProviderPublication.post_publication( :channel_session_id => @session_id, :topic => topic_name, :publication_message => message)
+        end
+
+        it "raises error when no message is given" do
+          lambda { Isbm::ProviderPublication.post_publication :channel_session_id => @session_id, :topic => topic_name }.should raise_error
         end
 
         it "posted message successfully" do

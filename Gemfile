@@ -4,3 +4,4 @@ source "http://rubygems.org"
 gemspec
 gem 'rack', '1.3.3'
 gem 'log_buddy'
+gem 'guard-rspec'
