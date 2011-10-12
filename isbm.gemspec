@@ -22,5 +22,8 @@ Gem::Specification.new do |s|
   s.add_development_dependency "rspec"
   s.add_development_dependency "rspec-given"
   s.add_development_dependency "rake"
+  if RUBY_PLATFORM =~ /java/
+    s.add_development_dependency "jruby-openssl"
+  end
   s.add_runtime_dependency "savon"
 end
