@@ -13,11 +13,12 @@ module Isbm
     # Returns a hash containing the id and details of the created channel
     #
     # WSDL: CreateChannel
-    def self.create_channel(attributes)
+    def self.create_channel(*args)
+      validate_presense_of args, :channel_name, :channel_type
       response = isbm_channel_man.request :wsdl, "CreateChannel" do
         soap.body = {
-          "channelName" => attributes[:channel_name],
-          "channelType" => attributes[:channel_type]
+          "channelName" => args.first[:channel_name],
+          "channelType" => args.first[:channel_type]
         }
       end
       response.to_hash[:create_channel_response]
@@ -31,13 +32,14 @@ module Isbm
     # Arguments (optional)
     #   :description
     #   :xpath_definition
-    def self.create_topic(attributes)
+    def self.create_topic(*args)
+      validate_presense_of args, :channel_id, :topic
       response = isbm_channel_man.request :wsdl, "CreateTopic" do
         soap.body = {
-          "channelID" => attributes[:channel_id],
-          "topic" => attributes[:topic],
-          "description" => attributes[:description],
-          "xpathDefinition" => attributes[:xpath_definition]
+          "channelID" => args.first[:channel_id],
+          "topic" => args.first[:topic],
+          "description" => args.first[:description],
+          "xpathDefinition" => args.first[:xpath_definition]
         }
       end
       response.to_hash[:create_topic_response]
@@ -70,14 +72,15 @@ module Isbm
     end
 
     # Returns a hash of channel info for the given channel
-    # Arguments
-    #   id (String of exsisting channel)
+    # Arguments (Required)
+    #   :channel_id
     #
     # WSDL: GetChannelInfo
-    def self.get_channel_info(id)
+    def self.get_channel_info(*args)
+      validate_presense_of args, :channel_id
       response = isbm_channel_man.request :wsdl, "GetChannelInfo" do
         soap.body = {
-          "channelID" => id
+          "channelID" => args.first[:channel_id]
         }
       end
       response.to_hash[:get_channel_info_response]
@@ -89,11 +92,12 @@ module Isbm
     #   :topic_name
     #
     # WSDL: GetTopicInfo
-    def self.get_topic_info(attributes)
+    def self.get_topic_info(*args)
+      validate_presense_of args, :channel_name, :channel_type
       response = isbm_channel_man.request :wsdl, "GetTopicInfo" do
         soap.body = {
-          "channelID" => attributes[:channel_id],
-          "topic" => attributes[:topic_name]
+          "channelID" => args.first[:channel_id],
+          "topic" => args.first[:topic_name]
         }
       end
       response.to_hash[:get_topic_info_response]
@@ -117,11 +121,12 @@ module Isbm
     #   :topic_name
     #
     # WSDL: DeleteTopic
-    def self.delete_topic(attributes)
+    def self.delete_topic(*args)
+      validate_presense_of args, :channel_name, :channel_type
       response = isbm_channel_man.request :wsdl, "DeleteTopic" do
         soap.body = {
-          "channelID" => attributes[:channel_id],
-          "topic" => attributes[:topic_name]
+          "channelID" => args.first[:channel_id],
+          "topic" => args.first[:topic_name]
         }
       end
       response.to_hash[:delete_topic_response]
@@ -143,7 +148,7 @@ module Isbm
     end
 
     def self.get_topics(id)
-      channel_info = Isbm::ChannelManagement.get_channel_info id
+      channel_info = Isbm::ChannelManagement.get_channel_info :channel_id => id
       channel_info[:topic]
     end
   end

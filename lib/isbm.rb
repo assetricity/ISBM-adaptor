@@ -6,6 +6,8 @@ module Isbm
   autoload :ChannelManagement, 'isbm/channel_management'
   autoload :ProviderPublication, 'isbm/provider_publication'
 
+  class ArgumentError < RuntimeError; end
+
   def self.included(base)
       base.class_eval do
         include InstanceMethods
@@ -30,6 +32,11 @@ module Isbm
         wsdl.document = "wsdls/ISBMConsumerRequestService.wsdl"
         wsdl.endpoint = "http://172.16.72.31:9080/IsbmModuleWeb/sca/ISBMProviderPublicationServiceSoapExport"
       }
+    end
+
+    private
+    def validate_presense_of(given_arguments, *args)
+      args.each { |arg| raise Isbm::ArgumentError if given_arguments.first[arg].nil? }
     end
   end
   module InstanceMethods
