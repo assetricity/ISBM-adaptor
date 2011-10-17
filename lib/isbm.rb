@@ -9,16 +9,23 @@ module Isbm
   class ArgumentError < RuntimeError; end
 
   def self.included(base)
-      base.class_eval do
-        include InstanceMethods
-        extend ClassMethods
-      end
+    base.class_eval do
+      include InstanceMethods
+      extend ClassMethods
     end
-  module ClassMethods
+  end
+
+  class << self
     def was_successful(response)
       return (!response.empty? && response[:transaction_status][:success_or_error_criteria] == "0" )? true : false
     end
 
+    def get_status_message(response)
+      return response[:transaction_status][:status_message]
+    end
+  end
+
+  module ClassMethods
     def isbm_channel_man
       Savon::Client.new {
         wsdl.document = "wsdls/ISBMChannelManagementService.wsdl"
