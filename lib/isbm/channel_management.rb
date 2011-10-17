@@ -106,10 +106,10 @@ module Isbm
     # Deletes a channel of the given id
     #
     # WSDL: DeleteChannel
-    def self.delete_channel(id)
+    def self.delete_channel(*args)
       response = isbm_channel_man.request :wsdl, "DeleteChannel" do
         soap.body = {
-          "channelID" => id
+          "channelID" => args.first[:channel_id]
         }
       end
       response.to_hash[:delete_channel_response]
