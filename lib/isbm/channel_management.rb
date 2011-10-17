@@ -104,6 +104,8 @@ module Isbm
     end
 
     # Deletes a channel of the given id
+    # Arguments (Required)
+    #   :channel_id
     #
     # WSDL: DeleteChannel
     def self.delete_channel(*args)
@@ -118,15 +120,15 @@ module Isbm
     # Request to delete a channel
     # Arguments (Required)
     #   :channel_id
-    #   :topic_name
+    #   :topic
     #
     # WSDL: DeleteTopic
     def self.delete_topic(*args)
-      validate_presense_of args, :channel_name, :channel_type
+      validate_presense_of args, :channel_id, :topic
       response = isbm_channel_man.request :wsdl, "DeleteTopic" do
         soap.body = {
           "channelID" => args.first[:channel_id],
-          "topic" => args.first[:topic_name]
+          "topic" => args.first[:topic]
         }
       end
       response.to_hash[:delete_topic_response]
@@ -137,7 +139,7 @@ module Isbm
     # related to functionality in the ISBM WSDL in any form
     # --------------------------------------------------------------------
 
-    def self.delete_all
+    def self.delete_all_channels
       Isbm::ChannelManagement.get_all_channels.each do |id|
         isbm_channel_man.request :wsdl, "DeleteChannel" do
           soap.body = {
