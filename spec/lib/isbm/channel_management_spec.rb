@@ -14,7 +14,7 @@ describe Isbm::ChannelManagement, :external_service => true do
       When { @response = Isbm::ChannelManagement.create_channel(:channel_name => channel_name, :channel_type => chtype) }
 
       Scenario "create channel responds with success" do
-        Then { Isbm::ChannelManagement.was_successful @response}
+        Then { Isbm.was_successful @response}
       end
 
       Scenario "channel is in list of all channels" do
@@ -42,7 +42,7 @@ describe Isbm::ChannelManagement, :external_service => true do
 
       Scenario "channel can be deleted" do
         When { @delete_channel_response = Isbm::ChannelManagement.delete_channel id }
-        Then { Isbm::ChannelManagement.was_successful @delete_channel_response }
+        Then { Isbm.was_successful @delete_channel_response }
       end
 
       after(:each) do

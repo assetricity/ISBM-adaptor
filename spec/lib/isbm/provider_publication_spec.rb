@@ -16,7 +16,7 @@ describe Isbm::ProviderPublication, :external_service => true do
     end
 
     it "created successfully" do
-      Isbm::ChannelManagement.was_successful @create_channel_response
+      Isbm.was_successful @create_channel_response
     end
 
     describe "open publication" do
@@ -26,7 +26,7 @@ describe Isbm::ProviderPublication, :external_service => true do
       end
 
       it "is successful in opening a publication channel" do
-        Isbm::ProviderPublication.was_successful( @open_pub_response ).should be_true
+        Isbm.was_successful( @open_pub_response ).should be_true
       end
 
       describe "post publication" do
@@ -42,7 +42,7 @@ describe Isbm::ProviderPublication, :external_service => true do
         end
 
         it "posted message successfully" do
-          Isbm::ProviderPublication.was_successful(@post_publication_response)
+          Isbm.was_successful(@post_publication_response)
         end
       end
 
@@ -52,7 +52,7 @@ describe Isbm::ProviderPublication, :external_service => true do
         end
 
         it "is successful in closing a publication" do
-          Isbm::ProviderPublication.was_successful( @close_pub_response ).should be_true
+          Isbm.was_successful( @close_pub_response ).should be_true
         end
       end
     end
