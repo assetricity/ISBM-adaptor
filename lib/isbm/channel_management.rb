@@ -1,7 +1,10 @@
 module Isbm
   class ChannelManagement
+    include Savon::Model
     include Isbm
 
+    document  "wsdls/ISBMChannelManagementService.wsdl"
+    endpoint  "http://172.16.72.31:9080/IsbmModuleWeb/sca/ISBMChannelManagementServiceSoapExport"
     @@channel_types = [nil, "Publication"]
 
     # Creates a channel on the ISBM
@@ -15,7 +18,7 @@ module Isbm
     # WSDL: CreateChannel
     def self.create_channel(*args)
       validate_presense_of args, :channel_name, :channel_type
-      response = isbm_channel_man.request :wsdl, "CreateChannel" do
+      response = client.request :wsdl, "CreateChannel" do
         soap.body = {
           "channelName" => args.first[:channel_name],
           "channelType" => args.first[:channel_type]
@@ -34,7 +37,7 @@ module Isbm
     #   :xpath_definition
     def self.create_topic(*args)
       validate_presense_of args, :channel_id, :topic
-      response = isbm_channel_man.request :wsdl, "CreateTopic" do
+      response = client.request :wsdl, "CreateTopic" do
         soap.body = {
           "channelID" => args.first[:channel_id],
           "topic" => args.first[:topic],
@@ -49,7 +52,7 @@ module Isbm
     #
     # WSDL: GetAllChannels
     def self.get_all_channels
-      response = isbm_channel_man.request :wsdl, "GetAllChannels"
+      response = client.request :wsdl, "GetAllChannels"
       channel_ids = response.to_hash[:get_all_channels_response][:channel_id]
       channel_ids.is_a?(Array) ? channel_ids.compact : [channel_ids].compact
     end
@@ -61,7 +64,7 @@ module Isbm
     #
     # WSDL: GetAllTopics
     def self.get_all_topics(ch_id)
-      response = isbm_channel_man.request :wsdl, "GetAllTopics" do
+      response = client.request :wsdl, "GetAllTopics" do
         soap.body = {
           "channelID" => ch_id
         }
@@ -78,7 +81,7 @@ module Isbm
     # WSDL: GetChannelInfo
     def self.get_channel_info(*args)
       validate_presense_of args, :channel_id
-      response = isbm_channel_man.request :wsdl, "GetChannelInfo" do
+      response = client.request :wsdl, "GetChannelInfo" do
         soap.body = {
           "channelID" => args.first[:channel_id]
         }
@@ -94,7 +97,7 @@ module Isbm
     # WSDL: GetTopicInfo
     def self.get_topic_info(*args)
       validate_presense_of args, :channel_name, :channel_type
-      response = isbm_channel_man.request :wsdl, "GetTopicInfo" do
+      response = client.request :wsdl, "GetTopicInfo" do
         soap.body = {
           "channelID" => args.first[:channel_id],
           "topic" => args.first[:topic_name]
@@ -109,7 +112,7 @@ module Isbm
     #
     # WSDL: DeleteChannel
     def self.delete_channel(*args)
-      response = isbm_channel_man.request :wsdl, "DeleteChannel" do
+      response = client.request :wsdl, "DeleteChannel" do
         soap.body = {
           "channelID" => args.first[:channel_id]
         }
@@ -125,7 +128,7 @@ module Isbm
     # WSDL: DeleteTopic
     def self.delete_topic(*args)
       validate_presense_of args, :channel_id, :topic
-      response = isbm_channel_man.request :wsdl, "DeleteTopic" do
+      response = client.request :wsdl, "DeleteTopic" do
         soap.body = {
           "channelID" => args.first[:channel_id],
           "topic" => args.first[:topic]
@@ -141,7 +144,7 @@ module Isbm
 
     def self.delete_all_channels
       Isbm::ChannelManagement.get_all_channels.each do |id|
-        isbm_channel_man.request :wsdl, "DeleteChannel" do
+        client.request :wsdl, "DeleteChannel" do
           soap.body = {
             "channelID" => id
           }

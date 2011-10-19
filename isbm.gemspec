@@ -26,5 +26,6 @@ Gem::Specification.new do |s|
     s.add_development_dependency "jruby-openssl"
   end
   s.add_runtime_dependency "savon"
+  s.add_runtime_dependency "savon_model"
   s.add_runtime_dependency "term-ansicolor"
 end

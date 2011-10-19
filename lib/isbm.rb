@@ -1,6 +1,7 @@
 require "isbm/version"
 require "savon"
 require "log_buddy"
+require "savon_model"
 
 module Isbm
   autoload :ChannelManagement, 'isbm/channel_management'
