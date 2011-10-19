@@ -20,8 +20,8 @@ module Isbm
       validate_presense_of args, :channel_name, :channel_type
       response = client.request :wsdl, "CreateChannel" do
         soap.body = {
-          "channelName" => args.first[:channel_name],
-          "channelType" => args.first[:channel_type]
+          :channel_name => args.first[:channel_name],
+          :channel_type => args.first[:channel_type]
         }
       end
       response.to_hash[:create_channel_response]
@@ -39,10 +39,10 @@ module Isbm
       validate_presense_of args, :channel_id, :topic
       response = client.request :wsdl, "CreateTopic" do
         soap.body = {
-          "channelID" => args.first[:channel_id],
-          "topic" => args.first[:topic],
-          "description" => args.first[:description],
-          "xpathDefinition" => args.first[:xpath_definition]
+          :channel_i_d => args.first[:channel_id],
+          :topic => args.first[:topic],
+          :description => args.first[:description],
+          :xpath_definition => args.first[:xpath_definition]
         }
       end
       response.to_hash[:create_topic_response]
@@ -66,7 +66,7 @@ module Isbm
     def self.get_all_topics(ch_id)
       response = client.request :wsdl, "GetAllTopics" do
         soap.body = {
-          "channelID" => ch_id
+          :channel_i_d => ch_id
         }
       end
       response.to_hash
@@ -83,7 +83,7 @@ module Isbm
       validate_presense_of args, :channel_id
       response = client.request :wsdl, "GetChannelInfo" do
         soap.body = {
-          "channelID" => args.first[:channel_id]
+          :channel_i_d => args.first[:channel_id]
         }
       end
       response.to_hash[:get_channel_info_response]
@@ -99,8 +99,8 @@ module Isbm
       validate_presense_of args, :channel_name, :channel_type
       response = client.request :wsdl, "GetTopicInfo" do
         soap.body = {
-          "channelID" => args.first[:channel_id],
-          "topic" => args.first[:topic_name]
+          :channel_i_d => args.first[:channel_id],
+          :topic => args.first[:topic_name]
         }
       end
       response.to_hash[:get_topic_info_response]
@@ -114,7 +114,7 @@ module Isbm
     def self.delete_channel(*args)
       response = client.request :wsdl, "DeleteChannel" do
         soap.body = {
-          "channelID" => args.first[:channel_id]
+          :channel_i_d => args.first[:channel_id]
         }
       end
       response.to_hash[:delete_channel_response]
@@ -130,8 +130,8 @@ module Isbm
       validate_presense_of args, :channel_id, :topic
       response = client.request :wsdl, "DeleteTopic" do
         soap.body = {
-          "channelID" => args.first[:channel_id],
-          "topic" => args.first[:topic]
+          :channel_i_d => args.first[:channel_id],
+          :topic => args.first[:topic]
         }
       end
       response.to_hash[:delete_topic_response]
@@ -146,7 +146,7 @@ module Isbm
       Isbm::ChannelManagement.get_all_channels.each do |id|
         client.request :wsdl, "DeleteChannel" do
           soap.body = {
-            "channelID" => id
+            :channel_i_d => id
           }
         end
       end

@@ -14,7 +14,7 @@ module Isbm
       validate_presense_of args, :channel_id
       response = client.request :wsdl, "OpenPublication" do
         soap.body = {
-          "channelID" => args.first[:channel_id]
+          :channel_i_d => args.first[:channel_id]
         }
       end
       response.to_hash[:open_publication_response]
