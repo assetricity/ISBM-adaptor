@@ -74,6 +74,18 @@ module Isbm
       topics.is_a?(Array) ? topics : [topics]
     end
 
+    # Returns an Isbm::Channel object with cached channel information
+    # this object can potnetially become unsynced with the ISBM
+    # and should be reloaded periodically to avoid this
+    #
+    # <tt>
+    # Isbm::ChannelManagement.get_channel "someid" => new Isbm::Channel
+    # </tt>
+    def self.get_channel(channel_id)
+      args = Isbm::ChannelManagement.get_channel_info( :channel_id => channel_id ).merge( { :channel_id => channel_id } )
+      Isbm::Channel.new args
+    end
+
     # Returns a hash of channel info for the given channel
     # Arguments (Required)
     #   :channel_id
@@ -81,9 +93,10 @@ module Isbm
     # WSDL: GetChannelInfo
     def self.get_channel_info(*args)
       validate_presense_of args, :channel_id
+      channel_id = args.first[:channel_id]
       response = client.request :wsdl, "GetChannelInfo" do
         soap.body = {
-          :channel_i_d => args.first[:channel_id]
+          :channel_i_d => channel_id
         }
       end
       response.to_hash[:get_channel_info_response]
@@ -137,11 +150,7 @@ module Isbm
       response.to_hash[:delete_topic_response]
     end
 
-    # --------------------------------------------------------------------
-    # The Following is Register specific ISBM functions and are not
-    # related to functionality in the ISBM WSDL in any form
-    # --------------------------------------------------------------------
-
+    # Used to nuke the ISBM of all channels. Probably shouldn't exists
     def self.delete_all_channels
       Isbm::ChannelManagement.get_all_channels.each do |id|
         client.request :wsdl, "DeleteChannel" do
@@ -152,9 +161,10 @@ module Isbm
       end
     end
 
+    # Get list of topics for channel with given ID
     def self.get_topics(id)
-      channel_info = Isbm::ChannelManagement.get_channel_info :channel_id => id
-      channel_info[:topic]
+      channel= Isbm::ChannelManagement.get_channel id
+      channel.topics
     end
   end
 end
