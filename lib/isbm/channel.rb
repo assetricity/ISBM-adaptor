@@ -3,7 +3,7 @@ module Isbm
   class Channel
     include Isbm
 
-    attr_reader :name, :topics, :type, :isbm_id
+    attr_reader :name, :topics, :topic_names, :type, :isbm_id
 
     def self.channel_types
       [nil, "Publication", "Request", "Response"]
@@ -19,7 +19,7 @@ module Isbm
 
     def reload
       new_info = Isbm::ChannelManagement.get_channel_info :channel_id => isbm_id
-      self.load_data new_info
+      load_data new_info
     end
 
     private
@@ -27,7 +27,14 @@ module Isbm
       @isbm_id = attrs[:channel_id]
       @name = attrs[:channel_name]
       @type = Isbm::Channel.channel_types[attrs[:channel_type].to_i]
-      @topics = attrs[:topic]
+      @topic_names = attrs[:topic]
+    end
+
+    def load_topics
+      topic_names.each do |tname|
+        response = Isbm::ChannelManagement.get_topic_info :channel_id => self.isbm_id, :topic => tname
+        # topics << Isbm::Topic.new( response )
+      end
     end
   end
 end

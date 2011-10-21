@@ -1,3 +1,4 @@
+#TODO Update to account for Channel and Topic Objects or just fix info given by get_channel/topic_info
 $:.unshift File.expand_path("../lib", __FILE__)
 
 require 'bundler/gem_tasks'

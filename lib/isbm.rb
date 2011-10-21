@@ -31,14 +31,20 @@ module Isbm
 
     # Returns the logger. Defaults to an instance of +Logger+ writing to STDOUT.
     def logger
-      @logger ||= ::Logger.new STDOUT
+      @logger ||= ::Logger.new STDERR
     end
   end
 
   module ClassMethods
     private
     def validate_presense_of(given_arguments, *args)
-      args.each { |arg| raise Isbm::ArgumentError if given_arguments.first[arg].nil? }
+      calling_method = /`(.*)'/.match(caller[0])
+      calling_parent = caller[1]
+      args.each do |arg| 
+        if given_arguments.first[arg].nil?
+          raise ArgumentError.new "#{calling_method} requires #{arg} \n#{calling_parent}"
+        end
+      end
     end
   end
   module InstanceMethods

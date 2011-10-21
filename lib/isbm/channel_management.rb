@@ -133,8 +133,8 @@ module Isbm
           }
         end
         response.to_hash[:delete_channel_response]
-      rescue
-        Isbm.logger.debug("delete channel requires a :channel_id")
+      rescue Isbm::ArgumentError => ex
+        Isbm.logger.debug ex.message
       end
     end
 

@@ -8,7 +8,7 @@ describe Isbm::ProviderPublication, :external_service => true do
     Given(:channel_name) {"Test#{Time.now.to_i}"}
     before :all do
       @create_channel_response = Isbm::ChannelManagement.create_channel(:channel_name => channel_name, :channel_type => 1)
-      @channel = @create_channel_response[:channel_id]
+      @channel_id = @create_channel_response[:channel_id]
     end
 
     it "raises error when no channel_id is given" do
@@ -21,7 +21,7 @@ describe Isbm::ProviderPublication, :external_service => true do
 
     describe "open publication" do
       before do
-        @open_pub_response = Isbm::ProviderPublication.open_publication :channel_id => @channel
+        @open_pub_response = Isbm::ProviderPublication.open_publication :channel_id => @channel_id
         @session_id = @open_pub_response[:channel_session_id]
       end
 
@@ -33,7 +33,7 @@ describe Isbm::ProviderPublication, :external_service => true do
         let(:topic_name) { "test_topic" }
         let(:message) { "Some Message" }
         before do
-          @create_topic_response = Isbm::ChannelManagement.create_topic(:channel_id => @channel, :topic => topic_name)
+          @create_topic_response = Isbm::ChannelManagement.create_topic(:channel_id => @channel_id, :topic => topic_name)
           @post_publication_response = Isbm::ProviderPublication.post_publication( :channel_session_id => @session_id, :topic => topic_name, :publication_message => message)
         end
 
@@ -58,7 +58,7 @@ describe Isbm::ProviderPublication, :external_service => true do
     end
 
     after :all do
-      Isbm::ChannelManagement.delete_channel(@channel)
+      Isbm::ChannelManagement.delete_channel(:channel_id => @channel_id)
     end
   end
 end
