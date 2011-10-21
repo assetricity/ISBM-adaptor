@@ -125,12 +125,17 @@ module Isbm
     #
     # WSDL: DeleteChannel
     def self.delete_channel(*args)
-      response = client.request :wsdl, "DeleteChannel" do
-        soap.body = {
-          :channel_i_d => args.first[:channel_id]
-        }
+      begin
+        validate_presense_of args, :channel_id
+        response = client.request :wsdl, "DeleteChannel" do
+          soap.body = {
+            :channel_i_d => args.first[:channel_id]
+          }
+        end
+        response.to_hash[:delete_channel_response]
+      rescue
+        Isbm.logger.debug("delete channel requires a :channel_id")
       end
-      response.to_hash[:delete_channel_response]
     end
 
     # Request to delete a channel
@@ -164,7 +169,7 @@ module Isbm
     # Get list of topics for channel with given ID
     def self.get_topics(id)
       channel= Isbm::ChannelManagement.get_channel id
-      channel.topics
+      channel.topic_names
     end
   end
 end

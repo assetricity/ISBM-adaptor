@@ -25,6 +25,14 @@ module Isbm
     def get_status_message(response)
       return response[:transaction_status][:status_message]
     end
+
+    # Sets the logger to use.
+    attr_writer :logger
+
+    # Returns the logger. Defaults to an instance of +Logger+ writing to STDOUT.
+    def logger
+      @logger ||= ::Logger.new STDOUT
+    end
   end
 
   module ClassMethods
