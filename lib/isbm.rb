@@ -3,6 +3,8 @@ require "savon"
 require "log_buddy"
 require "savon_model"
 
+HTTPI.adapter = :net_http
+
 module Isbm
   autoload :ChannelManagement, 'isbm/channel_management'
   autoload :ProviderPublication, 'isbm/provider_publication'
