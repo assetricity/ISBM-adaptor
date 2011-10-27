@@ -7,7 +7,7 @@ Gem::Specification.new do |s|
   s.version     = Isbm::VERSION
   s.authors     = ["Brandon Mathis"]
   s.email       = ["Brandon@KeysetTS.com"]
-  s.homepage    = ""
+  s.homepage    = "www.assetricity.com"
   s.summary     = %q{ISBM adaptor for ruby}
   s.description = %q{ISBM adaptor for ruby}
 
