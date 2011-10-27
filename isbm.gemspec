@@ -27,5 +27,4 @@ Gem::Specification.new do |s|
   end
   s.add_runtime_dependency "savon"
   s.add_runtime_dependency "savon_model"
-  s.add_runtime_dependency "term-ansicolor"
 end

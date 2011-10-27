@@ -19,7 +19,7 @@ namespace :isbm do
   desc "List all active ISBM Channel"
   task :list_channels do
     channels = Isbm::ChannelManagement.get_all_channels
-    puts "Found #{channels.length} Active Channels".green
+    puts "Found #{channels.length} Active Channels"
     puts "==================="
     channels.each { |channel| puts channel }
   end
@@ -31,10 +31,10 @@ namespace :isbm do
     type = args.channel_type
     response = Isbm::ChannelManagement.create_channel :channel_name => name, :channel_type => type
     if Isbm.was_successful response
-      puts "Channel created".green
+      puts "Channel created"
       puts "id: #{response[:channel_id]}"
     else
-      puts "Error creating channel".red
+      puts "Error creating channel"
       puts "name: #{name}"
       puts "type: #{type}"
     end
@@ -46,10 +46,10 @@ namespace :isbm do
     id = args.channel_id
     response = Isbm::ChannelManagement.get_channel_info :channel_id => id
     if Isbm.was_successful response
-      puts "Successfully obtained channel info".green
+      puts "Successfully obtained channel info"
     else
-      puts "Failed to retrieve channel info".red
-      puts (status_message response).yellow
+      puts "Failed to retrieve channel info"
+      puts (status_message response)
     end
     puts "channel_id: #{id}"
   end
@@ -60,10 +60,10 @@ namespace :isbm do
     id = args.channel_id
     response = Isbm::ChannelManagement.delete_channel :channel_id => id
     if Isbm.was_successful response
-      puts "Channel Deleted".green
+      puts "Channel Deleted"
     else
-      puts "Error deleting channel".red
-      puts (status_message response).yellow
+      puts "Error deleting channel"
+      puts (status_message response)
     end
       puts "channel_id: #{id}"
   end
@@ -75,10 +75,10 @@ namespace :isbm do
     topic = args.topic
     response = Isbm::ChannelManagement.create_topic :channel_id => channel_id, :topic => topic
     if Isbm.was_successful response
-      puts "Topic Created".green
+      puts "Topic Created"
     else
-      puts "Error creating topic".red
-      puts (status_message response).yellow
+      puts "Error creating topic"
+      puts (status_message response)
     end
     puts "channel_id: #{channel_id}"
     puts "topic: #{topic}"
@@ -91,10 +91,10 @@ namespace :isbm do
     topic = args.topic
     response = Isbm::ChannelManagement.delete_topic :channel_id => channel_id, :topic => topic
     if Isbm.was_successful response
-      puts "Topic Deleted".green
+      puts "Topic Deleted"
     else
-      puts "Error Deleting Topic".red
-      puts (status_message response).yellow
+      puts "Error Deleting Topic"
+      puts (status_message response)
     end
     puts "channel_id: #{channel_id}"
     puts "topic: #{topic}"
@@ -106,10 +106,10 @@ namespace :isbm do
     channel_id = args.channel_id
     response = Isbm::ProviderPublication.open_publication :channel_id => channel_id
     if Isbm.was_successful response
-      puts "Publication Session Created".green
+      puts "Publication Session Created"
     else
-      puts "Error Creating Publication Session".red
-      puts (status_message response).yellow
+      puts "Error Creating Publication Session"
+      puts (status_message response)
     end
     puts "channel_id: #{channel_id}"
     puts "channel_session_id: #{response[:channel_session_id]}"
@@ -121,10 +121,10 @@ namespace :isbm do
     channel_session_id= args.channel_session_id
     response = Isbm::ProviderPublication.close_publication :channel_session_id => channel_session_id
     if Isbm.was_successful response
-      puts "Publication Session Closed".green
+      puts "Publication Session Closed"
     else
-      puts "Error Closing Publication Session".red
-      puts (status_message response).yellow
+      puts "Error Closing Publication Session"
+      puts (status_message response)
     end
     puts "channel_session_id #{channel_session_id}"
   end
@@ -137,10 +137,10 @@ namespace :isbm do
     publication_message = args.publication_message
     response = Isbm::ProviderPublication.post_publication :channel_session_id => channel_session_id, :topic => topic, :publication_message => publication_message
     if Isbm.was_successful response
-      puts "Successfully Posted Publication".green
+      puts "Successfully Posted Publication"
     else
-      puts "Error Posting Publication".red
-      puts (status_message response).yellow
+      puts "Error Posting Publication"
+      puts (status_message response)
     end
     puts "channel_session_id #{channel_session_id}"
     puts "topic #{topic}"
