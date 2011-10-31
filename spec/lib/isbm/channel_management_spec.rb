@@ -1,5 +1,4 @@
 require 'spec_helper'
-#TODO Add test for reloading a channel that has been updated
 
 describe Isbm::ChannelManagement, :external_service => true do
   HTTPI.log = false
@@ -35,8 +34,19 @@ describe Isbm::ChannelManagement, :external_service => true do
       end
 
       context "with a topic" do
-        Given (:topic_name) {"Spec Test Topic"}
-        When { @topic = Isbm::ChannelManagement.create_topic(:channel_id => @id, :topic => topic_name) }
+        Given ( :topic_name ) {"Spec Test Topic"}
+        Given ( :description ) { "A Test Topic" }
+        Given ( :xpath_def ) { "/Test" }
+        When do
+          @response = Isbm::ChannelManagement.create_topic(:channel_id => @id, :topic => topic_name, :description => description )
+          @topic = Isbm::ChannelManagement.get_topic( @id, topic_name)
+        end
+        Then { Isbm.was_successful @response }
+        Then { @topic.name.should == topic_name }
+        Then { @topic.channel_id.should == @id }
+        Then { @topic.description.should == description }
+        # TODO add Xpath definition test
+        # Then { @topic.xpath_definition.should == xpath_def }
 
         context "before channel is relaoded" do
           Then { @channel.topic_names.should be_nil }

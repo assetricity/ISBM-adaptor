@@ -86,6 +86,16 @@ module Isbm
       Isbm::Channel.new args
     end
 
+    # Returns an Isbm::TOpic obec with cached topic information
+    # 
+    # <tt>
+    # Isbm::ChannelManagement.get_topic "channe_id", "topic_name" => new Isbm::Topic
+    # </tt>
+    def self.get_topic(channel_id, topic_name)
+      args = Isbm::ChannelManagement.get_topic_info( :channel_id => channel_id, :topic_name => topic_name ).merge( { :channel_id => channel_id } )
+      Isbm::Topic.new args
+    end
+
     # Returns a hash of channel info for the given channel
     # Arguments (Required)
     #   :channel_id
@@ -109,7 +119,7 @@ module Isbm
     #
     # WSDL: GetTopicInfo
     def self.get_topic_info(*args)
-      validate_presense_of args, :channel_name, :channel_type
+      validate_presense_of args, :channel_id, :topic_name
       response = client.request :wsdl, "GetTopicInfo" do
         soap.body = {
           :channel_i_d => args.first[:channel_id],

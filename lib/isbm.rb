@@ -9,6 +9,7 @@ module Isbm
   autoload :ChannelManagement, 'isbm/channel_management'
   autoload :ProviderPublication, 'isbm/provider_publication'
   autoload :Channel, 'isbm/channel'
+  autoload :Topic, 'isbm/topic'
 
   class ArgumentError < RuntimeError; end
 
