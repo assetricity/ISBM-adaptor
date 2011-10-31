@@ -74,28 +74,6 @@ module Isbm
       topics.is_a?(Array) ? topics : [topics]
     end
 
-    # Returns an Isbm::Channel object with cached channel information
-    # this object can potnetially become unsynced with the ISBM
-    # and should be reloaded periodically to avoid this
-    #
-    # <tt>
-    # Isbm::ChannelManagement.get_channel "someid" => new Isbm::Channel
-    # </tt>
-    def self.get_channel(channel_id)
-      args = Isbm::ChannelManagement.get_channel_info( :channel_id => channel_id ).merge( { :channel_id => channel_id } )
-      Isbm::Channel.new args
-    end
-
-    # Returns an Isbm::TOpic obec with cached topic information
-    # 
-    # <tt>
-    # Isbm::ChannelManagement.get_topic "channe_id", "topic_name" => new Isbm::Topic
-    # </tt>
-    def self.get_topic(channel_id, topic_name)
-      args = Isbm::ChannelManagement.get_topic_info( :channel_id => channel_id, :topic_name => topic_name ).merge( { :channel_id => channel_id } )
-      Isbm::Topic.new args
-    end
-
     # Returns a hash of channel info for the given channel
     # Arguments (Required)
     #   :channel_id
@@ -127,6 +105,21 @@ module Isbm
         }
       end
       response.to_hash[:get_topic_info_response]
+    end
+
+    # Give detailed session information
+    # Arguments (required)
+    #   :channel_session_id
+    #
+    # WSDL: GetSessionInfo
+    def self.get_session_info(*args)
+      validate_presense_of args, :channel_session_id
+      response = client.request :wsdl, "GetSessionInfo" do
+        soap.body = {
+          :channel_session_i_d => args.first[:channel_session_id]
+        }
+      end
+      response.to_hash[:get_session_info_response]
     end
 
     # Deletes a channel of the given id
@@ -163,6 +156,28 @@ module Isbm
         }
       end
       response.to_hash[:delete_topic_response]
+    end
+
+    # Returns an Isbm::Channel object with cached channel information
+    # this object can potnetially become unsynced with the ISBM
+    # and should be reloaded periodically to avoid this
+    #
+    # <tt>
+    # Isbm::ChannelManagement.get_channel "someid" => new Isbm::Channel
+    # </tt>
+    def self.get_channel(channel_id)
+      args = Isbm::ChannelManagement.get_channel_info( :channel_id => channel_id ).merge( { :channel_id => channel_id } )
+      Isbm::Channel.new args
+    end
+
+    # Returns an Isbm::Topic obec with cached topic information
+    # 
+    # <tt>
+    # Isbm::ChannelManagement.get_topic "channe_id", "topic_name" => new Isbm::Topic
+    # </tt>
+    def self.get_topic(channel_id, topic_name)
+      args = Isbm::ChannelManagement.get_topic_info( :channel_id => channel_id, :topic_name => topic_name ).merge( { :channel_id => channel_id } )
+      Isbm::Topic.new args
     end
 
     # Used to nuke the ISBM of all channels. Probably shouldn't exists

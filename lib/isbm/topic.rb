@@ -9,8 +9,13 @@ module Isbm
     end
 
     def reload
-      new_info = Isbm::ChannelManagement.get_topic_info channel_id, name
+      new_info = gather_info
       load_data new_info
+    end
+
+    def exists?
+      info = gather_info
+      Isbm.was_successful info
     end
 
     private
@@ -19,6 +24,10 @@ module Isbm
       @channel_id = attrs[:channel_id]
       @description = attrs[:description]
       @xpath_definition = attrs[:xpath_definition]
+    end
+
+    def gather_info
+      Isbm::ChannelManagement.get_topic_info :channel_id => channel_id, :topic_name => name
     end
   end
 end

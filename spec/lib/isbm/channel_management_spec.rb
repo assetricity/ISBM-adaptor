@@ -33,6 +33,11 @@ describe Isbm::ChannelManagement, :external_service => true do
         Then { @channel.topic_names.should == nil }
       end
 
+      context "without a topic" do
+        Given ( :topic ) { Isbm::Topic.new(:id => "someid") }
+        Then { session.exists?.should be_false }
+      end
+
       context "with a topic" do
         Given ( :topic_name ) {"Spec Test Topic"}
         Given ( :description ) { "A Test Topic" }
@@ -41,6 +46,7 @@ describe Isbm::ChannelManagement, :external_service => true do
           @response = Isbm::ChannelManagement.create_topic(:channel_id => @id, :topic => topic_name, :description => description )
           @topic = Isbm::ChannelManagement.get_topic( @id, topic_name)
         end
+        Then { @topic.exists?.should be_true }
         Then { Isbm.was_successful @response }
         Then { @topic.name.should == topic_name }
         Then { @topic.channel_id.should == @id }
