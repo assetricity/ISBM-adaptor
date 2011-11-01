@@ -3,6 +3,7 @@ require "savon"
 require "log_buddy"
 require "savon_model"
 
+# Use NetHttp from Ruby instead of HTTPI
 HTTPI.adapter = :net_http
 
 module Isbm
@@ -10,6 +11,7 @@ module Isbm
   autoload :ProviderPublication, 'isbm/provider_publication'
   autoload :Channel, 'isbm/channel'
   autoload :Topic, 'isbm/topic'
+  autoload :Session, 'isbm/session'
 
   class ArgumentError < RuntimeError; end
 

@@ -166,18 +166,30 @@ module Isbm
     # Isbm::ChannelManagement.get_channel "someid" => new Isbm::Channel
     # </tt>
     def self.get_channel(channel_id)
-      args = Isbm::ChannelManagement.get_channel_info( :channel_id => channel_id ).merge( { :channel_id => channel_id } )
+      chid_hash = { :channel_id => channel_id }
+      args = Isbm::ChannelManagement.get_channel_info( chid_hash ).merge( chid_hash )
       Isbm::Channel.new args
     end
 
     # Returns an Isbm::Topic obec with cached topic information
-    # 
+    #
     # <tt>
     # Isbm::ChannelManagement.get_topic "channe_id", "topic_name" => new Isbm::Topic
     # </tt>
     def self.get_topic(channel_id, topic_name)
       args = Isbm::ChannelManagement.get_topic_info( :channel_id => channel_id, :topic_name => topic_name ).merge( { :channel_id => channel_id } )
       Isbm::Topic.new args
+    end
+
+    # Returns an Isbm::Session object with cached session information
+    #
+    # <tt>
+    # Isbm::ChannelManagement.get_session "channel_session_id" => new Isbm::Session
+    # </tt>
+    def self.get_session(channel_session_id)
+      ch_session_id_hash = { :channel_session_id => channel_session_id }
+      args = Isbm::ChannelManagement.get_session_info( ch_session_id_hash ).merge( ch_session_id_hash )
+      Isbm::Session.new args
     end
 
     # Used to nuke the ISBM of all channels. Probably shouldn't exists

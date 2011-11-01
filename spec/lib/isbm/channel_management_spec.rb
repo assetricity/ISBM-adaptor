@@ -34,17 +34,16 @@ describe Isbm::ChannelManagement, :external_service => true do
       end
 
       context "without a topic" do
-        Given ( :topic ) { Isbm::Topic.new(:id => "someid") }
-        Then { session.exists?.should be_false }
+        Given ( :topic ) { Isbm::Topic.new(:channel_id => "someid", :topic => "jungle juice") }
+        Then { topic.exists?.should be_false }
       end
 
       context "with a topic" do
-        Given ( :topic_name ) {"Spec Test Topic"}
+        Given ( :topic_name ) { "Spec Test Topic" }
         Given ( :description ) { "A Test Topic" }
-        Given ( :xpath_def ) { "/Test" }
         When do
           @response = Isbm::ChannelManagement.create_topic(:channel_id => @id, :topic => topic_name, :description => description )
-          @topic = Isbm::ChannelManagement.get_topic( @id, topic_name)
+          @topic = Isbm::ChannelManagement.get_topic( @id, topic_name )
         end
         Then { @topic.exists?.should be_true }
         Then { Isbm.was_successful @response }
