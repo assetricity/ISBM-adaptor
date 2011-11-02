@@ -5,7 +5,7 @@ module Isbm
       desc "Creates an Isbm configuration file at config/isbm.yml"
 
       def self.source_root
-        @_isbm_source_root ||= File.expand_path("../templates", __FILE__)
+        @_isbm_source_root ||= File.expand_path("../config/templates", __FILE__)
       end
 
       def app_name
