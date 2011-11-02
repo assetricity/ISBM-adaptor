@@ -1,0 +1,6 @@
+endpoints:
+  channel_management:
+  provider_publication:
+
+logging: true
+send_log_to_railslog: true
