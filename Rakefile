@@ -3,7 +3,6 @@ $:.unshift File.expand_path("../lib", __FILE__)
 
 require 'bundler/gem_tasks'
 require 'rspec/core/rake_task'
-require 'term/ansicolor'
 require 'isbm'
 
 RSpec::Core::RakeTask.new do |t|
@@ -11,10 +10,6 @@ RSpec::Core::RakeTask.new do |t|
 end
 
 namespace :isbm do
-  class String
-    include Term::ANSIColor
-  end
-
   # GetAllChannels
   desc "List all active ISBM Channel"
   task :list_channels do
