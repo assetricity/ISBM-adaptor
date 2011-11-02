@@ -3,7 +3,7 @@ module Isbm
     include Savon::Model
     include Isbm
 
-    document  "wsdls/ISBMChannelManagementService.wsdl"
+    document  Isbm.wsdl_dir + "ISBMChannelManagementService.wsdl"
     endpoint  "http://172.16.72.31:9080/IsbmModuleWeb/sca/ISBMChannelManagementServiceSoapExport"
     @@channel_types = [nil, "Publication"]
 

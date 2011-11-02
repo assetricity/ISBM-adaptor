@@ -38,6 +38,10 @@ module Isbm
     def logger
       @logger ||= ::Logger.new STDERR
     end
+
+    def wsdl_dir
+      ( File.expand_path File.dirname(__FILE__) ) + "/../wsdls/"
+    end
   end
 
   module ClassMethods
