@@ -2,11 +2,18 @@ require "singleton"
 require "isbm"
 require "isbm/railties/document"
 require "rails"
-require "rails/mongoid"
 
 module Rails
   module Isbm
     class Railtie < Rails::Railtie
+      initializer "setup database" do
+        config_file = Rails.root.join("config", "mongoid.yml")
+        if config_file.file? &&
+          YAML.load(File.read(config_file).result)[Rails.env].values.flatten.any?
+          ::Isbm.load!(config_file)
+        end
+      end
+
       # After initialization we will warn the user if we can't find a mongoid.yml and
       # alert to create one.
       initializer "warn when configuration is missing" do

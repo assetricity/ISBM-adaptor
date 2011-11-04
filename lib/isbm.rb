@@ -12,6 +12,7 @@ module Isbm
   autoload :Channel, 'isbm/channel'
   autoload :Topic, 'isbm/topic'
   autoload :Session, 'isbm/session'
+  autoload :Config, 'isbm/config'
 
   class ArgumentError < RuntimeError; end
 
