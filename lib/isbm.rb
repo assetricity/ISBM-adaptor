@@ -1,6 +1,5 @@
 require "isbm/version"
 require "savon"
-require "log_buddy"
 require "savon_model"
 
 # Use NetHttp from Ruby instead of HTTPI
