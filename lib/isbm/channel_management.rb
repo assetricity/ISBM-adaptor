@@ -4,7 +4,7 @@ module Isbm
     include Isbm
 
     document  Isbm.wsdl_dir + "ISBMChannelManagementService.wsdl"
-    endpoint  "http://172.16.72.31:9080/IsbmModuleWeb/sca/ISBMChannelManagementServiceSoapExport"
+    endpoint  Isbm::Config.channel_management_endpoint
     @@channel_types = [nil, "Publication"]
 
     # Creates a channel on the ISBM

@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Isbm::Config do
   before do
-    ENV["RACK_ENV"] = "test"
+    ENV["RACK_ENV"] = "example"
   end
 
   context "when config file is loaded" do

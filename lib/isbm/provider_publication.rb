@@ -3,7 +3,7 @@ module Isbm
     include Isbm
     include Savon::Model
     document Isbm.wsdl_dir + "ISBMChannelManagementService.wsdl"
-    endpoint  "http://172.16.72.31:9080/IsbmModuleWeb/sca/ISBMProviderPublicationServiceSoapExport"
+    endpoint Isbm::Config.provider_publication_endpoint
 
     # Create a publication channel
     # Arguments (Required)

@@ -1,20 +1,4 @@
-production:
-  endpoints:
-    channel_management:
-    provider_publication:
-
-  logging: true
-  send_log_to_railslog: true
-
-development:
-  endpoints:
-    channel_management:
-    provider_publication:
-
-  logging: true
-  send_log_to_railslog: true
-
-test: 
+example: 
   endpoints:
     channel_management: chan.wsdl
     provider_publication: pro.wsdl
@@ -22,3 +6,10 @@ test:
   logging: true
   send_log_to_railslog: true
 
+test: 
+  endpoints:
+    channel_management: http://172.16.72.31:9080/IsbmModuleWeb/sca/ISBMChannelManagementServiceSoapExport
+    provider_publication: http://172.16.72.31:9080/IsbmModuleWeb/sca/ISBMProviderPublicationServiceSoapExport
+
+  logging: true
+  send_log_to_railslog: true
