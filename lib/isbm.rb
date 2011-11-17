@@ -5,6 +5,10 @@ require "savon_model"
 # Use NetHttp from Ruby instead of HTTPI
 HTTPI.adapter = :net_http
 
+if defined?(Rails)
+  require "isbm/railtie"
+end
+
 module Isbm
   autoload :ChannelManagement, 'isbm/channel_management'
   autoload :ProviderPublication, 'isbm/provider_publication'
