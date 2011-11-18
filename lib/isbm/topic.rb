@@ -14,20 +14,21 @@ module Isbm
     end
 
     def exists?
-      info = gather_info
-      Isbm.was_successful info
+      topics = gather_topics
+      topics.each{ |topic| return true if topic && topic[:topic_name] == self.name }
+      false
     end
 
     private
     def load_data(attrs)
-      @name = attrs[:topic]
+      @name = attrs[:topic_name]
       @channel_id = attrs[:channel_id]
-      @description = attrs[:description]
-      @xpath_definition = attrs[:xpath_definition]
+      @description = attrs[:topic_description]
+      @xpath_definition = attrs[:x_path_expression]
     end
 
-    def gather_info
-      Isbm::ChannelManagement.get_topic_info :channel_id => channel_id, :topic_name => name
+    def gather_topics
+      Isbm::ChannelManagement.get_all_topics channel_id
     end
   end
 end

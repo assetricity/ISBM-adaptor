@@ -13,20 +13,22 @@ module Isbm
     end
 
     def is_active
-      Isbm::ChannelManagement.get_all_channels.include?(self.isbm_id)
+      channels = Isbm::ChannelManagement.get_all_channels
+      channels.each{ |channel| return true if channel && channel[:channel_id] == self.isbm_id }
+      false
     end
 
     def reload
-      new_info = Isbm::ChannelManagement.get_channel_info :channel_id => isbm_id
+      new_info = Isbm::ChannelManagement.get_channel_info( :channel_name => name, :channel_type => type )
       load_data new_info
     end
 
     private
-    def load_data(attrs) 
+    def load_data(attrs)
       @isbm_id = attrs[:channel_id]
       @name = attrs[:channel_name]
-      @type = Isbm::Channel.channel_types[attrs[:channel_type].to_i]
-      @topic_names = attrs[:topic]
+      @type = attrs[:channel_type]
+      @topic_names = attrs[:topic_name]
     end
   end
 end

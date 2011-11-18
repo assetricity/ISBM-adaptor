@@ -27,10 +27,6 @@ module Isbm
   end
 
   class << self
-    def was_successful(response)
-      return (!response.empty? && response[:transaction_status][:success_or_error_criteria] == "0" )? true : false
-    end
-
     def get_status_message(response)
       return response[:transaction_status][:status_message]
     end
@@ -59,7 +55,12 @@ module Isbm
         end
       end
     end
+
+    def not_valid_chtype(type)
+      raise ArgumentError.new "#{type} is not a valid channel type"
+    end
   end
   module InstanceMethods
+    Gyoku.convert_symbols_to :camelcase
   end
 end

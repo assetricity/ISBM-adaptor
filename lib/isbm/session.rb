@@ -1,6 +1,6 @@
 module Isbm
   class Session
-    attr_accessor :isbm_id, :type, :topic, :listener_uri
+    attr_accessor :isbm_id, :type, :channel, :listener_uri
 
     def initialize(attrs)
       load_data attrs
@@ -18,10 +18,9 @@ module Isbm
 
     private
     def load_data(attrs)
-      @isbm_id = attrs[:channel_session_id]
-      @type = attrs[:channel_session_type]
-      @topic = attrs[:topic]
-      @listener_uri = attrs[:listener_uri]
+      @isbm_id = attrs[:session_id]
+      @channel = attrs[:channel_id]
+      @type = attrs[:application_type]
     end
   end
 end
