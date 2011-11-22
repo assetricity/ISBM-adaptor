@@ -58,7 +58,6 @@ module Isbm
     def self.get_all_channels
       response = client.request :wsdl, "GetChannels"
       channels = response.to_hash[:get_channels_response][:channel]
-      d channels
       channels.is_a?(Array) ? channels.compact : [channels].compact
     end
 
