@@ -11,12 +11,7 @@ describe Isbm::Config do
     end
 
     it "collects settings" do
-      Isbm::Config.settings.should == {
-        :provider_publication => "pro.wsdl",
-        :channel_management => "chan.wsdl",
-        :logging => true,
-        :send_log_to_railslog => true
-      }
+      Isbm::Config.settings[:provider_publication].should == "pro.wsdl"
     end
 
     it "has chan_man endpoint" do
