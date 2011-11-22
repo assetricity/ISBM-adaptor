@@ -36,6 +36,10 @@ module Isbm
       def channel_management_endpoint
         self.settings[:channel_management]
       end
+
+      def consumer_publication_endpoint
+        self.settings[:consumer_publication]
+      end
     end
   end
 end

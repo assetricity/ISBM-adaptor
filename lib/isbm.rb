@@ -12,6 +12,7 @@ end
 module Isbm
   autoload :ChannelManagement, 'isbm/channel_management'
   autoload :ProviderPublication, 'isbm/provider_publication'
+  autoload :ConsumerPublication, 'isbm/consumer_publication'
   autoload :Channel, 'isbm/channel'
   autoload :Topic, 'isbm/topic'
   autoload :Session, 'isbm/session'

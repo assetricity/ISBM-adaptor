@@ -54,13 +54,12 @@ module Isbm
       response.to_hash[:create_topic_response]
     end
 
-    # Returns an array of channel IDs ["ID1", "ID2", "ID3"]
-    #
     # WSDL: GetChannels
     def self.get_all_channels
       response = client.request :wsdl, "GetChannels"
-      channel_ids = response.to_hash[:get_channels_response][:channel]
-      channel_ids.is_a?(Array) ? channel_ids.compact : [channel_ids].compact
+      channels = response.to_hash[:get_channels_response][:channel]
+      d channels
+      channels.is_a?(Array) ? channels.compact : [channels].compact
     end
 
     # Returns an array of Topic IDs 
@@ -203,10 +202,10 @@ module Isbm
 
     # Used to nuke the ISBM of all channels. Probably shouldn't exists
     def self.delete_all_channels
-      Isbm::ChannelManagement.get_all_channels.each do |id|
+      Isbm::ChannelManagement.get_all_channels.each do |channel|
         client.request :wsdl, "DeleteChannel" do
           soap.body = {
-            :channel_i_d => id
+            :channel_i_d => channel[:channel_id]
           }
         end
       end
