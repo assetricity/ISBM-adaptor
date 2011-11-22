@@ -15,17 +15,10 @@ describe Isbm::ProviderPublication, :external_service => true do
       before(:all) do
         @open_pub_response = Isbm::ProviderPublication.open_publication :channel_id => @channel_id
         @session_id = @open_pub_response[:session_id]
-        @session = Isbm::ChannelManagement.get_session( @session_id )
       end
 
       it "is successful in opening a publication channel" do
         @open_pub_response.should_not be_nil
-      end
-
-      it "has the session object" do
-        @session.isbm_id.should == @session_id
-        @session.type.should == "Provider"
-        @session.channel.should == @channel_id
       end
 
       describe "post publication" do
