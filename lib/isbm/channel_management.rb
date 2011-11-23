@@ -76,7 +76,8 @@ module Isbm
       end
       response.to_hash
       topics = response.to_hash[:get_topics_response][:topic]
-      topics.is_a?(Array) ? topics : [topics]
+      return [] if topics.nil?
+      topics.is_a?(Array) ? topics : [topics].compact
     end
 
     # Returns a hash of channel info for the given channel
@@ -138,7 +139,7 @@ module Isbm
         }
       end
       sessions = response.to_hash[:get_sessions_response][:session]
-      sessions.is_a?(Array) ? sessions : [sessions]
+      sessions.is_a?(Array) ? sessions : [sessions].compact
     end
 
     # Deletes a channel of the given id
