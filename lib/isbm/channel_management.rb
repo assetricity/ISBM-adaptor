@@ -67,10 +67,11 @@ module Isbm
     # </tt>
     #
     # WSDL: GetTopics
-    def self.get_all_topics(ch_id)
+    def self.get_topics(*args)
+      validate_presense_of args, :channel_id
       response = client.request :wsdl, "GetTopics" do
         soap.body = {
-          :channel_i_d => ch_id
+          :channel_i_d => args.first[:channel_id]
         }
       end
       response.to_hash
@@ -129,6 +130,17 @@ module Isbm
       response.to_hash[:get_session_response][:session]
     end
 
+    def self.get_sessions(*args)
+      validate_presense_of args, :channel_id
+      response = client.request :wsdl, "GetSessions" do
+        soap.body = {
+          :channel_i_d => args.first[:channel_id]
+        }
+      end
+      sessions = response.to_hash[:get_sessions_response][:session]
+      sessions.is_a?(Array) ? sessions : [sessions]
+    end
+
     # Deletes a channel of the given id
     # Arguments (Required)
     #   :channel_id
@@ -174,12 +186,6 @@ module Isbm
           }
         end
       end
-    end
-
-    # Get list of topics for channel with given ID
-    def self.get_topics(id, type)
-      channel= Isbm::ChannelManagement.get_channel(id, type)
-      channel.topic_names
     end
   end
 end

@@ -33,8 +33,20 @@ describe Isbm::ChannelManagement, :external_service => true do
 
 
         Scenario "topics can be gathered for that channel" do
-          When { @topics = Isbm::ChannelManagement.get_all_topics(@id).map{ |topic| topic[:topic_name] } }
+          When { @topics = Isbm::ChannelManagement.get_topics(:channel_id => @id).map{ |topic| topic[:topic_name] } }
           Then { @topics.should include(topic_name) }
+        end
+      end
+
+      context "with a session" do
+        before :all do
+          @session_id = Isbm::ProviderPublication.open_publication(:channel_id => @id)[:session_id]
+          @sessions = Isbm::ChannelManagement.get_sessions :channel_id => @id
+        end
+
+        Scenario "sessions can be gathere for the channel" do
+          When { @sessions = Isbm::ChannelManagement.get_sessions(:channel_id => @id).map{ |session| session[:session_id] } }
+          Then { @sessions.should include(@session_id) }
         end
       end
     end
