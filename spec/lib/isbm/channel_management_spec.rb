@@ -25,12 +25,38 @@ describe Isbm::ChannelManagement, :external_service => true do
       context "with a topic" do
         Given ( :topic_name ) { "Spec Test Topic" }
         Given ( :description ) { "A Test Topic" }
+
         before(:all) do
           @response = Isbm::ChannelManagement.create_topic(:channel_id => @id, :topic_name => topic_name, :topic_description => description )
         end
-        # TODO add Xpath definition test
-        # Then { @topic.xpath_definition.should == xpath_def }
 
+        context "with a namespace and that crap" do
+          Given ( :topic2_name ) { "Topic2" }
+          Given ( :topic2_description ) { "Some dummy topic" }
+          Given ( :xpath_expression ) { "/This/that" }
+          Given ( :nsprefix ) { "test" }
+          Given ( :nsname ) { "http://test.com" }
+
+          before :all do
+            Isbm::ChannelManagement.create_topic(
+              :channel_id => @id,
+              :topic_name => topic2_name,
+              :topic_description => topic2_description,
+              :xpath_expression => xpath_expression,
+              :ns_prefix => nsprefix,
+              :ns_name => nsname
+            )
+            @topic = Isbm::ChannelManagement.get_topic_info(:channel_id => @id, :topic_name => topic2_name)
+          end
+
+          it "successfull created the topic with all that data" do
+            @topic[:topic_name].should == topic2_name
+            @topic[:topic_description].should == topic2_description
+            @topic[:x_path_expression].should == xpath_expression
+            @topic[:x_path_namespace][:namespace_prefix].should == nsprefix
+            @topic[:x_path_namespace][:namespace_name].should == nsname
+          end
+        end
 
         Scenario "topics can be gathered for that channel" do
           When { @topics = Isbm::ChannelManagement.get_topics(:channel_id => @id).map{ |topic| topic[:topic_name] } }

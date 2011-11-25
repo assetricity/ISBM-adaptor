@@ -41,14 +41,20 @@ module Isbm
     # Arguments (optional)
     #   :topic_description
     #   :xpath_expression
+    #   :ns_prefix
+    #   :ns_name
     def self.create_topic(*args)
       validate_presense_of args, :channel_id, :topic_name
       response = client.request :wsdl, "CreateTopic" do
         soap.body = {
           :channel_i_d => args.first[:channel_id],
           :topic_name => args.first[:topic_name],
-          :topic_description => args.first[:topic_description] || '',
-          :x_path_expression => args.first[:xpath_expression] || ''
+          :topic_description => args.first[:topic_description],
+          :x_path_expression => args.first[:xpath_expression],
+          :x_path_namespace => {
+            :namespace_prefix => args.first[:ns_prefix] || '',
+            :namespace_name => args.first[:ns_name] || ''
+          }
         }
       end
       response.to_hash[:create_topic_response]
