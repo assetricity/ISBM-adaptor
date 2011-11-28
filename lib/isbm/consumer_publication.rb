@@ -36,5 +36,15 @@ module Isbm
       end
       response.to_hash[:read_publication_response]
     end
+
+    def self.remove_publication(*args)
+      validate_presense_of args, :session_id
+      response = client.request :wsdl, "RemovePublication" do
+        soap.body = {
+          :session_i_d => args.first[:session_id]
+        }
+      end
+      response.to_hash[:remove_publication_response]
+    end
   end
 end

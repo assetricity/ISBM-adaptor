@@ -2,6 +2,7 @@ production:
   endpoints:
     channel_management:
     provider_publication:
+    consumer_publication:
 
   logging: true
   send_log_to_railslog: true
@@ -10,6 +11,7 @@ development:
   endpoints:
     channel_management:
     provider_publication:
+    consumer_publication:
 
   logging: true
   send_log_to_railslog: true
@@ -18,6 +20,7 @@ test:
   endpoints:
     channel_management:
     provider_publication:
+    consumer_publication:
 
   logging: true
   send_log_to_railslog: true

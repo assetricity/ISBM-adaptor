@@ -26,12 +26,19 @@
 					</xs:sequence>
 				</xs:complexType>
 			</xs:element>
+			<xs:element name="MessageContent">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:any minOccurs="1" maxOccurs="1" namespace="##any" processContents="lax"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
 			<xs:element name="PostPublication">
 				<xs:complexType>
 					<xs:sequence>
 						<xs:element minOccurs="1" maxOccurs="1" name="SessionID" type="xs:string"/>
+						<xs:element minOccurs="1" maxOccurs="1" ref="tns:MessageContent"/>
 						<xs:element minOccurs="1" maxOccurs="unbounded" name="TopicName" type="xs:string"/>
-						<xs:any minOccurs="1" maxOccurs="1" namespace="##any" processContents="lax"/>
 					</xs:sequence>
 				</xs:complexType>
 			</xs:element>
@@ -119,7 +126,7 @@
 		<wsdl:part name="parameters" element="tns:InvalidChannelTypeFault"/>
 	</wsdl:message>
 	<wsdl:message name="InvalidContentFault">
-		<wsdl:part name="parameters" element="tns:InvalidSessionFault"/>
+		<wsdl:part name="parameters" element="tns:InvalidContentFault"/>
 	</wsdl:message>
 	<wsdl:message name="InvalidSessionFault">
 		<wsdl:part name="parameters" element="tns:InvalidSessionFault"/>
@@ -151,7 +158,6 @@
 			<wsdl:fault name="InvalidSessionFault" message="tns:InvalidSessionFault"/>
 		</wsdl:operation>
 	</wsdl:portType>
-
 
 	<wsdl:binding name="ISBMProviderPublicationServiceSoap" type="tns:ISBMProviderPublicationService">
 		<soap:binding transport="http://schemas.xmlsoap.org/soap/http"/>

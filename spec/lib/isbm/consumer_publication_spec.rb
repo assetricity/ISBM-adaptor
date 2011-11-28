@@ -14,6 +14,8 @@ describe Isbm::ProviderPublication, :external_service => true do
       @channel_id = @create_channel_response[:channel_id]
       @create_topic_response = Isbm::ChannelManagement.create_topic(:channel_id => @channel_id, :topic_name => topic_name1)
       @create_topic_response = Isbm::ChannelManagement.create_topic(:channel_id => @channel_id, :topic_name => topic_name2)
+      @open_pub_response = Isbm::ProviderPublication.open_publication :channel_id => @channel_id
+      @pub_session_id = @open_pub_response[:session_id]
     end
 
     describe "open subscription session" do
@@ -30,9 +32,8 @@ describe Isbm::ProviderPublication, :external_service => true do
         Given ( :message ) { "value" }
 
         before :all do
-          @open_pub_response = Isbm::ProviderPublication.open_publication :channel_id => @channel_id
-          @pub_session_id = @open_pub_response[:session_id]
           @post_publication_response = Isbm::ProviderPublication.post_publication( :session_id => @pub_session_id, :topic_name => topic_name1, :message => message)
+          sleep(5)
           @read_response = Isbm::ConsumerPublication.read_publication( :session_id => @session_id )
         end
 
@@ -41,16 +42,16 @@ describe Isbm::ProviderPublication, :external_service => true do
         end
 
         it "received message" do
-          @read_response[:message].should == message
+          @read_response[:message_content].should == message
         end
 
         describe "remove publication" do
           before :all do
-            @remove_publication_response = Isbm::ProviderPublication.remove_publication( :session_id => @session_id )
+            @remove_publication_response = Isbm::ConsumerPublication.remove_publication( :session_id => @session_id )
           end
 
           it "was successful" do
-            @remove_publication_response[:fault].should_not be_nil
+            @remove_publication_response[:fault].should be_nil
           end
         end
       end
@@ -64,6 +65,10 @@ describe Isbm::ProviderPublication, :external_service => true do
           @close_session_response[:fault].should be_nil
         end
       end
+    end
+
+    after :all do
+      Isbm::ChannelManagement.delete_channel(:channel_id => @channel_id)
     end
   end
 end
