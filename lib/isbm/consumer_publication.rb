@@ -34,7 +34,6 @@ module Isbm
           :session_i_d => args.first[:session_id]
         }
       end
-      response.to_hash[:read_publication_response]
     end
 
     def self.remove_publication(*args)
@@ -44,7 +43,6 @@ module Isbm
           :session_i_d => args.first[:session_id]
         }
       end
-      response.to_hash[:remove_publication_response]
     end
   end
 end

@@ -29,11 +29,11 @@ describe Isbm::ProviderPublication, :external_service => true do
       end
 
       describe "read publication" do
-        Given ( :message ) { "value" }
+        Given ( :message ) { '<CCOMData><Entity xsi:type="Asset"><GUID>C013C740-19F5-11E1-92B7-6B8E4824019B</GUID></Entity></CCOMData>' }
 
         before :all do
           @post_publication_response = Isbm::ProviderPublication.post_publication( :session_id => @pub_session_id, :topic_name => topic_name1, :message => message)
-          sleep(5)
+          sleep(10)
           @read_response = Isbm::ConsumerPublication.read_publication( :session_id => @session_id )
         end
 
@@ -42,7 +42,10 @@ describe Isbm::ProviderPublication, :external_service => true do
         end
 
         it "received message" do
-          @read_response[:message_content].should == message
+          @read_response.should_not be_nil
+          doc = Nokogiri::XML.parse @read_response.to_xml
+          message = doc.xpath("//CCOMData").first.to_s
+          message.should =~ /C013C740-19F5-11E1-92B7-6B8E4824019B/
         end
 
         describe "remove publication" do

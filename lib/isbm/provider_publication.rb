@@ -46,7 +46,7 @@ module Isbm
       response = client.request :wsdl, "PostPublication" do
         soap.body = {
           :session_i_d => args.first[:session_id],
-          :message_content => args.first[:message],
+          :message_content! => args.first[:message],
           :topic_name => args.first[:topic_name]
         }
       end
