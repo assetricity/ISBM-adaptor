@@ -1,6 +1,6 @@
 module Isbm
   class ChannelManagement
-    include Savon::Model
+    extend Savon::Model
     include Isbm
 
     document  Isbm.wsdl_dir + "ISBMChannelManagementService.wsdl"
@@ -11,12 +11,12 @@ module Isbm
     def self.create_channel(uri, type, description = nil)
       validate_presence_of uri, type
       raise ArgumentError.new "#{type} is not a valid type. Must be either :publication, :request or :response." unless self.channel_types.has_key? type
-      response = client.request :wsdl, "CreateChannel" do
-        soap.body do |xml|
-          xml.ChannelURI(uri)
-          xml.ChannelType(channel_types[type])
-          xml.ChannelDescription(description) unless description.nil?
-        end
+      # TODO AM Why don't strings work for SOAP action?
+      # TODO AM Why doesn't Builder pick up XML namespaces
+      response = client.request :wsdl, :create_channel do
+        body = { "ChannelURI" => uri, "ChannelType" => channel_types[type] }
+        body.merge!({ "ChannelDescription" => description }) unless description.nil?
+        soap.body = body
       end
       return true
     end
@@ -24,10 +24,9 @@ module Isbm
     # Deletes the specified channel
     def self.delete_channel(uri)
       validate_presence_of uri
-      response = client.request :wsdl, "DeleteChannel" do
-        soap.body do |xml|
-          xml.ChannelURI(uri)
-        end
+      response = client.request :wsdl, :delete_channel do
+        soap.namespaces["xmlns"] = "http://www.openoandm.org/xml/ISBM/"
+        soap.body = { "ChannelURI" => uri }
       end
       return true
     end
@@ -36,10 +35,8 @@ module Isbm
     # Returns a single channel
     def self.get_channel(uri)
       validate_presence_of uri
-      response = client.request :wsdl, "GetChannel" do
-        soap.body do |xml|
-          xml.ChannelURI(uri)
-        end
+      response = client.request :wsdl, :get_channel do
+        soap.body = { "ChannelURI" => uri }
       end
       response.to_hash[:get_channel_response][:channel]
     end
@@ -47,7 +44,7 @@ module Isbm
     # Gets information about all channels
     # Returns an array of channels
     def self.get_channels
-      response = client.request :wsdl, "GetChannels"
+      response = client.request :wsdl, :get_channels
       channels = response.to_hash[:get_channels_response][:channel]
       channels.is_a?(Array) ? channels.compact : [channels].compact
     end

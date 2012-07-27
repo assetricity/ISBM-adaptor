@@ -1,8 +1,10 @@
 require 'spec_helper'
 
 describe Isbm::ChannelManagement, :external_service => true do
-  HTTPI.log = false
-  Savon.log = false
+  HTTPI.log = true
+  Savon.configure do |config|
+    config.log = true
+  end
 
   Given(:uri) { "Test#{Time.now.to_i}" }
   Given(:type) { :publication }
@@ -38,11 +40,11 @@ describe Isbm::ChannelManagement, :external_service => true do
   end
 
   context "valid arguments" do
-    before(:all) { Isbm::ChannelManagement.create_channel(uri, type); puts "this works!" }
+    before(:all) { Isbm::ChannelManagement.create_channel(uri, type) }
 
     describe "get channel" do
       it "returns a channel hash" do
-        Given(:channel) { Isbm::ChannelManagement.get_channel(uri) }
+        When(:channel) { Isbm::ChannelManagement.get_channel(uri) }
         Then { channel.should_not be_nil }
         Then { channel[:channel_uri].should_not be_nil }
         Then { channel[:channel_uri].is_a?(String).should be_true }
@@ -53,7 +55,7 @@ describe Isbm::ChannelManagement, :external_service => true do
 
     describe "get channels" do
       it "returns an array of channel hashes" do
-        Given(:channels) { Isbm::ChannelManagement.get_channels }
+        When(:channels) { Isbm::ChannelManagement.get_channels }
         Then { channels.should_not be_nil }
         Then { channels.is_a?(Array).should be_true }
         Then { channels.first[:channel_uri].should_not be_nil }
