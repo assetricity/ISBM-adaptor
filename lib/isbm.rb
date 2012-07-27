@@ -25,10 +25,6 @@ module Isbm
   end
 
   class << self
-    def get_status_message(response)
-      return response[:transaction_status][:status_message]
-    end
-
     # Sets the logger to use.
     attr_writer :logger
 
@@ -44,18 +40,14 @@ module Isbm
 
   module ClassMethods
     private
-    def validate_presense_of(given_arguments, *args)
+    def validate_presence_of(*args)
       calling_method = /`(.*)'/.match(caller[0])
       calling_parent = caller[1]
       args.each do |arg| 
-        if given_arguments.first[arg].nil?
+        if arg.nil?
           raise ArgumentError.new "#{calling_method} requires #{arg} \n#{calling_parent}"
         end
       end
-    end
-
-    def not_valid_chtype(type)
-      raise ArgumentError.new "#{type} is not a valid channel type"
     end
   end
   module InstanceMethods

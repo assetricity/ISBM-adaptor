@@ -29,12 +29,12 @@ module Isbm
         end
       end
 
-      def provider_publication_endpoint
-        self.settings[:provider_publication]
-      end
-
       def channel_management_endpoint
         self.settings[:channel_management]
+      end
+
+      def provider_publication_endpoint
+        self.settings[:provider_publication]
       end
 
       def consumer_publication_endpoint

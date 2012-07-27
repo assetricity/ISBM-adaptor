@@ -1,4 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+	Copyright MIMOSA 2012. All Rights Reserved.
+
+	License information for this file is provided in the file "License Agreement.txt" that is provided with this download package.
+
+	For support, more information, or to report errors, please contact MIMOSA at http://www.mimosa.org or OpenO&M at http://www.openoandm.info.
+-->
 <wsdl:definitions
 	xmlns:xs="http://www.w3.org/2001/XMLSchema"
 	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
@@ -19,11 +26,17 @@
 					</xs:sequence>
 				</xs:complexType>
 			</xs:element>
-			<xs:complexType name="Message">
+			<xs:complexType name="PublicationMessage">
 				<xs:sequence>
 					<xs:element minOccurs="1" maxOccurs="1" name="MessageID" type="xs:string"/>
 					<xs:element minOccurs="1" maxOccurs="1" ref="tns:MessageContent"/>
-					<xs:element minOccurs="1" maxOccurs="unbounded" name="TopicName" type="xs:string"/>
+					<xs:element minOccurs="1" maxOccurs="unbounded" name="Topic" type="xs:string"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="Namespace">
+				<xs:sequence>
+					<xs:element minOccurs="1" maxOccurs="1" name="NamespacePrefix" type="xs:string"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="NamespaceName" type="xs:string"/>
 				</xs:sequence>
 			</xs:complexType>
 
@@ -32,9 +45,11 @@
 			<xs:element name="OpenSubscriptionSession">
 				<xs:complexType>
 					<xs:sequence>
-						<xs:element minOccurs="1" maxOccurs="1" name="ChannelID" type="xs:string"/>
-						<xs:element minOccurs="1" maxOccurs="unbounded" name="TopicName" type="xs:string"/>
+						<xs:element minOccurs="1" maxOccurs="1" name="ChannelURI" type="xs:string"/>
+						<xs:element minOccurs="1" maxOccurs="unbounded" name="Topic" type="xs:string"/>
 						<xs:element minOccurs="0" maxOccurs="1" name="ListenerURI" type="xs:string"/>
+						<xs:element minOccurs="0" maxOccurs="1" name="XPathExpression" type="xs:string"/>
+						<xs:element minOccurs="0" maxOccurs="unbounded" name="XPathNamespace" type="tns:Namespace"/>
 					</xs:sequence>
 				</xs:complexType>
 			</xs:element>
@@ -49,25 +64,16 @@
 				<xs:complexType>
 					<xs:sequence>
 						<xs:element minOccurs="1" maxOccurs="1" name="SessionID" type="xs:string"/>
+						<xs:element minOccurs="0" maxOccurs="1" name="LastMessageID" type="xs:string"/>
 					</xs:sequence>
 				</xs:complexType>
 			</xs:element>
 			<xs:element name="ReadPublicationResponse">
 				<xs:complexType>
 					<xs:sequence>
-						<xs:element minOccurs="0" maxOccurs="1" name="Message" type="tns:Message"/>
+						<xs:element minOccurs="0" maxOccurs="1" name="PublicationMessage" type="tns:PublicationMessage"/>
 					</xs:sequence>
 				</xs:complexType>
-			</xs:element>
-			<xs:element name="RemovePublication">
-				<xs:complexType>
-					<xs:sequence>
-						<xs:element minOccurs="1" maxOccurs="1" name="SessionID" type="xs:string"/>
-					</xs:sequence>
-				</xs:complexType>
-			</xs:element>
-			<xs:element name="RemovePublicationResponse">
-				<xs:complexType/>
 			</xs:element>
 			<xs:element name="CloseSubscriptionSession">
 				<xs:complexType>
@@ -82,14 +88,21 @@
 
 			<!-- Fault elements -->
 
-			<xs:element name="InvalidChannelFault">
+			<xs:element name="ChannelFault">
 				<xs:complexType>
 					<xs:sequence>
 						<xs:element minOccurs="1" maxOccurs="1" name="Description" type="xs:string"/>
 					</xs:sequence>
 				</xs:complexType>
 			</xs:element>
-			<xs:element name="InvalidChannelTypeFault">
+			<xs:element name="DuplicateNamespacePrefixFault">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="1" maxOccurs="1" name="Description" type="xs:string"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="InvalidOperationFault">
 				<xs:complexType>
 					<xs:sequence>
 						<xs:element minOccurs="1" maxOccurs="1" name="Description" type="xs:string"/>
@@ -103,7 +116,7 @@
 					</xs:sequence>
 				</xs:complexType>
 			</xs:element>
-			<xs:element name="InvalidTopicFault">
+			<xs:element name="InvalidMessageFault">
 				<xs:complexType>
 					<xs:sequence>
 						<xs:element minOccurs="1" maxOccurs="1" name="Description" type="xs:string"/>
@@ -125,29 +138,26 @@
 	<wsdl:message name="ReadPublicationOut">
 		<wsdl:part name="parameters" element="tns:ReadPublicationResponse"/>
 	</wsdl:message>
-	<wsdl:message name="RemovePublicationIn">
-		<wsdl:part name="parameters" element="tns:RemovePublication"/>
-	</wsdl:message>
-	<wsdl:message name="RemovePublicationOut">
-		<wsdl:part name="parameters" element="tns:RemovePublicationResponse"/>
-	</wsdl:message>
 	<wsdl:message name="CloseSubscriptionSessionIn">
 		<wsdl:part name="parameters" element="tns:CloseSubscriptionSession"/>
 	</wsdl:message>
 	<wsdl:message name="CloseSubscriptionSessionOut">
 		<wsdl:part name="parameters" element="tns:CloseSubscriptionSessionResponse"/>
 	</wsdl:message>
-	<wsdl:message name="InvalidChannelFault">
-		<wsdl:part name="parameters" element="tns:InvalidChannelFault"/>
+	<wsdl:message name="ChannelFault">
+		<wsdl:part name="parameters" element="tns:ChannelFault"/>
 	</wsdl:message>
-	<wsdl:message name="InvalidChannelTypeFault">
-		<wsdl:part name="parameters" element="tns:InvalidChannelTypeFault"/>
+	<wsdl:message name="DuplicateNamespacePrefixFault">
+		<wsdl:part name="parameters" element="tns:DuplicateNamespacePrefixFault"/>
+	</wsdl:message>
+	<wsdl:message name="InvalidOperationFault">
+		<wsdl:part name="parameters" element="tns:InvalidOperationFault"/>
 	</wsdl:message>
 	<wsdl:message name="InvalidSessionFault">
 		<wsdl:part name="parameters" element="tns:InvalidSessionFault"/>
 	</wsdl:message>
-	<wsdl:message name="InvalidTopicFault">
-		<wsdl:part name="parameters" element="tns:InvalidTopicFault"/>
+	<wsdl:message name="InvalidMessageFault">
+		<wsdl:part name="parameters" element="tns:InvalidMessageFault"/>
 	</wsdl:message>
 
 	<wsdl:portType name="ISBMConsumerPublicationService">
@@ -155,21 +165,16 @@
 			<wsdl:documentation>Opens a subscription session for a channel.</wsdl:documentation>
 			<wsdl:input message="tns:OpenSubscriptionSessionIn"/>
 			<wsdl:output message="tns:OpenSubscriptionSessionOut"/>
-			<wsdl:fault name="InvalidChannelFault" message="tns:InvalidChannelFault"/>
-			<wsdl:fault name="InvalidChannelTypeFault" message="tns:InvalidChannelTypeFault"/>
-			<wsdl:fault name="InvalidTopicFault" message="tns:InvalidTopicFault"/>
+			<wsdl:fault name="ChannelFault" message="tns:ChannelFault"/>
+			<wsdl:fault name="InvalidOperationFault" message="tns:InvalidOperationFault"/>
+			<wsdl:fault name="DuplicateNamespacePrefixFault" message="tns:DuplicateNamespacePrefixFault"/>
 		</wsdl:operation>
 		<wsdl:operation name="ReadPublication">
-			<wsdl:documentation>Returns the first publication message in the message queue for the session. Note: this service does not remove the message from the message queue.</wsdl:documentation>
+			<wsdl:documentation>Returns the first non-expired publication message (if any) after the specified last message (even if the specified last message has expired) for the session.</wsdl:documentation>
 			<wsdl:input message="tns:ReadPublicationIn"/>
 			<wsdl:output message="tns:ReadPublicationOut"/>
 			<wsdl:fault name="InvalidSessionFault" message="tns:InvalidSessionFault"/>
-		</wsdl:operation>
-		<wsdl:operation name="RemovePublication">
-			<wsdl:documentation>Deletes the first publication message in the message queue for the session.</wsdl:documentation>
-			<wsdl:input message="tns:RemovePublicationIn"/>
-			<wsdl:output message="tns:RemovePublicationOut"/>
-			<wsdl:fault name="InvalidSessionFault" message="tns:InvalidSessionFault"/>
+			<wsdl:fault name="InvalidMessageFault" message="tns:InvalidMessageFault"/>
 		</wsdl:operation>
 		<wsdl:operation name="CloseSubscriptionSession">
 			<wsdl:documentation>Closes a subscription session.</wsdl:documentation>
@@ -189,14 +194,14 @@
 			<wsdl:output>
 				<soap:body use="literal"/>
 			</wsdl:output>
-			<wsdl:fault name="InvalidChannelFault">
-				<soap:fault name="InvalidChannelFault" use="literal"/>
+			<wsdl:fault name="ChannelFault">
+				<soap:fault name="ChannelFault" use="literal"/>
 			</wsdl:fault>
-			<wsdl:fault name="InvalidChannelTypeFault">
-				<soap:fault name="InvalidChannelTypeFault" use="literal"/>
+			<wsdl:fault name="InvalidOperationFault">
+				<soap:fault name="InvalidOperationFault" use="literal"/>
 			</wsdl:fault>
-			<wsdl:fault name="InvalidTopicFault">
-				<soap:fault name="InvalidTopicFault" use="literal"/>
+			<wsdl:fault name="DuplicateNamespacePrefixFault">
+				<soap:fault name="DuplicateNamespacePrefixFault" use="literal"/>
 			</wsdl:fault>
 		</wsdl:operation>
 		<wsdl:operation name="ReadPublication">
@@ -210,17 +215,8 @@
 			<wsdl:fault name="InvalidSessionFault">
 				<soap:fault name="InvalidSessionFault" use="literal"/>
 			</wsdl:fault>
-		</wsdl:operation>
-		<wsdl:operation name="RemovePublication">
-			<soap:operation soapAction="http://www.openoandm.org/xml/ISBM/RemovePublication" style="document"/>
-			<wsdl:input>
-				<soap:body use="literal"/>
-			</wsdl:input>
-			<wsdl:output>
-				<soap:body use="literal"/>
-			</wsdl:output>
-			<wsdl:fault name="InvalidSessionFault">
-				<soap:fault name="InvalidSessionFault" use="literal"/>
+			<wsdl:fault name="InvalidMessageFault">
+				<soap:fault name="InvalidMessageFault" use="literal"/>
 			</wsdl:fault>
 		</wsdl:operation>
 		<wsdl:operation name="CloseSubscriptionSession">
@@ -247,14 +243,14 @@
 			<wsdl:output>
 				<soap12:body use="literal"/>
 			</wsdl:output>
-			<wsdl:fault name="InvalidChannelFault">
-				<soap12:fault name="InvalidChannelFault" use="literal"/>
+			<wsdl:fault name="ChannelFault">
+				<soap12:fault name="ChannelFault" use="literal"/>
 			</wsdl:fault>
-			<wsdl:fault name="InvalidChannelTypeFault">
-				<soap12:fault name="InvalidChannelTypeFault" use="literal"/>
+			<wsdl:fault name="InvalidOperationFault">
+				<soap12:fault name="InvalidOperationFault" use="literal"/>
 			</wsdl:fault>
-			<wsdl:fault name="InvalidTopicFault">
-				<soap12:fault name="InvalidTopicFault" use="literal"/>
+			<wsdl:fault name="DuplicateNamespacePrefixFault">
+				<soap12:fault name="DuplicateNamespacePrefixFault" use="literal"/>
 			</wsdl:fault>
 		</wsdl:operation>
 		<wsdl:operation name="ReadPublication">
@@ -268,17 +264,8 @@
 			<wsdl:fault name="InvalidSessionFault">
 				<soap12:fault name="InvalidSessionFault" use="literal"/>
 			</wsdl:fault>
-		</wsdl:operation>
-		<wsdl:operation name="RemovePublication">
-			<soap12:operation soapAction="http://www.openoandm.org/xml/ISBM/RemovePublication" style="document"/>
-			<wsdl:input>
-				<soap12:body use="literal"/>
-			</wsdl:input>
-			<wsdl:output>
-				<soap12:body use="literal"/>
-			</wsdl:output>
-			<wsdl:fault name="InvalidSessionFault">
-				<soap12:fault name="InvalidSessionFault" use="literal"/>
+			<wsdl:fault name="InvalidMessageFault">
+				<soap12:fault name="InvalidMessageFault" use="literal"/>
 			</wsdl:fault>
 		</wsdl:operation>
 		<wsdl:operation name="CloseSubscriptionSession">

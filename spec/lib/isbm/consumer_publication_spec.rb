@@ -4,74 +4,67 @@ describe Isbm::ProviderPublication, :external_service => true do
   HTTPI.log = false
   Savon.log = false
 
-  context "when some channel with a topic exists" do
-    Given ( :topic_name1 ) { "Topic1" }
-    Given ( :topic_name2 ) { "Topic2" }
-    Given ( :channel_name ) { "Test#{Time.now.to_i}" }
+  context "invalid arguments" do
+    describe "open subscription session" do
+      Given(:uri) { "Test#{Time.now.to_i}" }
+      Given(:topics) { ["topics"] }
 
-    before :all do
-      @create_channel_response = Isbm::ChannelManagement.create_channel(:channel_name => channel_name, :channel_type => "Publication")
-      @channel_id = @create_channel_response[:channel_id]
-      @create_topic_response = Isbm::ChannelManagement.create_topic(:channel_id => @channel_id, :topic_name => topic_name1)
-      @create_topic_response = Isbm::ChannelManagement.create_topic(:channel_id => @channel_id, :topic_name => topic_name2)
-      @open_pub_response = Isbm::ProviderPublication.open_publication :channel_id => @channel_id
-      @pub_session_id = @open_pub_response[:session_id]
+      it "raises error with no URI" do
+        lambda { Isbm::ConsumerPublication.open_session(nil, topics) }.should raise_error
+      end
+
+      it "raises error with no topics" do
+        lambda { Isbm::ConsumerPublication.open_session(uri, nil) }.should raise_error
+      end
     end
+
+    describe "read publication" do
+      it "raises error with no session id" do
+        lambda { Isbm::ConsumerPublication.read_publication(nil) }.should raise_error
+      end
+    end
+
+    describe "close subscription session" do
+      it "raises error with no session id" do
+        lambda { Isbm::ConsumerPublication.close_session(nil) }.should raise_error
+      end
+    end
+  end
+
+  context "valid arguments" do
+    Given(:uri) { "Test#{Time.now.to_i}" }
+    Given(:type) { :publication }
+    Given(:topics) { ["topic"] }
+    Given(:content) { "<test/>" }
+
+    before(:all) { Isbm::ChannelManagement.create_channel(uri, type) }
+
+    When(:provider_session_id) { Isbm::ProviderPublication.open_session(uri) }
+    When(:consumer_session_id) { Isbm::ConsumerPublication.open_session(uri, topics) }
 
     describe "open subscription session" do
-      before :all do
-        @create_session_response = Isbm::ConsumerPublication.open_subscription( :channel_id => @channel_id, :topic_name => [ topic_name1, topic_name2 ] )
-        @session_id = @create_session_response[:session_id]
-      end
-
-      it "was successful" do
-        @session_id.should_not be_nil
-      end
-
-      describe "read publication" do
-        Given ( :message ) { '<CCOMData><Entity xsi:type="Asset"><GUID>C013C740-19F5-11E1-92B7-6B8E4824019B</GUID></Entity></CCOMData>' }
-
-        before :all do
-          @post_publication_response = Isbm::ProviderPublication.post_publication( :session_id => @pub_session_id, :topic_name => topic_name1, :message => message)
-          sleep(10)
-          @read_response = Isbm::ConsumerPublication.read_publication( :session_id => @session_id )
-        end
-
-        it "was successful" do
-          @read_response[:fault].should be_nil
-        end
-
-        it "received message" do
-          @read_response.should_not be_nil
-          doc = Nokogiri::XML.parse @read_response.to_xml
-          message = doc.xpath("//CCOMData").first.to_s
-          message.should =~ /C013C740-19F5-11E1-92B7-6B8E4824019B/
-        end
-
-        describe "remove publication" do
-          before :all do
-            @remove_publication_response = Isbm::ConsumerPublication.remove_publication( :session_id => @session_id )
-          end
-
-          it "was successful" do
-            @remove_publication_response[:fault].should be_nil
-          end
-        end
-      end
-
-      describe "close subscription session" do
-        before :all do
-          @close_session_response = Isbm::ConsumerPublication.close_subscription( :session_id => @session_id )
-        end
-
-        it "was successful" do
-          @close_session_response[:fault].should be_nil
-        end
+      it "returns a string" do
+        Then { consumer_session_id.is_a?(String).should be_true }
       end
     end
 
-    after :all do
-      Isbm::ChannelManagement.delete_channel(:channel_id => @channel_id)
+    describe "read publication" do
+      When { Isbm::ProviderPublication.post_publication(provider_session_id, content, topics) }
+      When(:message) { Isbm::ConsumerPublication.read_publication(consumer_session_id, nil) }
+
+      it "returns a message" do
+        Then { message[:message_id].should_not be_nil }
+        Then { message[:message_id].is_a?(String).should be_true }
+        Then { message[:message_content].should_not be_nil }
+        # TODO AM How to check it's an XML payload?
+        Then { Nokogiri::XML.parse(message[:message_content].to_xml).should_not raise_error }
+        Then { message[:topic].should_not be_nil }
+      end
+    end
+
+    after(:all) do
+      Isbm::ProviderPublication.close_session(provider_session_id)
+      Isbm::ChannelManagement.delete_channel(uri)
     end
   end
 end

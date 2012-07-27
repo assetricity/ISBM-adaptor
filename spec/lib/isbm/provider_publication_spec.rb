@@ -4,54 +4,80 @@ describe Isbm::ProviderPublication, :external_service => true do
   HTTPI.log = false
   Savon.log = false
 
-  context "when some channel exists" do
-    Given(:channel_name) {"Test#{Time.now.to_i}"}
-    before :all do
-      @create_channel_response = Isbm::ChannelManagement.create_channel(:channel_name => channel_name, :channel_type => "Publication")
-      @channel_id = @create_channel_response[:channel_id]
-    end
-
-    describe "open publication" do
-      before(:all) do
-        @open_pub_response = Isbm::ProviderPublication.open_publication :channel_id => @channel_id
-        @session_id = @open_pub_response[:session_id]
-      end
-
-      it "is successful in opening a publication channel" do
-        @open_pub_response.should_not be_nil
-      end
-
-      describe "post publication" do
-        let(:topic_name) { "test_topic" }
-        let(:message) { "<CCOMData>Some Message</CCOMData>" }
-
-        before(:all) do
-          @create_topic_response = Isbm::ChannelManagement.create_topic(:channel_id => @channel_id, :topic_name => topic_name)
-          @post_publication_response = Isbm::ProviderPublication.post_publication( :session_id => @session_id, :topic_name => topic_name, :message => message)
-        end
-
-        it "raises error when no message is given" do
-          lambda { Isbm::ProviderPublication.post_publication :channel_session_id => @session_id, :topic_name => topic_name }.should raise_error
-        end
-
-        it "posted message successfully" do
-          @post_publication_response[:fault].should be_nil
-        end
-      end
-
-      describe "close publication" do
-        before do
-          @close_pub_response = Isbm::ProviderPublication.close_publication :channel_session_id => @session_id
-        end
-
-        it "is successful in closing a publication" do
-          @close_pub_response[:fault].should be_nil
-        end
+  context "invalid arguments" do
+    describe "open publication session" do
+      it "raises error with no URI" do
+        lambda { Isbm::ProviderPublication.open_session(nil) }.should raise_error
       end
     end
 
-    after :all do
-      Isbm::ChannelManagement.delete_channel(:channel_id => @channel_id)
+    describe "post publication" do
+      Given(:session_id) { "session id" }
+      Given(:content) { "<test/>" }
+      Given(:topics) { ["topic"] }
+
+      it "raises error with no session id" do
+        lambda { Isbm::ProviderPublication.post_publication(nil, content, topics) }.should raise_error
+      end
+
+      it "raises error with no content" do
+        lambda { Isbm::ProviderPublication.post_publication(session_id, nil, topics) }.should raise_error
+      end
+
+      it "raises error with no topics" do
+        lambda { Isbm::ProviderPublication.post_publication(session_id, content, nil) }.should raise_error
+      end
+    end
+
+    describe "expire publication" do
+      Given(:message_id) { "message id" }
+
+      it "raises error with no session id" do
+        lambda { Isbm::ProviderPublication.expire_publication(nil, message_id) }.should raise_error
+      end
+
+      it "raises error with no message id" do
+        lambda { Isbm::ProviderPublication.expire_publication(session_id, nil) }.should raise_error
+      end
+    end
+
+    describe "close publication session" do
+      it "raises error with no session id" do
+        lambda { Isbm::ProviderPublication.close_session(nil) }.should raise_error
+      end
+    end
+  end
+
+  context "valid arguments" do
+    Given(:uri) { "Test#{Time.now.to_i}" }
+    Given(:type) { :publication }
+
+    before(:all) { Isbm::ChannelManagement.create_channel(uri, type) }
+
+    When(:session_id) { Isbm::ProviderPublication.open_session(uri) }
+
+    describe "open publication session" do
+      it "returns a string" do
+        Then { session_id.should_not be_nil }
+        Then { session_id.is_a?(String).should be_true }
+      end
+    end
+
+    describe "post publication" do
+      it "returns a string" do
+        Given(:content) { "<test/>" }
+        Given(:topics) { ["topic"] }
+
+        When(:message_id) { Isbm::ProviderPublication.post_publication(session_id, content, topics) }
+
+        Then { message_id.should_not be_nil }
+        Then { message_id.is_a?(String).should be_true }
+      end
+    end
+
+    after(:all) do
+      Isbm::ProviderPublication.close_session(session_id)
+      Isbm::ChannelManagement.delete_channel(uri)
     end
   end
 end

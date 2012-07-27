@@ -8,8 +8,8 @@ Gem::Specification.new do |s|
   s.authors     = ["Brandon Mathis"]
   s.email       = ["Brandon@KeysetTS.com"]
   s.homepage    = "http://www.assetricity.com"
-  s.summary     = %q{ISBM adaptor for ruby applications}
-  s.description = %q{ISBM adaptor for ruby applications}
+  s.summary     = %q{OpenO&M ISBM adaptor}
+  s.description = %q{OpenO&M ISBM adaptor}
   s.license     = ""
 
   s.rubyforge_project = "isbm"

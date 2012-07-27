@@ -1,48 +1,51 @@
 module Isbm
   class ConsumerPublication
-    include Isbm
     include Savon::Model
+    include Isbm
+
     document Isbm.wsdl_dir + "ISBMConsumerPublicationService.wsdl"
     endpoint Isbm::Config.consumer_publication_endpoint
 
-    def self.open_subscription(*args)
-      validate_presense_of args, :channel_id, :topic_name
+    # Opens a subscription session for a channel
+    # 'topics' must be an array of topic strings
+    # Returns the session id
+    def self.open_session(uri, topics, listener_uri = nil)
+      validate_presence_of uri, topics
       response = client.request :wsdl, "OpenSubscriptionSession" do
-        soap.body = {
-          :channel_i_d => args.first[:channel_id],
-          :topic_name => args.first[:topic_name],
-          :listener_u_r_i => args.first[:listener_uri]
-        }
+        soap.body do |xml|
+          xml.ChannelURI(uri)
+          topics.each do |topic|
+            xml.Topic(topic)
+          end
+          xml.ListenerURI(listener_uri) unless listener_uri.nil?
+        end
       end
-      response.to_hash[:open_subscription_session_response]
+      response.to_hash[:open_subscription_session_response][:session_id]
     end
 
-    def self.close_subscription(*args)
-      validate_presense_of args, :session_id
-      response = client.request :wsdl, "CloseSubscriptionSession" do
-        soap.body = {
-          :session_i_d => args.first[:session_id]
-        }
-      end
-      response.to_hash[:close_subscription_session_response]
-    end
-
-    def self.read_publication(*args)
-      validate_presense_of args, :session_id
+    # Reads the first message after the specified last message
+    # Setting last_message_id to nil will return the first publication
+    # Returns the publication message or nil if there isn't one available
+    def self.read_publication(session_id, last_message_id)
+      validate_presence_of session_id, last_message_id
       response = client.request :wsdl, "ReadPublication" do
-        soap.body = {
-          :session_i_d => args.first[:session_id]
-        }
+        soap.body do |xml|
+          xml.SessionID(session_id)
+          xml.LastMessageID(last_message_id) unless last_message_id.nil?
+        end
       end
+      response.to_hash[:read_publication_response][:publication_message]
     end
 
-    def self.remove_publication(*args)
-      validate_presense_of args, :session_id
-      response = client.request :wsdl, "RemovePublication" do
-        soap.body = {
-          :session_i_d => args.first[:session_id]
-        }
+    # Closes a subscription session
+    def self.close_session(session_id)
+      validate_presence_of session_id
+      response = client.request :wsdl, "CloseSubscriptionSession" do
+        soap.body do |xml|
+          xml.SessionID(session_id)
+        end
       end
+      return true
     end
   end
 end

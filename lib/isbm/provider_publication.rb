@@ -1,56 +1,68 @@
 module Isbm
   class ProviderPublication
-    include Isbm
     include Savon::Model
-    document Isbm.wsdl_dir + "ISBMChannelManagementService.wsdl"
+    include Isbm
+
+    document Isbm.wsdl_dir + "ISBMProviderPublicationService.wsdl"
     endpoint Isbm::Config.provider_publication_endpoint
 
-    # Create a publication channel
-    # Arguments (Required)
-    #   :channel_id
-    #
-    # WSDL: OpenPublicationSession
-    def self.open_publication(*args)
-      validate_presense_of args, :channel_id
+    # Opens a publication session for a channel
+    # Returns the session id
+    def self.open_session(uri)
+      validate_presence_of uri
       response = client.request :wsdl, "OpenPublicationSession" do
-        soap.body = {
-          :channel_i_d => args.first[:channel_id]
-        }
+        soap.body do |xml|
+          xml.ChannelURI(uri)
+        end
       end
-      response.to_hash[:open_publication_session_response]
+      response.to_hash[:open_publication_session_response][:session_id]
     end
 
-    # Close an open publication channel
-    # Arguments (Required)
-    #   :channel_session_id
-    #
-    # WSDL: ClosePublication
-    def self.close_publication(*args)
-      validate_presense_of args, :channel_session_id
-      response = client.request :wsdl, "ClosePublicationSession" do
-        soap.body = {
-          :session_i_d => args.first[:channel_session_id]
-        }
-      end
-      response.to_hash[:close_publication_session_response]
-    end
-
-    # Post a message to a publication channel
-    # Arguments (Required)
-    #   :channel_session_id
-    #   :topic_name
-    #
-    # WSDL: PostPublication
-    def self.post_publication(*args)
-      validate_presense_of args, :session_id, :topic_name, :message
+    # Posts a publication message
+    # 'content' argument must be a valid XML
+    # 'topics' must be an array of topic strings
+    # 'expiry', if specified, must be an XML Schema compatible duration string
+    # Returns the message id
+    # TODO AM Should we check content is valid XML?
+    # TODO AM Should we allow topics to be a string and wrap it as an array?
+    # TODO AM Should validate_presense_of check topic is array and bounds?
+    # TODO AM What type do we make expiry?
+    def self.post_publication(session_id, content, topics, expiry = nil)
+      validate_presence_of session_id, content, topics
       response = client.request :wsdl, "PostPublication" do
-        soap.body = {
-          :session_i_d => args.first[:session_id],
-          :message_content! => args.first[:message],
-          :topic_name => args.first[:topic_name]
-        }
+        soap.body do |xml|
+          xml.SessionID(session_id)
+          xml.MessageContent!(content)
+          topics.each do |topic|
+            xml.Topic(topic)
+          end
+          xml.Expiry(expiry) unless expiry.nil?
+        end
       end
-      response.to_hash[:post_publication_response]
+      response.to_hash[:post_publication_response][:message_id]
+    end
+
+    # Expires a posted publication message
+    def self.expire_publication(session_id, message_id)
+      validate_presence_of session_id, message_id
+      response = client.request :wsdl, "ExpirePublication" do
+        soap.body do |xml|
+          xml.SessionID(session_id)
+          xml.MessageID(message_id)
+        end
+      end
+      return true
+    end
+
+    # Closes a publication session
+    def self.close_session(session_id)
+      validate_presence_of session_id
+      response = client.request :wsdl, "ClosePublicationSession" do
+        soap.body do |xml|
+          xml.SessionID(session_id)
+        end
+      end
+      return true
     end
   end
 end
