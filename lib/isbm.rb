@@ -1,6 +1,5 @@
 require "isbm/version"
 require "savon"
-require "savon_model"
 
 # Use NetHttp from Ruby instead of HTTPI
 HTTPI.adapter = :net_http
