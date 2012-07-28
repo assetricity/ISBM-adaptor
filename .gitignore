@@ -4,4 +4,5 @@ pkg/*
 vendor/ruby
 vendor/jruby
 config
+bin
 .idea
