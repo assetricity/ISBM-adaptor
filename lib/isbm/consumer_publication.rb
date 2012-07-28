@@ -11,13 +11,15 @@ module Isbm
     # Returns the session id
     def self.open_session(uri, topics, listener_uri = nil)
       validate_presence_of uri, topics
-      response = client.request :wsdl, "OpenSubscriptionSession" do
+      response = client.request :wsdl, :open_subscription_session do
+        set_default_namespace soap
         soap.body do |xml|
           xml.ChannelURI(uri)
           topics.each do |topic|
             xml.Topic(topic)
           end
           xml.ListenerURI(listener_uri) unless listener_uri.nil?
+          xml # Last line of block needs to return Builder object
         end
       end
       response.to_hash[:open_subscription_session_response][:session_id]
@@ -28,10 +30,12 @@ module Isbm
     # Returns the publication message or nil if there isn't one available
     def self.read_publication(session_id, last_message_id)
       validate_presence_of session_id, last_message_id
-      response = client.request :wsdl, "ReadPublication" do
+      response = client.request :wsdl, :read_publication do
+        set_default_namespace soap
         soap.body do |xml|
           xml.SessionID(session_id)
           xml.LastMessageID(last_message_id) unless last_message_id.nil?
+          xml # Last line of block needs to return Builder object
         end
       end
       response.to_hash[:read_publication_response][:publication_message]
@@ -40,7 +44,8 @@ module Isbm
     # Closes a subscription session
     def self.close_session(session_id)
       validate_presence_of session_id
-      response = client.request :wsdl, "CloseSubscriptionSession" do
+      response = client.request :wsdl, :close_subscription_session do
+        set_default_namespace soap
         soap.body do |xml|
           xml.SessionID(session_id)
         end

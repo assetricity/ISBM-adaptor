@@ -10,7 +10,8 @@ module Isbm
     # Returns the session id
     def self.open_session(uri)
       validate_presence_of uri
-      response = client.request :wsdl, "OpenPublicationSession" do
+      response = client.request :wsdl, :open_publication_session do
+        set_default_namespace soap
         soap.body do |xml|
           xml.ChannelURI(uri)
         end
@@ -29,7 +30,8 @@ module Isbm
     # TODO AM What type do we make expiry?
     def self.post_publication(session_id, content, topics, expiry = nil)
       validate_presence_of session_id, content, topics
-      response = client.request :wsdl, "PostPublication" do
+      response = client.request :wsdl, :post_publication do
+        set_default_namespace soap
         soap.body do |xml|
           xml.SessionID(session_id)
           xml.MessageContent!(content)
@@ -37,6 +39,7 @@ module Isbm
             xml.Topic(topic)
           end
           xml.Expiry(expiry) unless expiry.nil?
+          xml # Last line of block needs to return Builder object
         end
       end
       response.to_hash[:post_publication_response][:message_id]
@@ -45,7 +48,8 @@ module Isbm
     # Expires a posted publication message
     def self.expire_publication(session_id, message_id)
       validate_presence_of session_id, message_id
-      response = client.request :wsdl, "ExpirePublication" do
+      response = client.request :wsdl, :expire_publication do
+        set_default_namespace soap
         soap.body do |xml|
           xml.SessionID(session_id)
           xml.MessageID(message_id)
@@ -57,7 +61,8 @@ module Isbm
     # Closes a publication session
     def self.close_session(session_id)
       validate_presence_of session_id
-      response = client.request :wsdl, "ClosePublicationSession" do
+      response = client.request :wsdl, :close_publication_session do
+        set_default_namespace soap
         soap.body do |xml|
           xml.SessionID(session_id)
         end

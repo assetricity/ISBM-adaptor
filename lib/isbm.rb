@@ -48,6 +48,11 @@ module Isbm
         end
       end
     end
+
+    # XML Builder can only set a namespace by prefix, so for simplicity, use a default namespace
+    def set_default_namespace(soap)
+      soap.namespaces["xmlns"] = "http://www.openoandm.org/xml/ISBM/"
+    end
   end
   module InstanceMethods
     Gyoku.convert_symbols_to :camelcase

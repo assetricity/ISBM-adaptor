@@ -11,12 +11,14 @@ module Isbm
     def self.create_channel(uri, type, description = nil)
       validate_presence_of uri, type
       raise ArgumentError.new "#{type} is not a valid type. Must be either :publication, :request or :response." unless self.channel_types.has_key? type
-      # TODO AM Why don't strings work for SOAP action?
-      # TODO AM Why doesn't Builder pick up XML namespaces
       response = client.request :wsdl, :create_channel do
-        body = { "ChannelURI" => uri, "ChannelType" => channel_types[type] }
-        body.merge!({ "ChannelDescription" => description }) unless description.nil?
-        soap.body = body
+        set_default_namespace soap
+        soap.body do |xml|
+          xml.ChannelURI(uri)
+          xml.ChannelType(channel_types[type])
+          xml.ChannelDescription(description) unless description.nil?
+          xml # Last line of block needs to return Builder object
+        end
       end
       return true
     end
@@ -25,8 +27,10 @@ module Isbm
     def self.delete_channel(uri)
       validate_presence_of uri
       response = client.request :wsdl, :delete_channel do
-        soap.namespaces["xmlns"] = "http://www.openoandm.org/xml/ISBM/"
-        soap.body = { "ChannelURI" => uri }
+        set_default_namespace soap
+        soap.body do |xml|
+          xml.ChannelURI(uri)
+        end
       end
       return true
     end
@@ -36,7 +40,10 @@ module Isbm
     def self.get_channel(uri)
       validate_presence_of uri
       response = client.request :wsdl, :get_channel do
-        soap.body = { "ChannelURI" => uri }
+        set_default_namespace soap
+        soap.body do |xml|
+          xml.ChannelURI(uri)
+        end
       end
       response.to_hash[:get_channel_response][:channel]
     end
