@@ -37,7 +37,7 @@ describe Isbm::ProviderPublication, :external_service => true do
     Given(:uri) { "Test#{Time.now.to_i}" }
     Given(:type) { :publication }
     Given(:topics) { ["topic"] }
-    Given(:content) { "<test/>" }
+    Given(:content) { '<CCOMData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.mimosa.org/osa-eai/v3-2-3/xml/CCOM-ML"><Entity xsi:type="Asset"><GUID>C013C740-19F5-11E1-92B7-6B8E4824019B</GUID></Entity></CCOMData>' }
 
     before(:all) { Isbm::ChannelManagement.create_channel(uri, type) }
 
@@ -60,7 +60,11 @@ describe Isbm::ProviderPublication, :external_service => true do
         Then { message[:message_content].should_not be_nil }
         Then { message[:topic].should_not be_nil }
         Then { message[:soap_envelope].should_not be_nil }
-        Then { lambda { Nokogiri::XML.parse(message[:soap_envelope]) }.should_not raise_error }
+        Then do
+          doc = Nokogiri.XML(message[:soap_envelope])
+          result = doc.xpath("//ccom:CCOMData", "ccom" => "http://www.mimosa.org/osa-eai/v3-2-3/xml/CCOM-ML")
+          result.should_not be_empty
+        end
       end
     end
 
