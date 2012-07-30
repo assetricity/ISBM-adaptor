@@ -1,9 +1,9 @@
 require 'spec_helper'
 
 describe Isbm::ChannelManagement, :external_service => true do
-  HTTPI.log = true
+  HTTPI.log = false
   Savon.configure do |config|
-    config.log = true
+    config.log = false
   end
 
   Given(:uri) { "Test#{Time.now.to_i}" }

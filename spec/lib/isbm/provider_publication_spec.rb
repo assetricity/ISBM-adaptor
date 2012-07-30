@@ -2,7 +2,9 @@ require 'spec_helper'
 
 describe Isbm::ProviderPublication, :external_service => true do
   HTTPI.log = false
-  Savon.log = false
+  Savon.configure do |config|
+    config.log = false
+  end
 
   context "invalid arguments" do
     describe "open publication session" do
