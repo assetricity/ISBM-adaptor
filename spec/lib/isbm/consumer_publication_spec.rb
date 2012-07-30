@@ -45,7 +45,7 @@ describe Isbm::ProviderPublication, :external_service => true do
     When(:consumer_session_id) { Isbm::ConsumerPublication.open_session(uri, topics) }
 
     describe "open subscription session" do
-      it "returns a string" do
+      context "returns a string" do
         Then { consumer_session_id.is_a?(String).should be_true }
       end
     end
@@ -54,13 +54,13 @@ describe Isbm::ProviderPublication, :external_service => true do
       When { Isbm::ProviderPublication.post_publication(provider_session_id, content, topics) }
       When(:message) { Isbm::ConsumerPublication.read_publication(consumer_session_id, nil) }
 
-      it "returns a message" do
+      context "returns a message" do
         Then { message[:message_id].should_not be_nil }
         Then { message[:message_id].is_a?(String).should be_true }
         Then { message[:message_content].should_not be_nil }
-        # TODO AM How to check it's an XML payload?
-        Then { Nokogiri::XML.parse(message[:message_content].to_xml).should_not raise_error }
         Then { message[:topic].should_not be_nil }
+        Then { message[:soap_envelope].should_not be_nil }
+        Then { lambda { Nokogiri::XML.parse(message[:soap_envelope]) }.should_not raise_error }
       end
     end
 
