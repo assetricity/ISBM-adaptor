@@ -3,8 +3,8 @@ module Isbm
     extend Savon::Model
     include Isbm
 
-    document  Isbm.wsdl_dir + "ISBMChannelManagementService.wsdl"
-    endpoint  Isbm::Config.channel_management_endpoint
+    document Isbm.wsdl_dir + "ISBMChannelManagementService.wsdl"
+    endpoint Isbm::Config.channel_management_endpoint
 
     # Creates a new channel
     # 'type' must be either :publication, :request or :response

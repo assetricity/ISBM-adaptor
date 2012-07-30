@@ -43,8 +43,8 @@ describe Isbm::ChannelManagement, :external_service => true do
     before(:all) { Isbm::ChannelManagement.create_channel(uri, type) }
 
     describe "get channel" do
-      it "returns a channel hash" do
-        When(:channel) { Isbm::ChannelManagement.get_channel(uri) }
+      When(:channel) { Isbm::ChannelManagement.get_channel(uri) }
+      context "returns a channel hash" do
         Then { channel.should_not be_nil }
         Then { channel[:channel_uri].should_not be_nil }
         Then { channel[:channel_uri].is_a?(String).should be_true }
@@ -54,8 +54,8 @@ describe Isbm::ChannelManagement, :external_service => true do
     end
 
     describe "get channels" do
-      it "returns an array of channel hashes" do
-        When(:channels) { Isbm::ChannelManagement.get_channels }
+      When(:channels) { Isbm::ChannelManagement.get_channels }
+      context "returns an array of channel hashes" do
         Then { channels.should_not be_nil }
         Then { channels.is_a?(Array).should be_true }
         Then { channels.first[:channel_uri].should_not be_nil }
