@@ -13,9 +13,9 @@ end
 
 namespace :isbm do
   desc "Create channel with the given URI and type"
-  task :create_channel, :uri, :type do |t, args|
+  task :create_channel, :uri, :channel_type do |t, args|
     uri = args.uri
-    type = args.type.to_sym
+    type = args.channel_type.to_sym
     Isbm::ChannelManagement.create_channel uri, type
   end
 
