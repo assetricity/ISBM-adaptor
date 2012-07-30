@@ -32,11 +32,10 @@ module Isbm
       validate_presence_of session_id, last_message_id
       response = client.request :wsdl, :read_publication do
         set_default_namespace soap
-        soap.body do |xml|
-          xml.SessionID(session_id)
-          xml.LastMessageID(last_message_id) unless last_message_id.nil?
-          xml # Last line of block needs to return Builder object
-        end
+        xml = Builder::XmlMarkup.new # Use separate builder when using conditional statements in XML generation
+        xml.SessionID(session_id)
+        xml.LastMessageID(last_message_id) unless last_message_id.nil?
+        soap.body = xml.target!
       end
       response.to_hash[:read_publication_response][:publication_message]
     end

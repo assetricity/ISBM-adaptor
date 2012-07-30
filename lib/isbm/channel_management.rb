@@ -13,12 +13,11 @@ module Isbm
       raise ArgumentError.new "#{type} is not a valid type. Must be either :publication, :request or :response." unless self.channel_types.has_key? type
       response = client.request :wsdl, :create_channel do
         set_default_namespace soap
-        soap.body do |xml|
-          xml.ChannelURI(uri)
-          xml.ChannelType(channel_types[type])
-          xml.ChannelDescription(description) unless description.nil?
-          xml # Last line of block needs to return Builder object
-        end
+        xml = Builder::XmlMarkup.new # Use separate builder when using conditional statements in XML generation
+        xml.ChannelURI(uri)
+        xml.ChannelType(channel_types[type])
+        xml.ChannelDescription(description) unless description.nil?
+        soap.body = xml.target!
       end
       return true
     end

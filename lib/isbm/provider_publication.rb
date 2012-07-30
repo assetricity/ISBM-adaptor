@@ -32,15 +32,14 @@ module Isbm
       validate_presence_of session_id, content, topics
       response = client.request :wsdl, :post_publication do
         set_default_namespace soap
-        soap.body do |xml|
-          xml.SessionID(session_id)
-          xml.MessageContent!(content)
-          topics.each do |topic|
-            xml.Topic(topic)
-          end
-          xml.Expiry(expiry) unless expiry.nil?
-          xml # Last line of block needs to return Builder object
+        xml = Builder::XmlMarkup.new # Use separate builder when using conditional statements in XML generation
+        xml.SessionID(session_id)
+        xml.MessageContent!(content)
+        topics.each do |topic|
+          xml.Topic(topic)
         end
+        xml.Expiry(expiry) unless expiry.nil?
+        soap.body = xml.target!
       end
       response.to_hash[:post_publication_response][:message_id]
     end
