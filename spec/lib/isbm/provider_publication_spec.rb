@@ -59,14 +59,14 @@ describe Isbm::ProviderPublication, :external_service => true do
     When(:session_id) { Isbm::ProviderPublication.open_session(uri) }
 
     describe "open publication session" do
-      it "returns a string" do
+      context "returns a string" do
         Then { session_id.should_not be_nil }
         Then { session_id.is_a?(String).should be_true }
       end
     end
 
     describe "post publication" do
-      it "returns a string" do
+      context "returns a string" do
         Given(:content) { "<test/>" }
         Given(:topics) { ["topic"] }
 

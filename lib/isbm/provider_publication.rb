@@ -1,6 +1,6 @@
 module Isbm
   class ProviderPublication
-    include Savon::Model
+    extend Savon::Model
     include Isbm
 
     document Isbm.wsdl_dir + "ISBMProviderPublicationService.wsdl"
@@ -34,7 +34,9 @@ module Isbm
         set_default_namespace soap
         xml = Builder::XmlMarkup.new # Use separate builder when using conditional statements in XML generation
         xml.SessionID(session_id)
-        xml.MessageContent!(content)
+        xml.MessageContent do
+          xml << content
+        end
         topics.each do |topic|
           xml.Topic(topic)
         end
