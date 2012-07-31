@@ -9,5 +9,10 @@ module Isbm
         end
       end
     end
+
+    def validate_xml(xml)
+      doc = Nokogiri.XML(xml)
+      raise ArgumentError.new "XML is not well formed: #{xml}" unless doc.errors.empty?
+    end
   end
 end

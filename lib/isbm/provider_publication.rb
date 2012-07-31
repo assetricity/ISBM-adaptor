@@ -26,14 +26,14 @@ module Isbm
     end
 
     # Posts a publication message
-    # 'content' argument must be a valid XML
+    # 'content' must be a valid XML string
     # 'topics' must be an array of topic strings or a single string
     # 'expiry', if specified, must be an XML Schema compatible duration string
     # Returns the message id
-    # TODO Check content is valid XML
     # TODO Create and use new expiry class
     def self.post_publication(session_id, content, topics, expiry = nil)
       validate_presence_of session_id, content, topics
+      validate_xml content
       topics = [topics] unless topics.is_a?(Array)
       response = client.request :wsdl, :post_publication do
         set_default_namespace soap

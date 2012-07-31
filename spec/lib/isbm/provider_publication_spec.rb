@@ -11,6 +11,7 @@ describe Isbm::ProviderPublication, :external_service => true do
     describe "#post_publication" do
       let(:session_id) { "session id" }
       let(:content) { "<test/>" }
+      let(:invalid_content) { "<test>" }
       let(:topics) { ["topic"] }
 
       it "raises error with no session id" do
@@ -19,6 +20,10 @@ describe Isbm::ProviderPublication, :external_service => true do
 
       it "raises error with no content" do
         lambda { Isbm::ProviderPublication.post_publication(session_id, nil, topics) }.should raise_error
+      end
+
+      it "raises error with invalid content" do
+        lambda { Isbm::ProviderPublication.post_publication(session_id, invalid_content, topics) }.should raise_error
       end
 
       it "raises error with no topics" do
