@@ -7,23 +7,23 @@ describe Isbm::ConsumerPublication, :external_service => true do
       let(:topics) { ["topics"] }
 
       it "raises error with no URI" do
-        lambda { Isbm::ConsumerPublication.open_session(nil, topics) }.should raise_error
+        expect { Isbm::ConsumerPublication.open_session(nil, topics) }.to raise_error
       end
 
       it "raises error with no topics" do
-        lambda { Isbm::ConsumerPublication.open_session(uri, nil) }.should raise_error
+        expect { Isbm::ConsumerPublication.open_session(uri, nil) }.to raise_error
       end
     end
 
     describe "#read_publication" do
       it "raises error with no session id" do
-        lambda { Isbm::ConsumerPublication.read_publication(nil, nil) }.should raise_error
+        expect { Isbm::ConsumerPublication.read_publication(nil, nil) }.to raise_error
       end
     end
 
     describe "#close_session" do
       it "raises error with no session id" do
-        lambda { Isbm::ConsumerPublication.close_session(nil) }.should raise_error
+        expect { Isbm::ConsumerPublication.close_session(nil) }.to raise_error
       end
     end
   end

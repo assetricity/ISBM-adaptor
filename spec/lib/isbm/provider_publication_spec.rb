@@ -4,7 +4,7 @@ describe Isbm::ProviderPublication, :external_service => true do
   context "with invalid arguments" do
     describe "#open_session" do
       it "raises error with no URI" do
-        lambda { Isbm::ProviderPublication.open_session(nil) }.should raise_error
+        expect { Isbm::ProviderPublication.open_session(nil) }.to raise_error
       end
     end
 
@@ -15,19 +15,19 @@ describe Isbm::ProviderPublication, :external_service => true do
       let(:topics) { ["topic"] }
 
       it "raises error with no session id" do
-        lambda { Isbm::ProviderPublication.post_publication(nil, content, topics) }.should raise_error
+        expect { Isbm::ProviderPublication.post_publication(nil, content, topics) }.to raise_error
       end
 
       it "raises error with no content" do
-        lambda { Isbm::ProviderPublication.post_publication(session_id, nil, topics) }.should raise_error
+        expect { Isbm::ProviderPublication.post_publication(session_id, nil, topics) }.to raise_error
       end
 
       it "raises error with invalid content" do
-        lambda { Isbm::ProviderPublication.post_publication(session_id, invalid_content, topics) }.should raise_error
+        expect { Isbm::ProviderPublication.post_publication(session_id, invalid_content, topics) }.to raise_error
       end
 
       it "raises error with no topics" do
-        lambda { Isbm::ProviderPublication.post_publication(session_id, content, nil) }.should raise_error
+        expect { Isbm::ProviderPublication.post_publication(session_id, content, nil) }.to raise_error
       end
     end
 
@@ -35,17 +35,17 @@ describe Isbm::ProviderPublication, :external_service => true do
       let(:message_id) { "message id" }
 
       it "raises error with no session id" do
-        lambda { Isbm::ProviderPublication.expire_publication(nil, message_id) }.should raise_error
+        expect { Isbm::ProviderPublication.expire_publication(nil, message_id) }.to raise_error
       end
 
       it "raises error with no message id" do
-        lambda { Isbm::ProviderPublication.expire_publication(session_id, nil) }.should raise_error
+        expect { Isbm::ProviderPublication.expire_publication(session_id, nil) }.to raise_error
       end
     end
 
     describe "close publication session" do
       it "raises error with no session id" do
-        lambda { Isbm::ProviderPublication.close_session(nil) }.should raise_error
+        expect { Isbm::ProviderPublication.close_session(nil) }.to raise_error
       end
     end
   end
@@ -76,12 +76,12 @@ describe Isbm::ProviderPublication, :external_service => true do
       end
 
       it "raises no error with single topic string" do
-        lambda { Isbm::ProviderPublication.post_publication(session_id, content, topic_string) }.should_not raise_error
+        expect { Isbm::ProviderPublication.post_publication(session_id, content, topic_string) }.not_to raise_error
       end
 
       let(:expiry) { Isbm::Duration.new(:hours => 1) }
       it "raises no error with expiry" do
-        lambda { Isbm::ProviderPublication.post_publication(session_id, content, topic_string, expiry) }.should_not raise_error
+        expect { Isbm::ProviderPublication.post_publication(session_id, content, topic_string, expiry) }.not_to raise_error
       end
     end
 

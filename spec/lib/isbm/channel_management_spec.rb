@@ -8,27 +8,27 @@ describe Isbm::ChannelManagement, :external_service => true do
   context "when invalid arguments" do
     describe "#create_channel" do
       it "raises error with no URI" do
-        lambda { Isbm::ChannelManagement.create_channel(nil, type) }.should raise_error
+        expect { Isbm::ChannelManagement.create_channel(nil, type) }.to raise_error
       end
 
       it "raises error with no type" do
-        lambda { Isbm::ChannelManagement.create_channel(uri, nil) }.should raise_error
+        expect { Isbm::ChannelManagement.create_channel(uri, nil) }.to raise_error
       end
 
       it "raises error with incorrect type" do
-        lambda { Isbm::ChannelManagement.create_channel(uri, :invalid_channel_type) }.should raise_error
+        expect { Isbm::ChannelManagement.create_channel(uri, :invalid_channel_type) }.to raise_error
       end
     end
 
     describe "#get_channel" do
       it "raises error with no URI" do
-        lambda { Isbm::ChannelManagement.get_channel(nil) }.should raise_error
+        expect { Isbm::ChannelManagement.get_channel(nil) }.to raise_error
       end
     end
 
     describe "#delete_channel" do
       it "raises error with no URI" do
-        lambda { Isbm::ChannelManagement.delete_channel(nil) }.should raise_error
+        expect { Isbm::ChannelManagement.delete_channel(nil) }.to raise_error
       end
     end
   end
