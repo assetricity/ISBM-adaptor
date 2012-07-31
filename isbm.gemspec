@@ -19,8 +19,8 @@ Gem::Specification.new do |s|
   s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   s.require_paths = ["lib"]
 
-  s.add_development_dependency "rspec"
-  s.add_development_dependency "rspec-given"
-  s.add_development_dependency "rake"
-  s.add_runtime_dependency "savon"
+  s.add_development_dependency "rspec", "2.11.0"
+  s.add_development_dependency "rspec-given", "1.5.0"
+  s.add_development_dependency "rake", "0.9.2.2"
+  s.add_runtime_dependency "savon", "1.1.0"
 end
