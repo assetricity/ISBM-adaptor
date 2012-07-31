@@ -40,11 +40,11 @@ module Isbm
   module ClassMethods
     private
     def validate_presence_of(*args)
-      calling_method = /`(.*)'/.match(caller[0])
-      calling_parent = caller[1]
-      args.each do |arg| 
+      args.each_with_index do |arg, index|
         if arg.nil?
-          raise ArgumentError.new "#{calling_method} requires #{arg} \n#{calling_parent}"
+          raise ArgumentError.new "Argument #{index} is nil: #{args.inspect}"
+        elsif arg.is_a?(Array) && arg.empty?
+          raise ArgumentError.new "Array (argument #{index}) is empty: #{args.inspect}"
         end
       end
     end
