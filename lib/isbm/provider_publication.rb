@@ -21,15 +21,14 @@ module Isbm
 
     # Posts a publication message
     # 'content' argument must be a valid XML
-    # 'topics' must be an array of topic strings
+    # 'topics' must be an array of topic strings or a single string
     # 'expiry', if specified, must be an XML Schema compatible duration string
     # Returns the message id
-    # TODO AM Should we check content is valid XML?
-    # TODO AM Should we allow topics to be a string and wrap it as an array?
-    # TODO AM Should validate_presense_of check topic is array and bounds?
-    # TODO AM What type do we make expiry?
+    # TODO Check content is valid XML
+    # TODO Create and use new expiry class
     def self.post_publication(session_id, content, topics, expiry = nil)
       validate_presence_of session_id, content, topics
+      topics = [topics] unless topics.is_a?(Array)
       response = client.request :wsdl, :post_publication do
         set_default_namespace soap
         xml = Builder::XmlMarkup.new # Use separate builder when using conditional statements in XML generation
@@ -49,7 +48,7 @@ module Isbm
     # Expires a posted publication message
     def self.expire_publication(session_id, message_id)
       validate_presence_of session_id, message_id
-      response = client.request :wsdl, :expire_publication do
+      client.request :wsdl, :expire_publication do
         set_default_namespace soap
         soap.body do |xml|
           xml.SessionID(session_id)
@@ -62,7 +61,7 @@ module Isbm
     # Closes a publication session
     def self.close_session(session_id)
       validate_presence_of session_id
-      response = client.request :wsdl, :close_publication_session do
+      client.request :wsdl, :close_publication_session do
         set_default_namespace soap
         soap.body do |xml|
           xml.SessionID(session_id)

@@ -61,12 +61,17 @@ describe Isbm::ProviderPublication, :external_service => true do
 
     describe "#post_publication" do
       let(:content) { "<test/>" }
-      let(:topics) { ["topic"] }
+      let(:topic_string) { "topic" }
+      let(:topic_array) { [topic_string] }
 
-      let(:message_id) { Isbm::ProviderPublication.post_publication(session_id, content, topics) }
+      let(:message_id) { Isbm::ProviderPublication.post_publication(session_id, content, topic_array) }
 
       it "returns a message id" do
         message_id.should_not be_nil
+      end
+
+      it "raises no error with single topic string" do
+        lambda { Isbm::ProviderPublication.post_publication(session_id, content, topic_string) }.should_not raise_error
       end
     end
 
