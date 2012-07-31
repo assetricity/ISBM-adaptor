@@ -1,3 +1,5 @@
+require 'isbm/message'
+
 module Isbm
   class ConsumerPublication
     extend Savon::Model
@@ -26,13 +28,7 @@ module Isbm
 
     # Reads the first message after the specified last message
     # Setting last_message_id to nil will return the first publication
-    # Returns the following hash:
-    # {
-    #   :message_id = String message identifier (assigned by ISBM server)
-    #   :message_content = Hash of message content
-    #   :topic = String or array of topics
-    #   :soap_envelope = Entire SOAP XML Envelope including response XML body
-    #}
+    # Returns a Isbm::Message
     def self.read_publication(session_id, last_message_id)
       validate_presence_of session_id
       response = client.request :wsdl, :read_publication do
@@ -43,13 +39,19 @@ module Isbm
         soap.body = xml.target!
       end
       hash = response.to_hash[:read_publication_response][:publication_message]
-      hash.merge!({ :soap_envelope => response.to_xml })
+      id = hash[:message_id]
+      topics = hash[:topic]
+
+      # Extract the message content and use the first (and only) Node from the NodeSet
+      content = response.xpath("//isbm:ReadPublicationResponse/isbm:PublicationMessage/isbm:MessageContent/child::*", "isbm" => isbm_namespace).first
+
+      Isbm::Message.new(id, content, topics)
     end
 
     # Closes a subscription session
     def self.close_session(session_id)
       validate_presence_of session_id
-      response = client.request :wsdl, :close_subscription_session do
+      client.request :wsdl, :close_subscription_session do
         set_default_namespace soap
         soap.body do |xml|
           xml.SessionID(session_id)

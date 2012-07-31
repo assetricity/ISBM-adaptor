@@ -1,15 +1,10 @@
 require 'spec_helper'
 
-describe Isbm::ProviderPublication, :external_service => true do
-  HTTPI.log = false
-  Savon.configure do |config|
-    config.log = false
-  end
-
-  context "invalid arguments" do
-    describe "open subscription session" do
-      Given(:uri) { "Test#{Time.now.to_i}" }
-      Given(:topics) { ["topics"] }
+describe Isbm::ConsumerPublication, :external_service => true do
+  context "with invalid arguments" do
+    describe "#open_session" do
+      let(:uri) { "Test#{Time.now.to_i}" }
+      let(:topics) { ["topics"] }
 
       it "raises error with no URI" do
         lambda { Isbm::ConsumerPublication.open_session(nil, topics) }.should raise_error
@@ -20,51 +15,45 @@ describe Isbm::ProviderPublication, :external_service => true do
       end
     end
 
-    describe "read publication" do
+    describe "#read_publication" do
       it "raises error with no session id" do
-        lambda { Isbm::ConsumerPublication.read_publication(nil) }.should raise_error
+        lambda { Isbm::ConsumerPublication.read_publication(nil, nil) }.should raise_error
       end
     end
 
-    describe "close subscription session" do
+    describe "#close_session" do
       it "raises error with no session id" do
         lambda { Isbm::ConsumerPublication.close_session(nil) }.should raise_error
       end
     end
   end
 
-  context "valid arguments" do
-    Given(:uri) { "Test#{Time.now.to_i}" }
-    Given(:type) { :publication }
-    Given(:topics) { ["topic"] }
-    Given(:content) { '<CCOMData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.mimosa.org/osa-eai/v3-2-3/xml/CCOM-ML"><Entity xsi:type="Asset"><GUID>C013C740-19F5-11E1-92B7-6B8E4824019B</GUID></Entity></CCOMData>' }
+  context "with valid arguments" do
+    let(:uri) { "Test#{Time.now.to_i}" }
+    let(:type) { :publication }
+    let(:topics) { ["topic"] }
+    let(:content) { '<CCOMData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.mimosa.org/osa-eai/v3-2-3/xml/CCOM-ML"><Entity xsi:type="Asset"><GUID>C013C740-19F5-11E1-92B7-6B8E4824019B</GUID></Entity></CCOMData>' }
 
     before(:all) { Isbm::ChannelManagement.create_channel(uri, type) }
 
-    When(:provider_session_id) { Isbm::ProviderPublication.open_session(uri) }
-    When(:consumer_session_id) { Isbm::ConsumerPublication.open_session(uri, topics) }
+    let(:provider_session_id) { Isbm::ProviderPublication.open_session(uri) }
+    let(:consumer_session_id) { Isbm::ConsumerPublication.open_session(uri, topics) }
 
-    describe "open subscription session" do
-      context "returns a string" do
-        Then { consumer_session_id.is_a?(String).should be_true }
+    describe "#open_session" do
+      it "returns a session id" do
+        consumer_session_id.should_not be_nil
       end
     end
 
-    describe "read publication" do
-      When { Isbm::ProviderPublication.post_publication(provider_session_id, content, topics) }
-      When(:message) { Isbm::ConsumerPublication.read_publication(consumer_session_id, nil) }
+    describe "#read_publication" do
+      before(:all) { Isbm::ProviderPublication.post_publication(provider_session_id, content, topics) }
+      let(:message) { Isbm::ConsumerPublication.read_publication(consumer_session_id, nil) }
 
-      context "returns a message" do
-        Then { message[:message_id].should_not be_nil }
-        Then { message[:message_id].is_a?(String).should be_true }
-        Then { message[:message_content].should_not be_nil }
-        Then { message[:topic].should_not be_nil }
-        Then { message[:soap_envelope].should_not be_nil }
-        Then do
-          doc = Nokogiri.XML(message[:soap_envelope])
-          result = doc.xpath("//ccom:CCOMData", "ccom" => "http://www.mimosa.org/osa-eai/v3-2-3/xml/CCOM-ML")
-          result.should_not be_empty
-        end
+      it "returns a valid message" do
+        message.id.should_not be_nil
+        message.topics.should_not be_nil
+        message.topics.empty?.should be_false
+        message.content.name.should eq "CCOMData"
       end
     end
 
