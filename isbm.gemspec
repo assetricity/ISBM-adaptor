@@ -20,7 +20,6 @@ Gem::Specification.new do |s|
   s.require_paths = ["lib"]
 
   s.add_development_dependency "rspec", "2.11.0"
-  s.add_development_dependency "rspec-given", "1.5.0"
   s.add_development_dependency "rake", "0.9.2.2"
   s.add_runtime_dependency "savon", "1.1.0"
 end
