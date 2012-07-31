@@ -1,4 +1,5 @@
 require "isbm/validation"
+require "isbm/duration"
 
 module Isbm
   class ProviderPublication
@@ -28,9 +29,8 @@ module Isbm
     # Posts a publication message
     # 'content' must be a valid XML string
     # 'topics' must be an array of topic strings or a single string
-    # 'expiry', if specified, must be an XML Schema compatible duration string
+    # 'expiry', if specified, must be an Isbm::Duration object
     # Returns the message id
-    # TODO Create and use new expiry class
     def self.post_publication(session_id, content, topics, expiry = nil)
       validate_presence_of session_id, content, topics
       validate_xml content
@@ -45,7 +45,8 @@ module Isbm
         topics.each do |topic|
           xml.Topic(topic)
         end
-        xml.Expiry(expiry) unless expiry.nil?
+        duration = expiry.to_s
+        xml.Expiry(duration) unless duration.nil?
         soap.body = xml.target!
       end
       response.to_hash[:post_publication_response][:message_id]

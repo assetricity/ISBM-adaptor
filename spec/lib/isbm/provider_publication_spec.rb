@@ -78,6 +78,11 @@ describe Isbm::ProviderPublication, :external_service => true do
       it "raises no error with single topic string" do
         lambda { Isbm::ProviderPublication.post_publication(session_id, content, topic_string) }.should_not raise_error
       end
+
+      let(:expiry) { Isbm::Duration.new(:hours => 1) }
+      it "raises no error with expiry" do
+        lambda { Isbm::ProviderPublication.post_publication(session_id, content, topic_string, expiry) }.should_not raise_error
+      end
     end
 
     after(:all) do

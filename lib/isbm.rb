@@ -13,6 +13,7 @@ module Isbm
   autoload :ProviderPublication, 'isbm/provider_publication'
   autoload :ConsumerPublication, 'isbm/consumer_publication'
   autoload :Config, 'isbm/config'
+  autoload :Duration, 'isbm/duration'
 
   class ArgumentError < RuntimeError; end
 
@@ -39,19 +40,13 @@ module Isbm
 
   module ClassMethods
     private
-    def validate_presence_of(*args)
-      args.each_with_index do |arg, index|
-        if arg.nil?
-          raise ArgumentError.new "Argument #{index} is nil: #{args.inspect}"
-        elsif arg.is_a?(Array) && arg.empty?
-          raise ArgumentError.new "Array (argument #{index}) is empty: #{args.inspect}"
-        end
-      end
+    def isbm_namespace
+      "http://www.openoandm.org/xml/ISBM/"
     end
 
     # XML Builder can only set a namespace by prefix, so for simplicity, use a default namespace
     def set_default_namespace(soap)
-      soap.namespaces["xmlns"] = "http://www.openoandm.org/xml/ISBM/"
+      soap.namespaces["xmlns"] = isbm_namespace
     end
   end
   module InstanceMethods
