@@ -1,3 +1,5 @@
+require "isbm/channel"
+
 module Isbm
   class ChannelManagement
     extend Savon::Model
@@ -10,12 +12,12 @@ module Isbm
     # 'type' must be either :publication, :request or :response
     def self.create_channel(uri, type, description = nil)
       validate_presence_of uri, type
-      raise ArgumentError.new "#{type} is not a valid type. Must be either :publication, :request or :response." unless self.channel_types.has_key? type
-      response = client.request :wsdl, :create_channel do
+      raise ArgumentError.new "#{type} is not a valid type. Must be either :publication, :request or :response." unless Isbm::Channel::TYPES.has_key?(type)
+      client.request :wsdl, :create_channel do
         set_default_namespace soap
         xml = Builder::XmlMarkup.new # Use separate builder when using conditional statements in XML generation
         xml.ChannelURI(uri)
-        xml.ChannelType(channel_types[type])
+        xml.ChannelType(Isbm::Channel::TYPES[type])
         xml.ChannelDescription(description) unless description.nil?
         soap.body = xml.target!
       end
@@ -25,7 +27,7 @@ module Isbm
     # Deletes the specified channel
     def self.delete_channel(uri)
       validate_presence_of uri
-      response = client.request :wsdl, :delete_channel do
+      client.request :wsdl, :delete_channel do
         set_default_namespace soap
         soap.body do |xml|
           xml.ChannelURI(uri)
@@ -44,7 +46,8 @@ module Isbm
           xml.ChannelURI(uri)
         end
       end
-      response.to_hash[:get_channel_response][:channel]
+      hash = response.to_hash[:get_channel_response][:channel]
+      Isbm::Channel.from_hash(hash)
     end
 
     # Gets information about all channels
@@ -52,13 +55,10 @@ module Isbm
     def self.get_channels
       response = client.request :wsdl, :get_channels
       channels = response.to_hash[:get_channels_response][:channel]
-      channels.is_a?(Array) ? channels.compact : [channels].compact
-    end
-
-    private
-
-    def self.channel_types
-      @@channel_types ||= { :publication => "Publication", :request => "Request", :response => "Response" }
+      channels = [channels] unless channels.is_a?(Array)
+      channels.map do |hash|
+        Isbm::Channel.from_hash(hash)
+      end
     end
   end
 end

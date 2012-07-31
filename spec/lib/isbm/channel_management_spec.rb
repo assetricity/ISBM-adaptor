@@ -1,19 +1,13 @@
 require 'spec_helper'
 
 describe Isbm::ChannelManagement, :external_service => true do
-  HTTPI.log = false
-  Savon.configure do |config|
-    config.log = false
-  end
+  let(:uri) { "Test#{Time.now.to_i}" }
+  let(:type) { :publication }
+  let(:description) { "description" }
 
-  Given(:uri) { "Test#{Time.now.to_i}" }
-  Given(:type) { :publication }
-
-  context "invalid arguments" do
-    describe "create channel" do
+  context "when invalid arguments" do
+    describe "#create_channel" do
       it "raises error with no URI" do
-        # TODO AM Can we use Then syntax here? e.g.
-        # TODO AM Then { Isbm::ChannelManagement.create_channel(nil, type).should raise_error }
         lambda { Isbm::ChannelManagement.create_channel(nil, type) }.should raise_error
       end
 
@@ -26,42 +20,37 @@ describe Isbm::ChannelManagement, :external_service => true do
       end
     end
 
-    describe "get channel" do
+    describe "#get_channel" do
       it "raises error with no URI" do
         lambda { Isbm::ChannelManagement.get_channel(nil) }.should raise_error
       end
     end
 
-    describe "delete channel" do
+    describe "#delete_channel" do
       it "raises error with no URI" do
         lambda { Isbm::ChannelManagement.delete_channel(nil) }.should raise_error
       end
     end
   end
 
-  context "valid arguments" do
-    before(:all) { Isbm::ChannelManagement.create_channel(uri, type) }
+  context "when valid arguments" do
+    before(:all) { Isbm::ChannelManagement.create_channel(uri, type, description) }
 
-    describe "get channel" do
-      When(:channel) { Isbm::ChannelManagement.get_channel(uri) }
-      context "returns a channel hash" do
-        Then { channel.should_not be_nil }
-        Then { channel[:channel_uri].should_not be_nil }
-        Then { channel[:channel_uri].is_a?(String).should be_true }
-        Then { channel[:channel_type].should_not be_nil }
-        Then { channel[:channel_type].is_a?(String).should be_true }
+    describe "#get_channel" do
+      let(:channel) { Isbm::ChannelManagement.get_channel(uri) }
+      it "returns a valid channel" do
+        channel.uri.should eq uri
+        channel.type.should eq type
+        channel.description.should eq description
       end
     end
 
-    describe "get channels" do
-      When(:channels) { Isbm::ChannelManagement.get_channels }
-      context "returns an array of channel hashes" do
-        Then { channels.should_not be_nil }
-        Then { channels.is_a?(Array).should be_true }
-        Then { channels.first[:channel_uri].should_not be_nil }
-        Then { channels.first[:channel_uri].is_a?(String).should be_true }
-        Then { channels.first[:channel_type].should_not be_nil }
-        Then { channels.first[:channel_type].is_a?(String).should be_true }
+    describe "#get_channels" do
+      let(:channels) { Isbm::ChannelManagement.get_channels }
+      it "returns an array of valid channels" do
+        channels.first.uri.should eq uri
+        channels.first.type.should eq type
+        channels.first.description.should eq description
       end
     end
 
