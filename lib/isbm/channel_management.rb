@@ -60,7 +60,7 @@ module Isbm
     def self.get_channels
       response = client.request :wsdl, :get_channels
       channels = response.to_hash[:get_channels_response][:channel]
-      channels = channels unless channels.is_a?(Array)
+      channels = [channels].compact unless channels.is_a?(Array)
       channels.map do |hash|
         Isbm::Channel.from_hash(hash)
       end
