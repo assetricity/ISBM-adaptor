@@ -1,9 +1,14 @@
+require "isbm/validation"
 require "isbm/channel"
 
 module Isbm
   class ChannelManagement
     extend Savon::Model
     include Isbm
+
+    class << self
+      include Isbm::Validation
+    end
 
     document Isbm.wsdl_dir + "ISBMChannelManagementService.wsdl"
     endpoint Isbm::Config.channel_management_endpoint
@@ -55,7 +60,7 @@ module Isbm
     def self.get_channels
       response = client.request :wsdl, :get_channels
       channels = response.to_hash[:get_channels_response][:channel]
-      channels = [channels] unless channels.is_a?(Array)
+      channels = channels unless channels.is_a?(Array)
       channels.map do |hash|
         Isbm::Channel.from_hash(hash)
       end

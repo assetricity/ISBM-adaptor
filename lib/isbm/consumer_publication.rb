@@ -1,9 +1,14 @@
+require "isbm/validation"
 require 'isbm/message'
 
 module Isbm
   class ConsumerPublication
     extend Savon::Model
     include Isbm
+
+    class << self
+      include Isbm::Validation
+    end
 
     document Isbm.wsdl_dir + "ISBMConsumerPublicationService.wsdl"
     endpoint Isbm::Config.consumer_publication_endpoint

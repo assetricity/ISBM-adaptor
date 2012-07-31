@@ -1,7 +1,13 @@
+require "isbm/validation"
+
 module Isbm
   class ProviderPublication
     extend Savon::Model
     include Isbm
+
+    class << self
+      include Isbm::Validation
+    end
 
     document Isbm.wsdl_dir + "ISBMProviderPublicationService.wsdl"
     endpoint Isbm::Config.provider_publication_endpoint
