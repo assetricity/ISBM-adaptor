@@ -1,22 +1,17 @@
 require 'spec_helper'
 
 describe Isbm::ProviderPublication, :external_service => true do
-  HTTPI.log = false
-  Savon.configure do |config|
-    config.log = false
-  end
-
-  context "invalid arguments" do
-    describe "open publication session" do
+  context "with invalid arguments" do
+    describe "#open_session" do
       it "raises error with no URI" do
         lambda { Isbm::ProviderPublication.open_session(nil) }.should raise_error
       end
     end
 
-    describe "post publication" do
-      Given(:session_id) { "session id" }
-      Given(:content) { "<test/>" }
-      Given(:topics) { ["topic"] }
+    describe "#post_publication" do
+      let(:session_id) { "session id" }
+      let(:content) { "<test/>" }
+      let(:topics) { ["topic"] }
 
       it "raises error with no session id" do
         lambda { Isbm::ProviderPublication.post_publication(nil, content, topics) }.should raise_error
@@ -31,8 +26,8 @@ describe Isbm::ProviderPublication, :external_service => true do
       end
     end
 
-    describe "expire publication" do
-      Given(:message_id) { "message id" }
+    describe "#expire_publication" do
+      let(:message_id) { "message id" }
 
       it "raises error with no session id" do
         lambda { Isbm::ProviderPublication.expire_publication(nil, message_id) }.should raise_error
@@ -50,30 +45,28 @@ describe Isbm::ProviderPublication, :external_service => true do
     end
   end
 
-  context "valid arguments" do
-    Given(:uri) { "Test#{Time.now.to_i}" }
-    Given(:type) { :publication }
+  context "with valid arguments" do
+    let(:uri) { "Test#{Time.now.to_i}" }
+    let(:type) { :publication }
 
     before(:all) { Isbm::ChannelManagement.create_channel(uri, type) }
 
-    When(:session_id) { Isbm::ProviderPublication.open_session(uri) }
+    let(:session_id) { Isbm::ProviderPublication.open_session(uri) }
 
-    describe "open publication session" do
-      context "returns a string" do
-        Then { session_id.should_not be_nil }
-        Then { session_id.is_a?(String).should be_true }
+    describe "#open_session" do
+      it "returns a session id" do
+        session_id.should_not be_nil
       end
     end
 
-    describe "post publication" do
-      context "returns a string" do
-        Given(:content) { "<test/>" }
-        Given(:topics) { ["topic"] }
+    describe "#post_publication" do
+      let(:content) { "<test/>" }
+      let(:topics) { ["topic"] }
 
-        When(:message_id) { Isbm::ProviderPublication.post_publication(session_id, content, topics) }
+      let(:message_id) { Isbm::ProviderPublication.post_publication(session_id, content, topics) }
 
-        Then { message_id.should_not be_nil }
-        Then { message_id.is_a?(String).should be_true }
+      it "returns a message id" do
+        message_id.should_not be_nil
       end
     end
 
