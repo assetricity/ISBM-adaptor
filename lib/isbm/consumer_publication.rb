@@ -28,7 +28,7 @@ module Isbm
         xml.ListenerURI(listener_uri) unless listener_uri.nil?
         soap.body = xml.target!
       end
-      response.to_hash[:open_subscription_session_response][:session_id]
+      response.to_hash[:open_subscription_session_response][:session_id].to_s
     end
 
     # Reads the first message after the specified last message

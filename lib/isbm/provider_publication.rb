@@ -23,7 +23,7 @@ module Isbm
           xml.ChannelURI(uri)
         end
       end
-      response.to_hash[:open_publication_session_response][:session_id]
+      response.to_hash[:open_publication_session_response][:session_id].to_s
     end
 
     # Posts a publication message
@@ -49,7 +49,7 @@ module Isbm
         xml.Expiry(duration) unless duration.nil?
         soap.body = xml.target!
       end
-      response.to_hash[:post_publication_response][:message_id]
+      response.to_hash[:post_publication_response][:message_id].to_s
     end
 
     # Expires a posted publication message
