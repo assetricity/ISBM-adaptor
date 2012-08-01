@@ -10,7 +10,7 @@ module Isbm
       include Isbm::Validation
     end
 
-    document Isbm.wsdl_dir + "ISBMProviderPublicationService.wsdl"
+    document wsdl_dir + "ISBMProviderPublicationService.wsdl"
     endpoint Isbm::Config.provider_publication_endpoint
 
     # Opens a publication session for a channel

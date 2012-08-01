@@ -10,7 +10,7 @@ module Isbm
       include Isbm::Validation
     end
 
-    document Isbm.wsdl_dir + "ISBMConsumerPublicationService.wsdl"
+    document wsdl_dir + "ISBMConsumerPublicationService.wsdl"
     endpoint Isbm::Config.consumer_publication_endpoint
 
     # Opens a subscription session for a channel

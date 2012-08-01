@@ -10,7 +10,7 @@ module Isbm
       include Isbm::Validation
     end
 
-    document Isbm.wsdl_dir + "ISBMChannelManagementService.wsdl"
+    document wsdl_dir + "ISBMChannelManagementService.wsdl"
     endpoint Isbm::Config.channel_management_endpoint
 
     # Creates a new channel

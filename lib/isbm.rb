@@ -15,8 +15,6 @@ module Isbm
   autoload :Config, 'isbm/config'
   autoload :Duration, 'isbm/duration'
 
-  class ArgumentError < RuntimeError; end
-
   def self.included(base)
     base.class_eval do
       include InstanceMethods
@@ -24,22 +22,13 @@ module Isbm
     end
   end
 
-  class << self
-    # Sets the logger to use.
-    attr_writer :logger
-
-    # Returns the logger. Defaults to an instance of +Logger+ writing to STDOUT.
-    def logger
-      @logger ||= ::Logger.new STDERR
-    end
+  module ClassMethods
+    private
 
     def wsdl_dir
       ( File.expand_path File.dirname(__FILE__) ) + "/../wsdls/"
     end
-  end
 
-  module ClassMethods
-    private
     def isbm_namespace
       "http://www.openoandm.org/xml/ISBM/"
     end
