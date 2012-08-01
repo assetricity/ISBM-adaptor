@@ -1,12 +1,7 @@
 module Isbm
   # Class that supports creation of ISO 8601 duration strings
   class Duration
-    attr_accessor :years
-    attr_accessor :months
-    attr_accessor :days
-    attr_accessor :hours
-    attr_accessor :minutes
-    attr_accessor :seconds
+    attr_accessor :years, :months, :days, :hours, :minutes, :seconds
 
     # 'duration' is a hash that can contain any combination of the keys
     # :years, :months, :days, :hours, :minutes, :seconds mapped to a numeric value

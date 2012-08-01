@@ -2,9 +2,7 @@ module Isbm
   class Channel
     TYPES = { :publication => "Publication", :request => "Request", :response => "Response" }
 
-    attr_accessor :uri
-    attr_accessor :type
-    attr_accessor :description
+    attr_accessor :uri, :type, :description
 
     def initialize(uri, type, description)
       @uri = uri.to_s
