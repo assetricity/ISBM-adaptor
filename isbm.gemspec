@@ -5,18 +5,14 @@ require "isbm/version"
 Gem::Specification.new do |s|
   s.name        = "isbm"
   s.version     = Isbm::VERSION
-  s.authors     = ["Brandon Mathis"]
-  s.email       = ["Brandon@KeysetTS.com"]
+  s.authors     = ["Assetricity"]
+  s.email       = ["info@assetricity.com"]
   s.homepage    = "http://www.assetricity.com"
   s.summary     = %q{OpenO&M ISBM adaptor}
-  s.description = %q{OpenO&M ISBM adaptor}
-  s.license     = ""
-
-  s.rubyforge_project = "isbm"
+  s.description = %q{OpenO&M ISBM adaptor based on Savon}
 
   s.files         = `git ls-files`.split("\n")
-  s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
-  s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
+  s.test_files    = `git ls-files -- spec/*`.split("\n")
   s.require_paths = ["lib"]
 
   s.add_development_dependency "rspec", "2.11.0"
