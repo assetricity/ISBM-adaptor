@@ -48,9 +48,9 @@ describe Isbm::ChannelManagement, :external_service => true do
     describe "#get_channels" do
       let(:channels) { Isbm::ChannelManagement.get_channels }
       it "returns an array of valid channels" do
-        channels.first.uri.should eq uri
-        channels.first.type.should eq type
-        channels.first.description.should eq description
+        (channel = channels.find { |channel| channel.uri == uri }).should_not be_nil
+        channel.type.should eq type
+        channel.description.should eq description
       end
     end
 
