@@ -1,25 +1,46 @@
-require 'spec_helper'
+require 'rubygems'
+require 'rspec'
+require 'isbm'
 
+# Not run with spec_helper in order to test default config values
 describe Isbm::Config do
   before do
-    ENV["RACK_ENV"] = "example"
+    ENV["RACK_ENV"] = "test"
   end
 
   context "when config file is loaded" do
-    before do
-      Isbm::Config::load!(File.join("spec","fixtures","isbm.yml"))
+    before(:all) do
+      Isbm::Config::clear
+      Isbm::Config::load(File.join("spec","fixtures","isbm.yml"))
     end
 
-    it "collects settings" do
-      Isbm::Config.settings[:provider_publication].should == "pro.wsdl"
-    end
-
-    it "has chan_man endpoint" do
-      Isbm::Config.channel_management_endpoint.should == "chan.wsdl"
+    it "has channel management endpoint" do
+      Isbm::Config.channel_management_endpoint.should eq "http://localhost/ChannelManagementService"
     end
 
     it "has provider_publication endpoint" do
-      Isbm::Config.provider_publication_endpoint.should == "pro.wsdl"
+      Isbm::Config.provider_publication_endpoint.should be_nil
     end
+
+    it "has no consumer_publication endpoint" do
+      Isbm::Config.consumer_publication_endpoint.should be_nil
+    end
+
+    it "has logging enabled" do
+      Isbm::Config.log.should be_true
+    end
+
+    it "has pretty print xml disabled by default" do
+      Isbm::Config.pretty_print_xml.should be_false
+    end
+
+    it "has rails logging disabled" do
+      Isbm::Config.use_rails_logger.should be_false
+    end
+  end
+
+  after(:all) do
+    Isbm::Config::clear
+    Isbm::Config.load(File.join("config", "isbm.yml")) # Reload normal test config as this spec will overwrite values
   end
 end

@@ -1,18 +1,15 @@
 require "isbm/version"
+require "isbm/config"
 require "savon"
+require "isbm/railtie" if defined?(Rails)
 
 # Use NetHttp from Ruby instead of HTTPI
 HTTPI.adapter = :net_http
-
-if defined?(Rails)
-  require "isbm/railtie"
-end
 
 module Isbm
   autoload :ChannelManagement, 'isbm/channel_management'
   autoload :ProviderPublication, 'isbm/provider_publication'
   autoload :ConsumerPublication, 'isbm/consumer_publication'
-  autoload :Config, 'isbm/config'
   autoload :Duration, 'isbm/duration'
 
   def self.included(base)

@@ -1,7 +1,6 @@
-example: 
+test:
   endpoints:
-    channel_management: chan.wsdl
-    provider_publication: pro.wsdl
-
-  logging: true
-  send_log_to_railslog: true
+    channel_management: http://localhost/ChannelManagementService
+    provider_publication:
+  log: true
+  use_rails_logger: false
