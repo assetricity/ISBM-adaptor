@@ -64,7 +64,11 @@ module Isbm
       end
 
       def configure_savon
+        # Configure HTTPI
         HTTPI.log = log
+        HTTPI.logger = Rails.logger if use_rails_logger && defined?(Rails)
+
+        # Configure Savon
         Savon.configure do |config|
           config.log = log
           config.pretty_print_xml = pretty_print_xml
