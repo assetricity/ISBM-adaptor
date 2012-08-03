@@ -44,6 +44,17 @@ module Isbm
       result
     end
 
+    def to_hash
+      hash = {}
+      hash.merge!(:years => @years) if @years
+      hash.merge!(:months => @months) if @months
+      hash.merge!(:days => @days) if @days
+      hash.merge!(:hours => @hours) if @hours
+      hash.merge!(:minutes => @minutes) if @minutes
+      hash.merge!(:seconds => @seconds) if @seconds
+      hash
+    end
+
     private
 
     VALID_SYMBOLS = [:years, :months, :days, :hours, :minutes, :seconds]

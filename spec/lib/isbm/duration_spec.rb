@@ -59,5 +59,11 @@ describe Isbm::Duration do
     it "supports fractional values" do
       Isbm::Duration.new(:minutes => 0.5).to_s.should eq "PT0.5M"
     end
+
+    let(:hash) { {:days => 1, :minutes => 2} }
+
+    it "outputs to hash" do
+      Isbm::Duration.new(hash).to_hash.should eq hash
+    end
   end
 end
