@@ -6,7 +6,11 @@ module Isbm
     def initialize(id, content, topics)
       @id = id.to_s
       @content = content
-      @topics = topics
+      if (topics.is_a?(Array))
+        @topics.each { |t| t.to_s }
+      else
+        @topics = [topics.to_s]
+      end
     end
   end
 end
