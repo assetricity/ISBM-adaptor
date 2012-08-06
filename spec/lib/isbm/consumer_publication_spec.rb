@@ -51,8 +51,7 @@ describe Isbm::ConsumerPublication, :external_service => true do
 
       it "returns a valid message" do
         message.id.should_not be_nil
-        message.topics.should_not be_nil
-        message.topics.empty?.should be_false
+        message.topics.first.should eq topics.first
         message.content.name.should eq "CCOMData"
       end
     end
