@@ -29,7 +29,7 @@ namespace :isbm do
   task :get_channel, :uri do |t, args|
     uri = args.uri
     channel = Isbm::ChannelManagement.get_channel uri
-    puts channel
+    p channel
   end
 
   desc "Get all channels"
@@ -37,13 +37,13 @@ namespace :isbm do
     channels = Isbm::ChannelManagement.get_channels
     puts "No. of Channels: #{channels.length}"
     puts "==================="
-    channels.each { |channel| puts channel }
+    channels.each { |channel| p channel }
   end
 
   desc "Delete all channels"
   task :nuke_channels do
     channels = Isbm::ChannelManagement.get_channels
-    channels.each { |c| Isbm::ChannelManagement.delete_channel c[:channel_uri] }
+    channels.each { |c| Isbm::ChannelManagement.delete_channel c.uri }
   end
 
   desc "Open a publication session on a given channel"
