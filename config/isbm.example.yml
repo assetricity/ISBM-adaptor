@@ -1,0 +1,13 @@
+development:
+  endpoints:
+    channel_management: http://simpleisbm.apphb.com/ChannelManagementService
+    provider_publication: http://simpleisbm.apphb.com/ProviderPublicationService
+    consumer_publication: http://simpleisbm.apphb.com/ConsumerPublicationService
+  log: true
+  pretty_print_xml: true
+
+test:
+  endpoints:
+    channel_management: http://simpleisbm.apphb.com/ChannelManagementService
+    provider_publication: http://simpleisbm.apphb.com/ProviderPublicationService
+    consumer_publication: http://simpleisbm.apphb.com/ConsumerPublicationService
