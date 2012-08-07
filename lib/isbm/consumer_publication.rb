@@ -44,13 +44,17 @@ module Isbm
         soap.body = xml.target!
       end
       hash = response.to_hash[:read_publication_response][:publication_message]
-      id = hash[:message_id]
-      topics = hash[:topic]
+      message = nil
+      if hash
+        id = hash[:message_id]
+        topics = hash[:topic]
 
-      # Extract the message content and use the first (and only) Node from the NodeSet
-      content = response.xpath("//isbm:ReadPublicationResponse/isbm:PublicationMessage/isbm:MessageContent/child::*", "isbm" => isbm_namespace).first
+        # Extract the message content and use the first (and only) Node from the NodeSet
+        content = response.xpath("//isbm:ReadPublicationResponse/isbm:PublicationMessage/isbm:MessageContent/child::*", "isbm" => isbm_namespace).first
 
-      Isbm::Message.new(id, content, topics)
+        message = Isbm::Message.new(id, content, topics)
+      end
+      message
     end
 
     # Closes a subscription session

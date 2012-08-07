@@ -54,6 +54,12 @@ describe Isbm::ConsumerPublication, :external_service => true do
         message.topics.first.should eq topics.first
         message.content.name.should eq "CCOMData"
       end
+
+      let(:message2) { Isbm::ConsumerPublication.read_publication(consumer_session_id, message.id) }
+
+      it "returns nil when there are no more messages" do
+        message2.should be_nil
+      end
     end
 
     after(:all) do
