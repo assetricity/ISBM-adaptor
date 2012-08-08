@@ -1,6 +1,4 @@
 require 'rubygems'
-require 'rspec'
-require 'isbm'
 
 # Not run with spec_helper in order to test default config values
 describe Isbm::Config do
