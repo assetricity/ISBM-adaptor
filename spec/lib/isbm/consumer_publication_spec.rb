@@ -1,9 +1,9 @@
 require 'spec_helper'
 
-describe Isbm::ConsumerPublication, :external_service => true do
+describe Isbm::ConsumerPublication do
   context "with invalid arguments" do
-    describe "#open_session" do
-      let(:uri) { "Test#{Time.now.to_i}" }
+    describe "#open_session", :vcr do
+      let(:uri) { "Test" }
       let(:topics) { ["topics"] }
 
       it "raises error with no URI" do
@@ -15,13 +15,13 @@ describe Isbm::ConsumerPublication, :external_service => true do
       end
     end
 
-    describe "#read_publication" do
+    describe "#read_publication", :vcr do
       it "raises error with no session id" do
         expect { Isbm::ConsumerPublication.read_publication(nil, nil) }.to raise_error
       end
     end
 
-    describe "#close_session" do
+    describe "#close_session", :vcr do
       it "raises error with no session id" do
         expect { Isbm::ConsumerPublication.close_session(nil) }.to raise_error
       end
@@ -29,24 +29,29 @@ describe Isbm::ConsumerPublication, :external_service => true do
   end
 
   context "with valid arguments" do
-    let(:uri) { "Test#{Time.now.to_i}" }
+    let(:uri) { "Test" }
     let(:type) { :publication }
     let(:topics) { ["topic"] }
     let(:content) { '<CCOMData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.mimosa.org/osa-eai/v3-2-3/xml/CCOM-ML"><Entity xsi:type="Asset"><GUID>C013C740-19F5-11E1-92B7-6B8E4824019B</GUID></Entity></CCOMData>' }
 
-    before(:all) { Isbm::ChannelManagement.create_channel(uri, type) }
+    before do
+      Isbm::ChannelManagement.create_channel(uri, type)
+    end
 
     let(:provider_session_id) { Isbm::ProviderPublication.open_session(uri) }
     let(:consumer_session_id) { Isbm::ConsumerPublication.open_session(uri, topics) }
 
-    describe "#open_session" do
+    describe "#open_session", :vcr do
       it "returns a session id" do
         consumer_session_id.should_not be_nil
       end
     end
 
-    describe "#read_publication" do
-      before(:all) { Isbm::ProviderPublication.post_publication(provider_session_id, content, topics) }
+    describe "#read_publication", :vcr do
+      before do
+        Isbm::ProviderPublication.post_publication(provider_session_id, content, topics)
+      end
+
       let(:message) { Isbm::ConsumerPublication.read_publication(consumer_session_id, nil) }
 
       it "returns a valid message" do
@@ -62,7 +67,7 @@ describe Isbm::ConsumerPublication, :external_service => true do
       end
     end
 
-    after(:all) do
+    after do
       Isbm::ProviderPublication.close_session(provider_session_id)
       Isbm::ChannelManagement.delete_channel(uri)
     end

@@ -1,0 +1,114 @@
+--- 
+http_interactions: 
+  - request: 
+      method: post
+      uri: http://simpleisbm.apphb.com/ChannelManagementService
+      body: 
+        string: <?xml version="1.0" encoding="UTF-8"?><env:Envelope xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tns="http://www.openoandm.org/xml/ISBM/" xmlns:env="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ins0="http://www.openoandm.org/xml/ISBM/" xmlns="http://www.openoandm.org/xml/ISBM/"><env:Body><ins0:CreateChannel><ChannelURI>Test</ChannelURI><ChannelType>Publication</ChannelType><ChannelDescription>description</ChannelDescription></ins0:CreateChannel></env:Body></env:Envelope>
+      headers: 
+        soapaction: 
+          - "\"http://www.openoandm.org/xml/ISBM/CreateChannel\""
+        content-type: 
+          - text/xml;charset=UTF-8
+        content-length: 
+          - "539"
+        accept: 
+          - "*/*"
+    response: 
+      status: 
+        code: 200
+        message: OK
+      headers: 
+        server: 
+          - nginx
+        date: 
+          - Wed, 08 Aug 2012 15:37:32 GMT
+        content-type: 
+          - text/xml; charset=utf-8
+        content-length: 
+          - "260"
+        connection: 
+          - keep-alive
+        cache-control: 
+          - private
+        set-cookie: 
+          - ASP.NET_SessionId=xnpbakwaaxj5de5gepzhws0r; path=/; HttpOnly
+      body: 
+        string: <s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/"><s:Body xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><CreateChannelResponse xmlns="http://www.openoandm.org/xml/ISBM/"/></s:Body></s:Envelope>
+      http_version: "1.1"
+    recorded_at: Wed, 08 Aug 2012 15:37:54 GMT
+  - request: 
+      method: post
+      uri: http://simpleisbm.apphb.com/ChannelManagementService
+      body: 
+        string: <?xml version="1.0" encoding="UTF-8"?><env:Envelope xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tns="http://www.openoandm.org/xml/ISBM/" xmlns:env="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ins0="http://www.openoandm.org/xml/ISBM/" xmlns="http://www.openoandm.org/xml/ISBM/"><env:Body><ins0:GetChannel><ChannelURI>Test</ChannelURI></ins0:GetChannel></env:Body></env:Envelope>
+      headers: 
+        soapaction: 
+          - "\"http://www.openoandm.org/xml/ISBM/GetChannel\""
+        content-type: 
+          - text/xml;charset=UTF-8
+        content-length: 
+          - "443"
+        cookie: 
+          - ASP.NET_SessionId=xnpbakwaaxj5de5gepzhws0r
+        accept: 
+          - "*/*"
+    response: 
+      status: 
+        code: 200
+        message: OK
+      headers: 
+        server: 
+          - nginx
+        date: 
+          - Wed, 08 Aug 2012 15:37:33 GMT
+        content-type: 
+          - text/xml; charset=utf-8
+        content-length: 
+          - "415"
+        connection: 
+          - keep-alive
+        cache-control: 
+          - private
+      body: 
+        string: <s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/"><s:Body xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><GetChannelResponse xmlns="http://www.openoandm.org/xml/ISBM/"><Channel><ChannelURI>Test</ChannelURI><ChannelType>Publication</ChannelType><ChannelDescription>description</ChannelDescription></Channel></GetChannelResponse></s:Body></s:Envelope>
+      http_version: "1.1"
+    recorded_at: Wed, 08 Aug 2012 15:37:54 GMT
+  - request: 
+      method: post
+      uri: http://simpleisbm.apphb.com/ChannelManagementService
+      body: 
+        string: <?xml version="1.0" encoding="UTF-8"?><env:Envelope xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tns="http://www.openoandm.org/xml/ISBM/" xmlns:env="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ins0="http://www.openoandm.org/xml/ISBM/" xmlns="http://www.openoandm.org/xml/ISBM/"><env:Body><ins0:DeleteChannel><ChannelURI>Test</ChannelURI></ins0:DeleteChannel></env:Body></env:Envelope>
+      headers: 
+        soapaction: 
+          - "\"http://www.openoandm.org/xml/ISBM/DeleteChannel\""
+        content-type: 
+          - text/xml;charset=UTF-8
+        content-length: 
+          - "449"
+        cookie: 
+          - ASP.NET_SessionId=xnpbakwaaxj5de5gepzhws0r
+        accept: 
+          - "*/*"
+    response: 
+      status: 
+        code: 200
+        message: OK
+      headers: 
+        server: 
+          - nginx
+        date: 
+          - Wed, 08 Aug 2012 15:37:33 GMT
+        content-type: 
+          - text/xml; charset=utf-8
+        content-length: 
+          - "260"
+        connection: 
+          - keep-alive
+        cache-control: 
+          - private
+      body: 
+        string: <s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/"><s:Body xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><DeleteChannelResponse xmlns="http://www.openoandm.org/xml/ISBM/"/></s:Body></s:Envelope>
+      http_version: "1.1"
+    recorded_at: Wed, 08 Aug 2012 15:37:54 GMT
+recorded_with: VCR 2.2.4

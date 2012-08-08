@@ -54,17 +54,19 @@ describe Isbm::ProviderPublication, :external_service => true do
     let(:uri) { "Test#{Time.now.to_i}" }
     let(:type) { :publication }
 
-    before(:all) { Isbm::ChannelManagement.create_channel(uri, type) }
+    before do
+      Isbm::ChannelManagement.create_channel(uri, type)
+    end
 
     let(:session_id) { Isbm::ProviderPublication.open_session(uri) }
 
-    describe "#open_session" do
+    describe "#open_session", :vcr do
       it "returns a session id" do
         session_id.should_not be_nil
       end
     end
 
-    describe "#post_publication" do
+    describe "#post_publication", :vcr do
       let(:content) { "<test/>" }
       let(:topic_string) { "topic" }
       let(:topic_array) { [topic_string] }
@@ -75,8 +77,10 @@ describe Isbm::ProviderPublication, :external_service => true do
         message_id.should_not be_nil
       end
 
-      it "raises no error with single topic string" do
-        expect { Isbm::ProviderPublication.post_publication(session_id, content, topic_string) }.not_to raise_error
+      it "raises no error with single topic string", :vcr do
+        expect do
+          Isbm::ProviderPublication.post_publication(session_id, content, topic_string) 
+        end.not_to raise_error
       end
 
       let(:expiry) { Isbm::Duration.new(:hours => 1) }
@@ -85,7 +89,7 @@ describe Isbm::ProviderPublication, :external_service => true do
       end
     end
 
-    after(:all) do
+    after do
       Isbm::ProviderPublication.close_session(session_id)
       Isbm::ChannelManagement.delete_channel(uri)
     end

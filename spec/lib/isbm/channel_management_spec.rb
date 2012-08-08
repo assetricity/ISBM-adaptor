@@ -1,7 +1,7 @@
 require 'spec_helper'
 
-describe Isbm::ChannelManagement, :external_service => true do
-  let(:uri) { "Test#{Time.now.to_i}" }
+describe Isbm::ChannelManagement do
+  let(:uri) { "Test" }
   let(:type) { :publication }
   let(:description) { "description" }
 
@@ -34,11 +34,13 @@ describe Isbm::ChannelManagement, :external_service => true do
   end
 
   context "when valid arguments" do
-    before(:all) { Isbm::ChannelManagement.create_channel(uri, type, description) }
+    before do
+      Isbm::ChannelManagement.create_channel(uri, type, description)
+    end
 
     describe "#get_channel" do
       let(:channel) { Isbm::ChannelManagement.get_channel(uri) }
-      it "returns a valid channel" do
+      it "returns a valid channel", :vcr do
         channel.uri.should eq uri
         channel.type.should eq type
         channel.description.should eq description
@@ -47,13 +49,15 @@ describe Isbm::ChannelManagement, :external_service => true do
 
     describe "#get_channels" do
       let(:channels) { Isbm::ChannelManagement.get_channels }
-      it "returns an array of valid channels" do
+      it "returns an array of valid channels", :vcr do
         (channel = channels.find { |channel| channel.uri == uri }).should_not be_nil
         channel.type.should eq type
         channel.description.should eq description
       end
     end
 
-    after(:all) { Isbm::ChannelManagement.delete_channel(uri) }
+    after do
+      Isbm::ChannelManagement.delete_channel(uri)
+    end
   end
 end
