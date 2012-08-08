@@ -2,7 +2,6 @@ require 'rubygems'
 require 'rspec'
 require 'vcr'
 require 'fakeweb'
-require 'awesome_print'
 require 'isbm'
 
 $:.unshift File.expand_path('..', __FILE__)
