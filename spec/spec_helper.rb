@@ -7,7 +7,12 @@ require 'isbm'
 $:.unshift File.expand_path('..', __FILE__)
 
 ENV["RACK_ENV"] = 'test'
-Isbm::Config.load(File.join("config", "isbm.yml"))
+
+def config_isbm(file)
+  Isbm::Config.load(file, ENV["RACK_ENV"])
+end
+
+config_isbm(File.join("config", "isbm.yml"))
 
 class String
   def underscore

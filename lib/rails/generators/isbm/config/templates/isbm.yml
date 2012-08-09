@@ -3,24 +3,27 @@ production:
     channel_management:
     provider_publication:
     consumer_publication:
-  log: false
-  pretty_print_xml: false
-  use_rails_logger: false
+  options:
+    log: false
+    pretty_print_xml: false
+    use_rails_logger: false
 
 development:
   endpoints:
     channel_management:
     provider_publication:
     consumer_publication:
-  log: true
-  pretty_print_xml: true
-  use_rails_logger: true
+  options:
+    log: true
+    pretty_print_xml: true
+    use_rails_logger: true
 
-test: 
+test:
   endpoints:
     channel_management:
     provider_publication:
     consumer_publication:
-  log: false
-  pretty_print_xml: false
-  use_rails_logger: true
+  options:
+    log: false
+    pretty_print_xml: false
+    use_rails_logger: true

@@ -2,5 +2,6 @@ test:
   endpoints:
     channel_management: http://localhost/ChannelManagementService
     provider_publication:
-  log: true
-  use_rails_logger: false
+  options:
+    log: true
+    use_rails_logger: false

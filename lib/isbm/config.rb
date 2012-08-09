@@ -3,12 +3,9 @@ module Isbm
     class << self
       # Load the settings from a compliant isbm.yml file
       # 'path' is a string path to the file
-      def load(path)
-        environment = defined?(Rails) && Rails.respond_to?(:env) ? Rails.env : ENV["RACK_ENV"]
-        settings = YAML.load(File.new(path).read)[environment]
-        unless settings.blank?
-          from_hash(settings)
-        end
+      def load(path, environment)
+        settings = YAML.load_file(path) || {}
+        from_hash(settings[environment] || {})
         configure_savon
       end
 
@@ -49,18 +46,18 @@ module Isbm
 
       private
 
-      def from_hash(options)
-        @settings ||= {}
-        options.each do |name, value|
-          # Flatten endpoint hash
-          if name == "endpoints"
-            options[name].each do |type, endpoint|
-              @settings[type.to_sym] = endpoint
-            end
-          else
-            @settings[name.to_sym] = value
-          end
-        end
+      def from_hash(config)
+        @settings = {}
+        define_endpoints(config["endpoints"] || {})
+        define_options(config["options"] || {})
+      end
+
+      def define_options(options = {})
+        options.each{ |name, value| @settings[name.to_sym] = value }
+      end
+
+      def define_endpoints(endpoints = {})
+        endpoints.each{ |type, endpoint| @settings[type.to_sym] = endpoint}
       end
 
       def configure_savon
