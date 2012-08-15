@@ -1,4 +1,4 @@
 module Isbm
-  # Version should match version of the ISBM spec, with a bugfix level
-  VERSION = "1.0.rc7.0"
+  # Version should match version of the ISBM spec, with a patch level
+  VERSION = "1.0.rc8.0"
 end
