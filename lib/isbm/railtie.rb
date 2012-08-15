@@ -14,7 +14,7 @@ module Isbm
     initializer "setup database" do
       config_file = Rails.root.join("config", "isbm.yml")
       if config_file.file? && YAML.load(File.read(config_file))[Rails.env].values.flatten.any?
-        ::Isbm::Config.load(config_file)
+        ::Isbm::Config.load(config_file, Rails.env)
       else
       end
     end
