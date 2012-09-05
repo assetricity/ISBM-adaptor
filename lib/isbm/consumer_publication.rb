@@ -49,8 +49,17 @@ module Isbm
         id = hash[:message_id]
         topics = hash[:topic]
 
-        # Extract the message content and use the first (and only) Node from the NodeSet
-        content = response.xpath("//isbm:ReadPublicationResponse/isbm:PublicationMessage/isbm:MessageContent/child::*", "isbm" => isbm_namespace).first
+        # Extract the child element in message content
+        # //isbm:ReadPublicationResponse/isbm:PublicationMessage/isbm:MessageContent/child::*
+        content = response.doc.root.element_children.first.element_children.first.element_children.first.element_children[1].element_children.first
+
+        # Retain any ancestor namespaces in case they are applicable for the element and/or children
+        # This is because content#to_xml does not output ancestor namespaces
+        content.namespaces.each do |key, value|
+          prefix = key.gsub(/xmlns:?/, "")
+          prefix = nil if prefix.empty?
+          content.add_namespace_definition(prefix, value)
+        end
 
         message = Isbm::Message.new(id, content, topics)
       end
