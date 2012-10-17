@@ -15,10 +15,10 @@ Gem::Specification.new do |s|
   s.test_files    = `git ls-files -- spec/*`.split("\n")
   s.require_paths = ["lib"]
 
-  s.add_development_dependency "rspec", "2.11.0"
-  s.add_development_dependency "rake", "0.9.2.2"
-  s.add_development_dependency "vcr", "2.2.4"
-  s.add_development_dependency "fakeweb", "1.3.0"
-  s.add_development_dependency "jruby-openssl", "0.7.7" # for vcr, not sure why
-  s.add_runtime_dependency "savon", "1.1.0"
+  s.add_development_dependency "rspec", "~> 2.11.0"
+  s.add_development_dependency "rake", "~> 0.9.2.2"
+  s.add_development_dependency "vcr", "~> 2.2.5"
+  s.add_development_dependency "fakeweb", "~> 1.3.0"
+  s.add_development_dependency "jruby-openssl", "~> 0.7.7" # for vcr, not sure why
+  s.add_runtime_dependency "savon", "~> 1.2.0"
 end
