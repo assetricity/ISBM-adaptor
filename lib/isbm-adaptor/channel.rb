@@ -6,7 +6,7 @@ module IsbmAdaptor
 
     def initialize(uri, type, description)
       @uri = uri.to_s
-      @type = TYPES.index(type)
+      @type = TYPES.key(type)
       @description = description.to_s unless description.nil?
     end
 
