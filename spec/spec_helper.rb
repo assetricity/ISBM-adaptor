@@ -1,15 +1,15 @@
-require 'rubygems'
-require 'rspec'
-require 'vcr'
-require 'fakeweb'
-require 'isbm'
+require "rubygems"
+require "rspec"
+require "vcr"
+require "fakeweb"
+require "isbm-adaptor"
 
-$:.unshift File.expand_path('..', __FILE__)
+$:.unshift File.expand_path("..", __FILE__)
 
-ENV["RACK_ENV"] = 'test'
+ENV["RACK_ENV"] = "test"
 
 def config_isbm(file)
-  Isbm::Config.load(file, ENV["RACK_ENV"])
+  IsbmAdaptor::Config.load(file, ENV["RACK_ENV"])
 end
 
 config_isbm(File.join("config", "isbm.yml"))
@@ -17,9 +17,9 @@ config_isbm(File.join("config", "isbm.yml"))
 class String
   def underscore
     word = self.dup
-    word.gsub!(/::/, '/')
-    word.gsub!(/([A-Z\d]+)([A-Z][a-z])/,'\1_\2')
-    word.gsub!(/([a-z\d])([A-Z])/,'\1_\2')
+    word.gsub!(/::/, "/")
+    word.gsub!(/([A-Z\d]+)([A-Z][a-z])/,"\1_\2")
+    word.gsub!(/([a-z\d])([A-Z])/,"\1_\2")
     word.tr!("-", "_")
     word.downcase!
     word
@@ -50,7 +50,7 @@ end
 # tests that have the :vcr symbol next to the description
 VCR.configure do |c|
   c.default_cassette_options = { :record => :new_episodes }
-  c.cassette_library_dir = 'spec/cassettes'
+  c.cassette_library_dir = "spec/cassettes"
   c.hook_into :fakeweb
   c.ignore_localhost = true
 end
@@ -61,7 +61,7 @@ RSpec.configure do |config|
   # A little trick we use to easily make a test use vcr by
   # just tagging it with :vcr
   config.around(:each, :vcr) do |example|
-    name = example.metadata[:full_description].split(/\s+/, 2).join('/').underscore.gsub(/[^\w\/]+/, '_')
+    name = example.metadata[:full_description].split(/\s+/, 2).join("/").underscore.gsub(/[^\w\/]+/, "_")
     options = example.metadata.slice(:record, :match_requests_on).except(:example_group)
     VCR.use_cassette(name, options) { example.call }
   end
