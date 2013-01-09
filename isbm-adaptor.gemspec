@@ -16,8 +16,8 @@ Gem::Specification.new do |s|
   s.require_paths = ["lib"]
 
   s.add_development_dependency "rspec", "~> 2.12.0"
-  s.add_development_dependency "rake", "~> 0.9.2.2"
-  s.add_development_dependency "vcr", "~> 2.3.0"
+  s.add_development_dependency "rake", "~> 10.0.0"
+  s.add_development_dependency "vcr", "~> 2.4.0"
   s.add_development_dependency "fakeweb", "~> 1.3.0"
   s.add_runtime_dependency "savon", "~> 1.2.0"
 end
