@@ -15,6 +15,7 @@ Gem::Specification.new do |s|
   s.test_files    = `git ls-files -- spec/*`.split("\n")
   s.require_paths = ["lib"]
 
+  s.add_development_dependency "activesupport", "~> 3.2.0"
   s.add_development_dependency "rake", "~> 10.0.0"
   s.add_development_dependency "rspec", "~> 2.12.0"
   s.add_development_dependency "vcr", "~> 2.4.0"
