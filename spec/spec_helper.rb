@@ -1,7 +1,7 @@
 require "rubygems"
 require "rspec"
+require "webmock/rspec"
 require "vcr"
-require "fakeweb"
 require "isbm-adaptor"
 
 $:.unshift File.expand_path("..", __FILE__)
@@ -46,20 +46,17 @@ class Hash
   end
 end
 
-# This will configure VCR to record http traffic using fakeweb on
-# tests that have the :vcr symbol next to the description
 VCR.configure do |c|
-  c.default_cassette_options = { :record => :new_episodes }
+  c.default_cassette_options = { record: :new_episodes }
   c.cassette_library_dir = "spec/cassettes"
-  c.hook_into :fakeweb
+  c.hook_into :webmock
   c.ignore_localhost = true
 end
 
 RSpec.configure do |config|
   config.treat_symbols_as_metadata_keys_with_true_values = true
 
-  # A little trick we use to easily make a test use vcr by
-  # just tagging it with :vcr
+  # Make a test use VCR by tagging it with :vcr
   config.around(:each, :vcr) do |example|
     name = example.metadata[:full_description].split(/\s+/, 2).join("/").underscore.gsub(/[^\w\/]+/, "_")
     options = example.metadata.slice(:record, :match_requests_on).except(:example_group)
