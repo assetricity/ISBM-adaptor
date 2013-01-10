@@ -21,5 +21,5 @@ Gem::Specification.new do |s|
   s.add_development_dependency "vcr", "~> 2.4.0"
   s.add_development_dependency "webmock", "~> 1.9.0"
 
-  s.add_runtime_dependency "savon", "~> 1.2.0"
+  s.add_runtime_dependency "savon", "~> 2.0.0"
 end

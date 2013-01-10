@@ -6,7 +6,7 @@ module IsbmAdaptor
       def load(path, environment)
         settings = YAML.load_file(path) || {}
         from_hash(settings[environment] || {})
-        configure_savon
+        configure_httpi
       end
 
       # Defined in YAML at environment->endpoints->channel_management
@@ -60,17 +60,9 @@ module IsbmAdaptor
         endpoints.each{ |type, endpoint| @settings[type.to_sym] = endpoint}
       end
 
-      def configure_savon
-        # Configure HTTPI
+      def configure_httpi
         HTTPI.log = log
         HTTPI.logger = Rails.logger if use_rails_logger && defined?(Rails)
-
-        # Configure Savon
-        Savon.configure do |config|
-          config.log = log
-          config.pretty_print_xml = pretty_print_xml
-          config.logger = Rails.logger if use_rails_logger && defined?(Rails)
-        end
       end
     end
   end

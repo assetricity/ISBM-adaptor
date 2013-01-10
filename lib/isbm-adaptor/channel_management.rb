@@ -10,34 +10,37 @@ module IsbmAdaptor
       include IsbmAdaptor::Validation
     end
 
-    document wsdl_dir + "ISBMChannelManagementService.wsdl"
-    endpoint IsbmAdaptor::Config.channel_management_endpoint
+    config = { wsdl: wsdl_dir + "ISBMChannelManagementService.wsdl",
+               endpoint: IsbmAdaptor::Config.channel_management_endpoint,
+               log: IsbmAdaptor::Config.log,
+               pretty_print_xml: IsbmAdaptor::Config.pretty_print_xml }
+    config[:logger] = Rails.logger if IsbmAdaptor::Config.use_rails_logger && defined?(Rails)
+
+    client config
+
+    operations :create_channel, :delete_channel, :get_channel, :get_channels
 
     # Creates a new channel
     # 'type' must be either :publication, :request or :response
     def self.create_channel(uri, type, description = nil)
       validate_presence_of uri, type
       raise ArgumentError.new "#{type} is not a valid type. Must be either :publication, :request or :response." unless IsbmAdaptor::Channel::TYPES.has_key?(type)
-      client.request :wsdl, :create_channel do
-        set_default_namespace soap
-        xml = Builder::XmlMarkup.new # Use separate builder when using conditional statements in XML generation
-        xml.ChannelURI(uri)
-        xml.ChannelType(IsbmAdaptor::Channel::TYPES[type])
-        xml.ChannelDescription(description) unless description.nil?
-        soap.body = xml.target!
-      end
+
+      message = { "ChannelURI" => uri,
+                  "ChannelType" => IsbmAdaptor::Channel::TYPES[type] }
+      message["ChannelDescription"] = description  unless description.nil?
+
+      super(message: message)
+
       return true
     end
 
     # Deletes the specified channel
     def self.delete_channel(uri)
       validate_presence_of uri
-      client.request :wsdl, :delete_channel do
-        set_default_namespace soap
-        soap.body do |xml|
-          xml.ChannelURI(uri)
-        end
-      end
+
+      super(message: { "ChannelURI" => uri })
+
       return true
     end
 
@@ -45,12 +48,9 @@ module IsbmAdaptor
     # Returns a single channel
     def self.get_channel(uri)
       validate_presence_of uri
-      response = client.request :wsdl, :get_channel do
-        set_default_namespace soap
-        soap.body do |xml|
-          xml.ChannelURI(uri)
-        end
-      end
+
+      response = super(message: { "ChannelURI" => uri })
+
       hash = response.to_hash[:get_channel_response][:channel]
       IsbmAdaptor::Channel.from_hash(hash)
     end
@@ -58,7 +58,8 @@ module IsbmAdaptor
     # Gets information about all channels
     # Returns an array of channels
     def self.get_channels
-      response = client.request :wsdl, :get_channels
+      response = super
+
       channels = response.to_hash[:get_channels_response][:channel]
       channels = [channels].compact unless channels.is_a?(Array)
       channels.map do |hash|

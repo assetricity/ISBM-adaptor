@@ -14,7 +14,6 @@ module IsbmAdaptor
 
   def self.included(base)
     base.class_eval do
-      include InstanceMethods
       extend ClassMethods
     end
   end
@@ -34,8 +33,5 @@ module IsbmAdaptor
     def set_default_namespace(soap)
       soap.namespaces["xmlns"] = isbm_namespace
     end
-  end
-  module InstanceMethods
-    Gyoku.convert_symbols_to :camelcase
   end
 end

@@ -10,19 +10,23 @@ module IsbmAdaptor
       include IsbmAdaptor::Validation
     end
 
-    document wsdl_dir + "ISBMProviderPublicationService.wsdl"
-    endpoint IsbmAdaptor::Config.provider_publication_endpoint
+    config = { wsdl: wsdl_dir + "ISBMProviderPublicationService.wsdl",
+               endpoint: IsbmAdaptor::Config.provider_publication_endpoint,
+               log: IsbmAdaptor::Config.log,
+               pretty_print_xml: IsbmAdaptor::Config.pretty_print_xml }
+    config[:logger] = Rails.logger if IsbmAdaptor::Config.use_rails_logger && defined?(Rails)
+
+    client config
+
+    operations :open_publication_session, :post_publication, :expire_publication, :close_publication_session
 
     # Opens a publication session for a channel
     # Returns the session id
     def self.open_session(uri)
       validate_presence_of uri
-      response = client.request :wsdl, :open_publication_session do
-        set_default_namespace soap
-        soap.body do |xml|
-          xml.ChannelURI(uri)
-        end
-      end
+
+      response = open_publication_session(message: { "ChannelURI" => uri })
+
       response.to_hash[:open_publication_session_response][:session_id].to_s
     end
 
@@ -35,45 +39,39 @@ module IsbmAdaptor
       validate_presence_of session_id, content, topics
       validate_xml content
       topics = [topics] unless topics.is_a?(Array)
-      response = client.request :wsdl, :post_publication do
-        set_default_namespace soap
-        xml = Builder::XmlMarkup.new # Use separate builder when using conditional statements in XML generation
-        xml.SessionID(session_id)
-        xml.MessageContent do
-          xml << content
-        end
-        topics.each do |topic|
-          xml.Topic(topic)
-        end
-        duration = expiry.to_s
-        xml.Expiry(duration) unless duration.nil?
-        soap.body = xml.target!
+
+      # Use Builder to generate XML body as we need to concatenate XML message content
+      xml = Builder::XmlMarkup.new
+      xml.isbm :SessionID, session_id
+      xml.isbm :MessageContent do
+        xml << content
       end
+      topics.each do |topic|
+        xml.isbm :Topic, topic
+      end
+      duration = expiry.to_s
+      xml.isbm :Expiry, duration unless duration.nil?
+
+      response = super(message: xml.target!)
+
       response.to_hash[:post_publication_response][:message_id].to_s
     end
 
     # Expires a posted publication message
     def self.expire_publication(session_id, message_id)
       validate_presence_of session_id, message_id
-      client.request :wsdl, :expire_publication do
-        set_default_namespace soap
-        soap.body do |xml|
-          xml.SessionID(session_id)
-          xml.MessageID(message_id)
-        end
-      end
+
+      super(message: { "SessionID" => session_id, "MessageID" => message_id })
+
       return true
     end
 
     # Closes a publication session
     def self.close_session(session_id)
       validate_presence_of session_id
-      client.request :wsdl, :close_publication_session do
-        set_default_namespace soap
-        soap.body do |xml|
-          xml.SessionID(session_id)
-        end
-      end
+
+      close_publication_session(message: { "SessionID" => session_id })
+
       return true
     end
   end

@@ -8,17 +8,14 @@ http_interactions:
       string: "<?xml version=\"1.0\" encoding=\"UTF-8\"?><env:Envelope xmlns:xsd=\"\
         http://www.w3.org/2001/XMLSchema\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\
         \ xmlns:isbm=\"http://www.openoandm.org/xml/ISBM/\" xmlns:env=\"http://schemas.xmlsoap.org/soap/envelope/\"\
-        \ xmlns:ins0=\"http://www.openoandm.org/xml/ISBM/\" xmlns=\"http://www.openoandm.org/xml/ISBM/\"\
-        ><env:Body><ins0:CreateChannel><ChannelURI>Test1357707413</ChannelURI><ChannelType>Publication</ChannelType></ins0:CreateChannel></env:Body></env:Envelope>"
+        ><env:Body><isbm:CreateChannel><isbm:ChannelURI>Test1357783359</isbm:ChannelURI><isbm:ChannelType>Publication</isbm:ChannelType></isbm:CreateChannel></env:Body></env:Envelope>"
     headers:
-      Cookie:
-      - ASP.NET_SessionId=ayqzh4k344fwkbbqiwst1rsb
       Soapaction:
       - "\"http://www.openoandm.org/xml/ISBM/CreateChannel\""
       Content-Type:
       - text/xml;charset=UTF-8
       Content-Length:
-      - '498'
+      - '427'
       Accept:
       - "*/*"
       User-Agent:
@@ -36,19 +33,21 @@ http_interactions:
       - text/xml; charset=utf-8
       Server:
       - Microsoft-IIS/7.5
+      Set-Cookie:
+      - ASP.NET_SessionId=o1ohxgizfat1n3tnsrwiv4da; path=/; HttpOnly
       X-Aspnet-Version:
       - 4.0.30319
       X-Powered-By:
       - ASP.NET
       Date:
-      - Wed, 09 Jan 2013 04:57:00 GMT
+      - Thu, 10 Jan 2013 02:02:50 GMT
     body:
       encoding: US-ASCII
       string: "<s:Envelope xmlns:s=\"http://schemas.xmlsoap.org/soap/envelope/\"><s:Body\
         \ xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\"\
         ><CreateChannelResponse xmlns=\"http://www.openoandm.org/xml/ISBM/\"/></s:Body></s:Envelope>"
     http_version:
-  recorded_at: Wed, 09 Jan 2013 04:56:55 GMT
+  recorded_at: Thu, 10 Jan 2013 02:02:41 GMT
 - request:
     method: post
     uri: http://simpleisbm.assetricity.com/ProviderPublicationService
@@ -57,17 +56,16 @@ http_interactions:
       string: "<?xml version=\"1.0\" encoding=\"UTF-8\"?><env:Envelope xmlns:xsd=\"\
         http://www.w3.org/2001/XMLSchema\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\
         \ xmlns:isbm=\"http://www.openoandm.org/xml/ISBM/\" xmlns:env=\"http://schemas.xmlsoap.org/soap/envelope/\"\
-        \ xmlns:ins0=\"http://www.openoandm.org/xml/ISBM/\" xmlns=\"http://www.openoandm.org/xml/ISBM/\"\
-        ><env:Body><ins0:OpenPublicationSession><ChannelURI>Test1357707413</ChannelURI></ins0:OpenPublicationSession></env:Body></env:Envelope>"
+        ><env:Body><isbm:OpenPublicationSession><isbm:ChannelURI>Test1357783359</isbm:ChannelURI></isbm:OpenPublicationSession></env:Body></env:Envelope>"
     headers:
       Cookie:
-      - ASP.NET_SessionId=cc1mqdo5frsqvydw5xqxns4w
+      - ASP.NET_SessionId=0wi31lwwahwkjse13ddoyfkb
       Soapaction:
       - "\"http://www.openoandm.org/xml/ISBM/OpenPublicationSession\""
       Content-Type:
       - text/xml;charset=UTF-8
       Content-Length:
-      - '478'
+      - '397'
       Accept:
       - "*/*"
       User-Agent:
@@ -90,15 +88,15 @@ http_interactions:
       X-Powered-By:
       - ASP.NET
       Date:
-      - Wed, 09 Jan 2013 04:57:02 GMT
+      - Thu, 10 Jan 2013 02:02:52 GMT
     body:
       encoding: US-ASCII
       string: "<s:Envelope xmlns:s=\"http://schemas.xmlsoap.org/soap/envelope/\"><s:Body\
         \ xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\"\
         ><OpenPublicationSessionResponse xmlns=\"http://www.openoandm.org/xml/ISBM/\"\
-        ><SessionID>6af68e5f-dc48-4c95-af92-71e7d70ff56a</SessionID></OpenPublicationSessionResponse></s:Body></s:Envelope>"
+        ><SessionID>0f77fa0b-fdc0-4482-9bc6-d5499c4e8c90</SessionID></OpenPublicationSessionResponse></s:Body></s:Envelope>"
     http_version:
-  recorded_at: Wed, 09 Jan 2013 04:56:57 GMT
+  recorded_at: Thu, 10 Jan 2013 02:02:43 GMT
 - request:
     method: post
     uri: http://simpleisbm.assetricity.com/ProviderPublicationService
@@ -107,17 +105,14 @@ http_interactions:
       string: "<?xml version=\"1.0\" encoding=\"UTF-8\"?><env:Envelope xmlns:xsd=\"\
         http://www.w3.org/2001/XMLSchema\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\
         \ xmlns:isbm=\"http://www.openoandm.org/xml/ISBM/\" xmlns:env=\"http://schemas.xmlsoap.org/soap/envelope/\"\
-        \ xmlns:ins0=\"http://www.openoandm.org/xml/ISBM/\" xmlns=\"http://www.openoandm.org/xml/ISBM/\"\
-        ><env:Body><ins0:PostPublication><SessionID>6af68e5f-dc48-4c95-af92-71e7d70ff56a</SessionID><MessageContent><test/></MessageContent><Topic>topic</Topic><Expiry></Expiry></ins0:PostPublication></env:Body></env:Envelope>"
+        ><env:Body><isbm:PostPublication><isbm:SessionID>0f77fa0b-fdc0-4482-9bc6-d5499c4e8c90</isbm:SessionID><isbm:MessageContent><test/></isbm:MessageContent><isbm:Topic>topic</isbm:Topic><isbm:Expiry></isbm:Expiry></isbm:PostPublication></env:Body></env:Envelope>"
     headers:
-      Cookie:
-      - ASP.NET_SessionId=cc1mqdo5frsqvydw5xqxns4w
       Soapaction:
       - "\"http://www.openoandm.org/xml/ISBM/PostPublication\""
       Content-Type:
       - text/xml;charset=UTF-8
       Content-Length:
-      - '561'
+      - '510'
       Accept:
       - "*/*"
       User-Agent:
@@ -135,19 +130,21 @@ http_interactions:
       - text/xml; charset=utf-8
       Server:
       - Microsoft-IIS/7.5
+      Set-Cookie:
+      - ASP.NET_SessionId=gt2vdftutot1wn1jo1v2ozts; path=/; HttpOnly
       X-Aspnet-Version:
       - 4.0.30319
       X-Powered-By:
       - ASP.NET
       Date:
-      - Wed, 09 Jan 2013 04:57:04 GMT
+      - Thu, 10 Jan 2013 02:02:54 GMT
     body:
       encoding: US-ASCII
       string: "<s:Envelope xmlns:s=\"http://schemas.xmlsoap.org/soap/envelope/\"><s:Body\
         \ xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\"\
-        ><PostPublicationResponse xmlns=\"http://www.openoandm.org/xml/ISBM/\"><MessageID>13ce777b-09e1-4a5c-88f8-c17c818249b7</MessageID></PostPublicationResponse></s:Body></s:Envelope>"
+        ><PostPublicationResponse xmlns=\"http://www.openoandm.org/xml/ISBM/\"><MessageID>c1d8aa3e-5f3f-47a9-8dfe-7079af3ca15d</MessageID></PostPublicationResponse></s:Body></s:Envelope>"
     http_version:
-  recorded_at: Wed, 09 Jan 2013 04:56:59 GMT
+  recorded_at: Thu, 10 Jan 2013 02:02:45 GMT
 - request:
     method: post
     uri: http://simpleisbm.assetricity.com/ProviderPublicationService
@@ -156,17 +153,16 @@ http_interactions:
       string: "<?xml version=\"1.0\" encoding=\"UTF-8\"?><env:Envelope xmlns:xsd=\"\
         http://www.w3.org/2001/XMLSchema\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\
         \ xmlns:isbm=\"http://www.openoandm.org/xml/ISBM/\" xmlns:env=\"http://schemas.xmlsoap.org/soap/envelope/\"\
-        \ xmlns:ins0=\"http://www.openoandm.org/xml/ISBM/\" xmlns=\"http://www.openoandm.org/xml/ISBM/\"\
-        ><env:Body><ins0:ClosePublicationSession><SessionID>6af68e5f-dc48-4c95-af92-71e7d70ff56a</SessionID></ins0:ClosePublicationSession></env:Body></env:Envelope>"
+        ><env:Body><isbm:ClosePublicationSession><isbm:SessionID>0f77fa0b-fdc0-4482-9bc6-d5499c4e8c90</isbm:SessionID></isbm:ClosePublicationSession></env:Body></env:Envelope>"
     headers:
       Cookie:
-      - ASP.NET_SessionId=cc1mqdo5frsqvydw5xqxns4w
+      - ASP.NET_SessionId=gt2vdftutot1wn1jo1v2ozts
       Soapaction:
       - "\"http://www.openoandm.org/xml/ISBM/ClosePublicationSession\""
       Content-Type:
       - text/xml;charset=UTF-8
       Content-Length:
-      - '500'
+      - '419'
       Accept:
       - "*/*"
       User-Agent:
@@ -189,7 +185,7 @@ http_interactions:
       X-Powered-By:
       - ASP.NET
       Date:
-      - Wed, 09 Jan 2013 04:57:06 GMT
+      - Thu, 10 Jan 2013 02:02:56 GMT
     body:
       encoding: US-ASCII
       string: "<s:Envelope xmlns:s=\"http://schemas.xmlsoap.org/soap/envelope/\"><s:Body\
@@ -197,7 +193,7 @@ http_interactions:
         ><ClosePublicationSessionResponse xmlns=\"http://www.openoandm.org/xml/ISBM/\"\
         /></s:Body></s:Envelope>"
     http_version:
-  recorded_at: Wed, 09 Jan 2013 04:57:01 GMT
+  recorded_at: Thu, 10 Jan 2013 02:02:47 GMT
 - request:
     method: post
     uri: http://simpleisbm.assetricity.com/ChannelManagementService
@@ -206,17 +202,16 @@ http_interactions:
       string: "<?xml version=\"1.0\" encoding=\"UTF-8\"?><env:Envelope xmlns:xsd=\"\
         http://www.w3.org/2001/XMLSchema\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\
         \ xmlns:isbm=\"http://www.openoandm.org/xml/ISBM/\" xmlns:env=\"http://schemas.xmlsoap.org/soap/envelope/\"\
-        \ xmlns:ins0=\"http://www.openoandm.org/xml/ISBM/\" xmlns=\"http://www.openoandm.org/xml/ISBM/\"\
-        ><env:Body><ins0:DeleteChannel><ChannelURI>Test1357707413</ChannelURI></ins0:DeleteChannel></env:Body></env:Envelope>"
+        ><env:Body><isbm:DeleteChannel><isbm:ChannelURI>Test1357783359</isbm:ChannelURI></isbm:DeleteChannel></env:Body></env:Envelope>"
     headers:
       Cookie:
-      - ASP.NET_SessionId=ayqzh4k344fwkbbqiwst1rsb
+      - ASP.NET_SessionId=o1ohxgizfat1n3tnsrwiv4da
       Soapaction:
       - "\"http://www.openoandm.org/xml/ISBM/DeleteChannel\""
       Content-Type:
       - text/xml;charset=UTF-8
       Content-Length:
-      - '460'
+      - '379'
       Accept:
       - "*/*"
       User-Agent:
@@ -239,12 +234,12 @@ http_interactions:
       X-Powered-By:
       - ASP.NET
       Date:
-      - Wed, 09 Jan 2013 04:57:08 GMT
+      - Thu, 10 Jan 2013 02:02:58 GMT
     body:
       encoding: US-ASCII
       string: "<s:Envelope xmlns:s=\"http://schemas.xmlsoap.org/soap/envelope/\"><s:Body\
         \ xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\"\
         ><DeleteChannelResponse xmlns=\"http://www.openoandm.org/xml/ISBM/\"/></s:Body></s:Envelope>"
     http_version:
-  recorded_at: Wed, 09 Jan 2013 04:57:03 GMT
+  recorded_at: Thu, 10 Jan 2013 02:02:49 GMT
 recorded_with: VCR 2.4.0
