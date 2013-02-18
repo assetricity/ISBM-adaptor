@@ -1,0 +1,1 @@
+Assetricity ISBM-Adaptor Gem
