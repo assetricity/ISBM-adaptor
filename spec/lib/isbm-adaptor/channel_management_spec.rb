@@ -1,63 +1,60 @@
-require "spec_helper"
+require 'spec_helper'
 
-describe IsbmAdaptor::ChannelManagement do
-  let(:uri) { "Test" }
+describe IsbmAdaptor::ChannelManagement, :vcr do
+  let(:uri) { 'Test' }
   let(:type) { :publication }
-  let(:description) { "description" }
+  let(:description) { 'description' }
+  let(:client) { IsbmAdaptor::ChannelManagement.new(ENDPOINTS['channel_management'], OPTIONS) }
 
-  context "when invalid arguments" do
-    describe "#create_channel" do
-      it "raises error with no URI" do
-        expect { IsbmAdaptor::ChannelManagement.create_channel(nil, type) }.to raise_error
+  context 'when invalid arguments' do
+    describe '#create_channel' do
+      it 'raises error with no URI' do
+        expect { client.create_channel(nil, type) }.to raise_error
       end
 
-      it "raises error with no type" do
-        expect { IsbmAdaptor::ChannelManagement.create_channel(uri, nil) }.to raise_error
+      it 'raises error with no type' do
+        expect { client.create_channel(uri, nil) }.to raise_error
       end
 
-      it "raises error with incorrect type" do
-        expect { IsbmAdaptor::ChannelManagement.create_channel(uri, :invalid_channel_type) }.to raise_error
-      end
-    end
-
-    describe "#get_channel" do
-      it "raises error with no URI" do
-        expect { IsbmAdaptor::ChannelManagement.get_channel(nil) }.to raise_error
+      it 'raises error with incorrect type' do
+        expect { client.create_channel(uri, :invalid_channel_type) }.to raise_error
       end
     end
 
-    describe "#delete_channel" do
-      it "raises error with no URI" do
-        expect { IsbmAdaptor::ChannelManagement.delete_channel(nil) }.to raise_error
+    describe '#get_channel' do
+      it 'raises error with no URI' do
+        expect { client.get_channel(nil) }.to raise_error
+      end
+    end
+
+    describe '#delete_channel' do
+      it 'raises error with no URI' do
+        expect { client.delete_channel(nil) }.to raise_error
       end
     end
   end
 
-  context "when valid arguments" do
-    before do
-      IsbmAdaptor::ChannelManagement.create_channel(uri, type, description)
-    end
+  context 'when valid arguments' do
+    before { client.create_channel(uri, type, description) }
 
-    describe "#get_channel" do
-      let(:channel) { IsbmAdaptor::ChannelManagement.get_channel(uri) }
-      it "returns a valid channel", :vcr do
-        channel.uri.should eq uri
-        channel.type.should eq type
-        channel.description.should eq description
+    describe '#get_channel' do
+      let(:channel) { client.get_channel(uri) }
+      it 'returns a valid channel' do
+        channel.uri.should == uri
+        channel.type.should == type
+        channel.description.should == description
       end
     end
 
-    describe "#get_channels" do
-      let(:channels) { IsbmAdaptor::ChannelManagement.get_channels }
-      it "returns an array of valid channels", :vcr do
+    describe '#get_channels' do
+      let(:channels) { client.get_channels }
+      it 'returns an array of valid channels' do
         (channel = channels.find { |channel| channel.uri == uri }).should_not be_nil
-        channel.type.should eq type
-        channel.description.should eq description
+        channel.type.should == type
+        channel.description.should == description
       end
     end
 
-    after do
-      IsbmAdaptor::ChannelManagement.delete_channel(uri)
-    end
+    after { client.delete_channel(uri) }
   end
 end

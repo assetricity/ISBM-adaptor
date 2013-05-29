@@ -4,7 +4,7 @@ development:
     provider_publication: http://simpleisbm.assetricity.com/ProviderPublicationService
     consumer_publication: http://simpleisbm.assetricity.com/ConsumerPublicationService
   options:
-    log: true
+    log: false
     pretty_print_xml: true
 
 test:
@@ -12,3 +12,6 @@ test:
     channel_management: http://simpleisbm.assetricity.com/ChannelManagementService
     provider_publication: http://simpleisbm.assetricity.com/ProviderPublicationService
     consumer_publication: http://simpleisbm.assetricity.com/ConsumerPublicationService
+  options:
+    log: false
+    pretty_print_xml: true

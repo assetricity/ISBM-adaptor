@@ -1,41 +1,44 @@
-require "isbm-adaptor/validation"
-require "isbm-adaptor/duration"
+require 'isbm-adaptor/service'
+require 'isbm-adaptor/duration'
 
 module IsbmAdaptor
   class ProviderPublication
-    extend Savon::Model
-    include IsbmAdaptor
+    include IsbmAdaptor::Service
 
-    class << self
-      include IsbmAdaptor::Validation
+    # Creates a new ISBM ProviderPublication client.
+    #
+    # @param endpoint [String] the SOAP endpoint URI
+    # @option options [Object] :logger (Rails.logger or $stdout) location where log should be output
+    # @option options [Boolean] :log (true) specify whether requests are logged
+    # @option options [Boolean] :pretty_print_xml (false) specify whether request and response XML are formatted
+    def initialize(endpoint, options = {})
+      options[:wsdl] = wsdl_dir + 'ISBMProviderPublicationService.wsdl'
+      options[:endpoint] = endpoint
+      default_savon_options(options)
+      @client = Savon.client(options)
     end
 
-    config = { wsdl: wsdl_dir + "ISBMProviderPublicationService.wsdl",
-               endpoint: IsbmAdaptor::Config.provider_publication_endpoint,
-               log: IsbmAdaptor::Config.log,
-               pretty_print_xml: IsbmAdaptor::Config.pretty_print_xml }
-    config[:logger] = Rails.logger if IsbmAdaptor::Config.use_rails_logger && defined?(Rails)
-
-    client config
-
-    operations :open_publication_session, :post_publication, :expire_publication, :close_publication_session
-
-    # Opens a publication session for a channel
-    # Returns the session id
-    def self.open_session(uri)
+    # Opens a publication session for a channel.
+    #
+    # @param [String] uri the channel URI
+    # @return [String] the session id
+    # @raise [ArgumentError] if uri is nil/empty
+    def open_session(uri)
       validate_presence_of uri
 
-      response = open_publication_session(message: { "ChannelURI" => uri })
+      response = @client.call(:open_publication_session, message: { 'ChannelURI' => uri })
 
       response.to_hash[:open_publication_session_response][:session_id].to_s
     end
 
-    # Posts a publication message
-    # 'content' must be a valid XML string
-    # 'topics' must be an array of topic strings or a single string
-    # 'expiry', if specified, must be an IsbmAdaptor::Duration object
-    # Returns the message id
-    def self.post_publication(session_id, content, topics, expiry = nil)
+    # Posts a publication message.
+    #
+    # @param content [String] a valid XML string as message contents
+    # @param topics [Array<String>, String] a collection of topics or single topic
+    # @param expiry [Duration] when the message should expire
+    # @return [String] the message id
+    # @raise [ArgumentError] if session_id, content, topics is nil/empty or content is not valid XML
+    def post_publication(session_id, content, topics, expiry = nil)
       validate_presence_of session_id, content, topics
       validate_xml content
       topics = [topics] unless topics.is_a?(Array)
@@ -52,25 +55,34 @@ module IsbmAdaptor
       duration = expiry.to_s
       xml.isbm :Expiry, duration unless duration.nil?
 
-      response = super(message: xml.target!)
+      response = @client.call(:post_publication, message: xml.target!)
 
       response.to_hash[:post_publication_response][:message_id].to_s
     end
 
-    # Expires a posted publication message
-    def self.expire_publication(session_id, message_id)
+    # Expires a posted publication message.
+    #
+    # @param session_id [String] the session id used to post the publication
+    # @param message_id [String] the message id received after posting the publication
+    # @return [void]
+    # @raise [ArgumentError] if session_id or message_id are nil/empty
+    def expire_publication(session_id, message_id)
       validate_presence_of session_id, message_id
 
-      super(message: { "SessionID" => session_id, "MessageID" => message_id })
+      @client.call(:expire_publication, message: { 'SessionID' => session_id, 'MessageID' => message_id })
 
       return true
     end
 
-    # Closes a publication session
-    def self.close_session(session_id)
+    # Closes a publication session.
+    #
+    # @param session_id [String] the session id
+    # @return [void]
+    # @raise [ArgumentError] if session_id is nil/empty
+    def close_session(session_id)
       validate_presence_of session_id
 
-      close_publication_session(message: { "SessionID" => session_id })
+      @client.call(:close_publication_session, message: { 'SessionID' => session_id })
 
       return true
     end

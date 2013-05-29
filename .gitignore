@@ -4,6 +4,6 @@ Gemfile.lock
 pkg/*
 vendor/ruby
 vendor/jruby
-config/isbm.yml
+config/settings.yml
 bin
 .idea

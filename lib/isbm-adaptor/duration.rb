@@ -1,10 +1,15 @@
 module IsbmAdaptor
-  # Class that supports creation of ISO 8601 duration strings
   class Duration
     attr_accessor :years, :months, :days, :hours, :minutes, :seconds
 
-    # 'duration' is a hash that can contain any combination of the keys
-    # :years, :months, :days, :hours, :minutes, :seconds mapped to a numeric value
+    # Creates a new Duration based on specified time components.
+    #
+    # @option duration [Numeric] :years duration in years
+    # @option duration [Numeric] :months duration in months
+    # @option duration [Numeric] :days duration in days
+    # @option duration [Numeric] :hours duration in hours
+    # @option duration [Numeric] :minutes duration in minutes
+    # @option duration [Numeric] :seconds duration in seconds
     def initialize(duration)
       duration.keys.each do |key|
         raise ArgumentError.new "Invalid key: #{key}" unless VALID_SYMBOLS.include?(key)
@@ -22,6 +27,7 @@ module IsbmAdaptor
       @seconds = duration[:seconds]
     end
 
+    # @return [String] ISO 8601 formatted duration
     def to_s
       date = []
       date << "#{@years}Y" unless @years.nil?
@@ -36,22 +42,23 @@ module IsbmAdaptor
       result = nil
 
       if !date.empty? || !time.empty?
-        result = "P"
+        result = 'P'
         result += date.join unless date.empty?
-        result += "T" + time.join unless time.empty?
+        result += 'T' + time.join unless time.empty?
       end
 
       result
     end
 
+    # @return [Hash] all specified time components
     def to_hash
       hash = {}
-      hash.merge!(:years => @years) if @years
-      hash.merge!(:months => @months) if @months
-      hash.merge!(:days => @days) if @days
-      hash.merge!(:hours => @hours) if @hours
-      hash.merge!(:minutes => @minutes) if @minutes
-      hash.merge!(:seconds => @seconds) if @seconds
+      hash.merge!(years: @years) if @years
+      hash.merge!(months: @months) if @months
+      hash.merge!(days: @days) if @days
+      hash.merge!(hours: @hours) if @hours
+      hash.merge!(minutes: @minutes) if @minutes
+      hash.merge!(seconds: @seconds) if @seconds
       hash
     end
 
