@@ -21,16 +21,17 @@ module IsbmAdaptor
     # Creates a new channel.
     #
     # @param uri [String] the channel URI
-    # @param type [Symbol] the channel type, either :publication or :request
+    # @param type [Symbol] the channel type, either publication or request (symbol or titleized string)
     # @param description [String] the channel description, defaults to nil
     # @return [void]
     # @raise [ArgumentError] if uri or type are nil/empty or type is not a valid Symbol
     def create_channel(uri, type, description = nil)
       validate_presence_of uri, type
-      raise ArgumentError, "#{type} is not a valid type. Must be either :publication or :request." unless IsbmAdaptor::Channel::TYPES.has_key?(type)
+      channel_type = type.to_s.downcase.capitalize
+      raise ArgumentError, "#{channel_type} is not a valid type. Must be either Publication or Request." unless IsbmAdaptor::Channel::TYPES.include?(channel_type)
 
       message = { 'ChannelURI' => uri,
-                  'ChannelType' => IsbmAdaptor::Channel::TYPES[type] }
+                  'ChannelType' => channel_type }
       message['ChannelDescription'] = description  unless description.nil?
 
       @client.call(:create_channel, message: message)

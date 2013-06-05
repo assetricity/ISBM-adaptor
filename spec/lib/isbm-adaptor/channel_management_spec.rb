@@ -41,7 +41,7 @@ describe IsbmAdaptor::ChannelManagement, :vcr do
       let(:channel) { client.get_channel(uri) }
       it 'returns a valid channel' do
         channel.uri.should == uri
-        channel.type.should == type
+        channel.type.should == type.to_s.capitalize
         channel.description.should == description
       end
     end
@@ -50,7 +50,7 @@ describe IsbmAdaptor::ChannelManagement, :vcr do
       let(:channels) { client.get_channels }
       it 'returns an array of valid channels' do
         (channel = channels.find { |channel| channel.uri == uri }).should_not be_nil
-        channel.type.should == type
+        channel.type.should == type.to_s.capitalize
         channel.description.should == description
       end
     end

@@ -1,6 +1,6 @@
 module IsbmAdaptor
   class Channel
-    TYPES = { publication: 'Publication', request: 'Request' }
+    TYPES = ['Publication', 'Request']
 
     attr_accessor :uri, :type, :description
 
@@ -11,7 +11,7 @@ module IsbmAdaptor
     # @param description [String] the channel description
     def initialize(uri, type, description)
       @uri = uri.to_s
-      @type = TYPES.key(type)
+      @type = type
       @description = description.to_s unless description.nil?
     end
 
