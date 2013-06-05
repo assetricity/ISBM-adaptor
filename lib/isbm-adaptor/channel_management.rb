@@ -26,7 +26,8 @@ module IsbmAdaptor
     # @return [void]
     # @raise [ArgumentError] if uri or type are nil/empty or type is not a valid Symbol
     def create_channel(uri, type, description = nil)
-      validate_presence_of uri, type
+      validate_presence_of uri, 'Channel URI'
+      validate_presence_of type, 'Channel Type'
       channel_type = type.to_s.downcase.capitalize
       raise ArgumentError, "#{channel_type} is not a valid type. Must be either Publication or Request." unless IsbmAdaptor::Channel::TYPES.include?(channel_type)
 
@@ -45,7 +46,7 @@ module IsbmAdaptor
     # @return [void]
     # @raise [ArgumentError] if uri is nil/empty
     def delete_channel(uri)
-      validate_presence_of uri
+      validate_presence_of uri, 'Channel URI'
 
       @client.call(:delete_channel, message: { 'ChannelURI' => uri })
 
@@ -58,7 +59,7 @@ module IsbmAdaptor
     # @return [Channel] the queried channel
     # @raise [ArgumentError] if uri is nil/empty
     def get_channel(uri)
-      validate_presence_of uri
+      validate_presence_of uri, 'Channel URI'
 
       response = @client.call(:get_channel, message: { 'ChannelURI' => uri })
 

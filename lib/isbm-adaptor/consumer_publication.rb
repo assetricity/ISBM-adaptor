@@ -24,7 +24,8 @@ module IsbmAdaptor
     # @return [String] the session id
     # @raise [ArgumentError] if uri or topics are nil/empty
     def open_session(uri, topics, listener_uri = nil)
-      validate_presence_of uri, topics
+      validate_presence_of uri, 'Channel URI'
+      validate_presence_of topics, 'Topics'
 
       # Use Builder to generate XML body as we may have multiple Topic elements
       xml = Builder::XmlMarkup.new
@@ -48,7 +49,7 @@ module IsbmAdaptor
     # @return [Message] first message after specified last message. nil if no message.
     # @raise [ArgumentError] if session_id is nil/empty
     def read_publication(session_id, last_message_id)
-      validate_presence_of session_id
+      validate_presence_of session_id, 'Session Id'
 
       message = { 'SessionID' => session_id }
       message['LastMessageID'] = last_message_id unless last_message_id.nil?
@@ -84,7 +85,7 @@ module IsbmAdaptor
     # @return [void]
     # @raise [ArgumentError] if session_id is nil/empty
     def close_session(session_id)
-      validate_presence_of session_id
+      validate_presence_of session_id, 'Session Id'
 
       @client.call(:close_subscription_session, message: { 'SessionID' => session_id })
 

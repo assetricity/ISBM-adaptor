@@ -24,7 +24,7 @@ module IsbmAdaptor
     # @return [String] the session id
     # @raise [ArgumentError] if uri is nil/empty
     def open_session(uri)
-      validate_presence_of uri
+      validate_presence_of uri, 'Channel URI'
 
       response = @client.call(:open_publication_session, message: { 'ChannelURI' => uri })
 
@@ -39,8 +39,11 @@ module IsbmAdaptor
     # @return [String] the message id
     # @raise [ArgumentError] if session_id, content, topics is nil/empty or content is not valid XML
     def post_publication(session_id, content, topics, expiry = nil)
-      validate_presence_of session_id, content, topics
+      validate_presence_of session_id, 'Session Id'
+      validate_presence_of content, 'Content'
+      validate_presence_of topics, 'Topics'
       validate_xml content
+
       topics = [topics] unless topics.is_a?(Array)
 
       # Use Builder to generate XML body as we need to concatenate XML message content
@@ -67,7 +70,8 @@ module IsbmAdaptor
     # @return [void]
     # @raise [ArgumentError] if session_id or message_id are nil/empty
     def expire_publication(session_id, message_id)
-      validate_presence_of session_id, message_id
+      validate_presence_of session_id, 'Session Id'
+      validate_presence_of message_id, 'Message Id'
 
       @client.call(:expire_publication, message: { 'SessionID' => session_id, 'MessageID' => message_id })
 
@@ -80,7 +84,7 @@ module IsbmAdaptor
     # @return [void]
     # @raise [ArgumentError] if session_id is nil/empty
     def close_session(session_id)
-      validate_presence_of session_id
+      validate_presence_of session_id, 'Session Id'
 
       @client.call(:close_publication_session, message: { 'SessionID' => session_id })
 

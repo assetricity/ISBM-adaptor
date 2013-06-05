@@ -17,17 +17,15 @@ module IsbmAdaptor
       options[:pretty_print_xml] ||= false
     end
 
-    # Validates the passed objects are not nil or empty
+    # Validates the presence of the passed value.
     #
-    # @param args [Array<Object>] collection of objects to validate
+    # @param value [Object] presence of object to validate
+    # @param name [String] name of value to include in error message if not present
     # @return [void]
-    def validate_presence_of(*args)
-      args.each_with_index do |arg, index|
-        if arg.nil?
-          raise ArgumentError, "Argument #{index} is nil: #{args.inspect}"
-        elsif arg.is_a?(Array) && arg.empty?
-          raise ArgumentError, "Array (argument #{index}) is empty: #{args.inspect}"
-        end
+    # @raises [ArgumentError] if value is not present
+    def validate_presence_of(value, name)
+      if value.blank?
+        raise ArgumentError, "#{name} must be specified"
       end
     end
 
