@@ -18,7 +18,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'vcr', '~> 2.5.0'
   s.add_development_dependency 'webmock', '~> 1.11.0'
 
-  s.add_runtime_dependency 'activesupport', '~> 3.0'
+  s.add_runtime_dependency 'activesupport', '>= 3.0.0'
   s.add_runtime_dependency 'builder', '>= 3.0.0'
   s.add_runtime_dependency 'savon', '>= 2.0.0'
 end
