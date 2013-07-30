@@ -1,4 +1,5 @@
-Assetricity ISBM-Adaptor Gem
+Assetricity ISBM-Adaptor Gem  
+![travis](https://travis-ci.org/assetricity/isbm_adaptor.png)
 
 Copyright 2013 Assetricity, LLC
 
