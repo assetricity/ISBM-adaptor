@@ -3,3 +3,10 @@ rvm:
   - jruby-19mode # JRuby in 1.9 mode
 before_script:
   - cp config/settings.example.yml config/settings.yml
+    notifications:
+email:
+  recipients:
+    - BMathis@assetricity.com
+    - amathew@assetricity.com
+  on_success: [change] # default: change
+  on_failure: [always] # default: always
