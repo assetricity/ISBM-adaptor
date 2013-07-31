@@ -6,7 +6,7 @@ Gem::Specification.new do |s|
   s.version     = IsbmAdaptor::VERSION
   s.authors     = ['Assetricity']
   s.email       = ['info@assetricity.com']
-  s.homepage    = 'http://www.assetricity.com'
+  s.homepage    = 'https://github.com/assetricity/isbm_adaptor'
   s.summary     = 'OpenO&M ISBM adaptor'
   s.description = 'OpenO&M ISBM adaptor based on Savon'
 
