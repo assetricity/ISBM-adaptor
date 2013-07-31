@@ -1,5 +1,5 @@
-require 'isbm-adaptor/service'
-require 'isbm-adaptor/channel'
+require 'isbm_adaptor/service'
+require 'isbm_adaptor/channel'
 
 module IsbmAdaptor
   class ChannelManagement

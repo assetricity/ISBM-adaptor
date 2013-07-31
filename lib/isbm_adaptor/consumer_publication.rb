@@ -1,5 +1,5 @@
-require 'isbm-adaptor/service'
-require 'isbm-adaptor/message'
+require 'isbm_adaptor/service'
+require 'isbm_adaptor/message'
 
 module IsbmAdaptor
   class ConsumerPublication

@@ -1,5 +1,5 @@
-require 'isbm-adaptor/service'
-require 'isbm-adaptor/duration'
+require 'isbm_adaptor/service'
+require 'isbm_adaptor/duration'
 
 module IsbmAdaptor
   class ProviderPublication
