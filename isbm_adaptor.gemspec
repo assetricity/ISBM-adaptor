@@ -9,8 +9,9 @@ Gem::Specification.new do |s|
   s.homepage    = 'https://github.com/assetricity/isbm_adaptor'
   s.summary     = 'OpenO&M ISBM adaptor'
   s.description = 'OpenO&M ISBM adaptor based on Savon'
+  s.license     = 'MIT'
 
-  s.files         = Dir.glob('lib/**/*') + Dir.glob('wsdls/*') + %w(README.md)
+  s.files         = Dir.glob('lib/**/*') + Dir.glob('wsdls/*') + %w(LICENSE README.md)
 
   s.add_development_dependency 'rake', '~> 10.0.0'
   s.add_development_dependency 'rspec', '~> 2.13.0'
