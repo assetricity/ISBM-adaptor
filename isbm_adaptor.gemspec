@@ -2,16 +2,15 @@ $:.push File.expand_path('../lib', __FILE__)
 require 'isbm_adaptor/version'
 
 Gem::Specification.new do |s|
-  s.name        = 'isbm_adaptor'
-  s.version     = IsbmAdaptor::VERSION
-  s.authors     = ['Assetricity']
-  s.email       = ['info@assetricity.com']
-  s.homepage    = 'https://github.com/assetricity/isbm_adaptor'
-  s.summary     = 'OpenO&M ISBM adaptor'
-  s.description = 'OpenO&M ISBM adaptor based on Savon'
-  s.license     = 'MIT'
+  s.name     = 'isbm_adaptor'
+  s.version  = IsbmAdaptor::VERSION
+  s.authors  = ['Assetricity']
+  s.email    = ['info@assetricity.com']
+  s.homepage = 'https://github.com/assetricity/isbm_adaptor'
+  s.summary  = 'ISBM Adaptor provides a Ruby API for the OpenO&M ISBM specification'
+  s.license  = 'MIT'
 
-  s.files         = Dir.glob('lib/**/*') + Dir.glob('wsdls/*') + %w(LICENSE README.md)
+  s.files    = Dir.glob('lib/**/*') + Dir.glob('wsdls/*') + %w(LICENSE README.md)
 
   s.add_development_dependency 'rake', '~> 10.0.0'
   s.add_development_dependency 'rspec', '~> 2.13.0'
