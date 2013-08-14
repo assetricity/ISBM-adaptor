@@ -3,6 +3,8 @@ rvm:
   - jruby-19mode # JRuby in 1.9 mode
 before_script:
   - cp config/settings.example.yml config/settings.yml
+env:
+  - COVERAGE=on
 notifications:
   email:
     recipients:
