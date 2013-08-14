@@ -1,6 +1,7 @@
 # ISBM Adaptor
 
 [![travis](https://travis-ci.org/assetricity/isbm_adaptor.png)](https://travis-ci.org/assetricity/isbm_adaptor)
+[![Coverage Status](https://coveralls.io/repos/assetricity/isbm_adaptor/badge.png?branch=master)](https://coveralls.io/r/assetricity/isbm_adaptor?branch=master)
 
 The ISBM Adaptor provides a Ruby API for the [OpenO&M ISBM specification](http://www.mimosa.org/?q=about/what-open-om).
 
