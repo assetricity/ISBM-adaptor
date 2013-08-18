@@ -1,6 +1,16 @@
 language: ruby
 rvm:
-  - jruby-19mode # JRuby in 1.9 mode
+  - 1.9.3
+  - jruby-19mode
+jdk:
+  - openjdk7
+  - oraclejdk7
+matrix:
+  exclude:
+    - rvm: 1.9.3
+      jdk: openjdk7
+    - rvm: 1.9.3
+      jdk: oraclejdk7
 before_script:
   - cp config/settings.example.yml config/settings.yml
 env:
@@ -10,5 +20,3 @@ notifications:
     recipients:
       - BMathis@assetricity.com
       - amathew@assetricity.com
-    on_success: [change] # default: change
-    on_failure: [always] # default: always

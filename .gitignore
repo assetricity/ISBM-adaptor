@@ -1,9 +1,8 @@
 *.gem
 .bundle
-Gemfile.lock
-pkg/*
-vendor/ruby
-vendor/jruby
-config/settings.yml
-bin
 .idea
+.ruby-version
+Gemfile.lock
+bin
+config/settings.yml
+pkg/*
