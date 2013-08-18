@@ -5,9 +5,9 @@ require 'rspec'
 require 'webmock/rspec'
 require 'vcr'
 require 'isbm_adaptor'
-require 'coveralls'
 
 if ENV['COVERAGE'] == 'on'
+  require 'coveralls'
   Coveralls.wear!
 end
 
