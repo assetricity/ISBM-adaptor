@@ -66,15 +66,18 @@ module IsbmAdaptor
       result
     end
 
+    # Creates a hash of the time components. Any keys with nil values are
+    # excluded from the result.
+    #
     # @return [Hash] all specified time components
     def to_hash
       hash = {}
-      hash.merge!(years: @years) if @years
-      hash.merge!(months: @months) if @months
-      hash.merge!(days: @days) if @days
-      hash.merge!(hours: @hours) if @hours
-      hash.merge!(minutes: @minutes) if @minutes
-      hash.merge!(seconds: @seconds) if @seconds
+      hash[:years] = @years if @years
+      hash[:months] = @months if @months
+      hash[:days] = @days if @days
+      hash[:hours] = @hours if @hours
+      hash[:minutes] = @minutes if @minutes
+      hash[:seconds] = @seconds if @seconds
       hash
     end
 
