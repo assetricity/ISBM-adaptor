@@ -3,6 +3,8 @@ development:
     channel_management: http://simpleisbm.assetricity.com/ChannelManagementService
     provider_publication: http://simpleisbm.assetricity.com/ProviderPublicationService
     consumer_publication: http://simpleisbm.assetricity.com/ConsumerPublicationService
+    provider_request: http://simpleisbm.assetricity.com/ProviderRequestService
+    consumer_request: http://simpleisbm.assetricity.com/ConsumerRequestService
   options:
     log: false
     pretty_print_xml: true
@@ -12,6 +14,8 @@ test:
     channel_management: http://simpleisbm.assetricity.com/ChannelManagementService
     provider_publication: http://simpleisbm.assetricity.com/ProviderPublicationService
     consumer_publication: http://simpleisbm.assetricity.com/ConsumerPublicationService
+    provider_request: http://simpleisbm.assetricity.com/ProviderRequestService
+    consumer_request: http://simpleisbm.assetricity.com/ConsumerRequestService
   options:
     log: false
     pretty_print_xml: true
