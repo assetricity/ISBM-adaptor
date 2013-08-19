@@ -1,10 +1,8 @@
-require 'isbm_adaptor/service'
+require 'isbm_adaptor/client'
 require 'isbm_adaptor/channel'
 
 module IsbmAdaptor
-  class ChannelManagement
-    include IsbmAdaptor::Service
-
+  class ChannelManagement < IsbmAdaptor::Client
     # Creates a new ISBM ChannelManagement client.
     #
     # @param endpoint [String] the SOAP endpoint URI
@@ -12,10 +10,7 @@ module IsbmAdaptor
     # @option options [Boolean] :log (true) specify whether requests are logged
     # @option options [Boolean] :pretty_print_xml (false) specify whether request and response XML are formatted
     def initialize(endpoint, options = {})
-      options[:wsdl] = wsdl_dir + 'ISBMChannelManagementService.wsdl'
-      options[:endpoint] = endpoint
-      default_savon_options(options)
-      @client = Savon.client(options)
+      super('ISBMChannelManagementService.wsdl', endpoint, options)
     end
 
     # Creates a new channel.
