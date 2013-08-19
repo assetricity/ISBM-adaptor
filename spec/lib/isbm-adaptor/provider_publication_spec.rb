@@ -6,7 +6,7 @@ describe IsbmAdaptor::ProviderPublication, :vcr do
   context 'with invalid arguments' do
     describe '#open_session' do
       it 'raises error with no URI' do
-        expect { client.open_session(nil) }.to raise_error
+        expect { client.open_session(nil) }.to raise_error ArgumentError
       end
     end
 
@@ -17,37 +17,38 @@ describe IsbmAdaptor::ProviderPublication, :vcr do
       let(:topics) { ['topic'] }
 
       it 'raises error with no session id' do
-        expect { client.post_publication(nil, content, topics) }.to raise_error
+        expect { client.post_publication(nil, content, topics) }.to raise_error ArgumentError
       end
 
       it 'raises error with no content' do
-        expect { client.post_publication(session_id, nil, topics) }.to raise_error
+        expect { client.post_publication(session_id, nil, topics) }.to raise_error ArgumentError
       end
 
       it 'raises error with invalid content' do
-        expect { client.post_publication(session_id, invalid_content, topics) }.to raise_error
+        expect { client.post_publication(session_id, invalid_content, topics) }.to raise_error ArgumentError
       end
 
       it 'raises error with no topics' do
-        expect { client.post_publication(session_id, content, nil) }.to raise_error
+        expect { client.post_publication(session_id, content, nil) }.to raise_error ArgumentError
       end
     end
 
     describe '#expire_publication' do
+      let(:session_id) { 'session id' }
       let(:message_id) { 'message id' }
 
       it 'raises error with no session id' do
-        expect { client.expire_publication(nil, message_id) }.to raise_error
+        expect { client.expire_publication(nil, message_id) }.to raise_error ArgumentError
       end
 
       it 'raises error with no message id' do
-        expect { client.expire_publication(session_id, nil) }.to raise_error
+        expect { client.expire_publication(session_id, nil) }.to raise_error ArgumentError
       end
     end
 
     describe 'close publication session' do
       it 'raises error with no session id' do
-        expect { client.close_session(nil) }.to raise_error
+        expect { client.close_session(nil) }.to raise_error ArgumentError
       end
     end
   end

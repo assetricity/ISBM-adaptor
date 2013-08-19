@@ -3,11 +3,11 @@ require 'spec_helper'
 describe IsbmAdaptor::Duration do
   context 'when invalid arguments' do
     it 'should raise an ArgumentError with invalid symbols' do
-      expect { IsbmAdaptor::Duration.new(invalid_symbol: 1) }.to raise_error
+      expect { IsbmAdaptor::Duration.new(invalid_symbol: 1) }.to raise_error ArgumentError
     end
 
     it 'should raise an ArgumentError with negative values' do
-      expect { IsbmAdaptor::Duration.new(years: -1) }.to raise_error
+      expect { IsbmAdaptor::Duration.new(years: -1) }.to raise_error ArgumentError
     end
   end
 

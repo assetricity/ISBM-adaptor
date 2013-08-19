@@ -9,23 +9,23 @@ describe IsbmAdaptor::ConsumerPublication, :vcr do
       let(:topics) { ['topics'] }
 
       it 'raises error with no URI' do
-        expect { client.open_session(nil, topics) }.to raise_error
+        expect { client.open_session(nil, topics) }.to raise_error ArgumentError
       end
 
       it 'raises error with no topics' do
-        expect { client.open_session(uri, nil) }.to raise_error
+        expect { client.open_session(uri, nil) }.to raise_error ArgumentError
       end
     end
 
     describe '#read_publication' do
       it 'raises error with no session id' do
-        expect { client.read_publication(nil, nil) }.to raise_error
+        expect { client.read_publication(nil, nil) }.to raise_error ArgumentError
       end
     end
 
     describe '#close_session' do
       it 'raises error with no session id' do
-        expect { client.close_session(nil) }.to raise_error
+        expect { client.close_session(nil) }.to raise_error ArgumentError
       end
     end
   end

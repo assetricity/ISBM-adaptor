@@ -9,27 +9,27 @@ describe IsbmAdaptor::ChannelManagement, :vcr do
   context 'when invalid arguments' do
     describe '#create_channel' do
       it 'raises error with no URI' do
-        expect { client.create_channel(nil, type) }.to raise_error
+        expect { client.create_channel(nil, type) }.to raise_error ArgumentError
       end
 
       it 'raises error with no type' do
-        expect { client.create_channel(uri, nil) }.to raise_error
+        expect { client.create_channel(uri, nil) }.to raise_error ArgumentError
       end
 
       it 'raises error with incorrect type' do
-        expect { client.create_channel(uri, :invalid_channel_type) }.to raise_error
+        expect { client.create_channel(uri, :invalid_channel_type) }.to raise_error ArgumentError
       end
     end
 
     describe '#get_channel' do
       it 'raises error with no URI' do
-        expect { client.get_channel(nil) }.to raise_error
+        expect { client.get_channel(nil) }.to raise_error ArgumentError
       end
     end
 
     describe '#delete_channel' do
       it 'raises error with no URI' do
-        expect { client.delete_channel(nil) }.to raise_error
+        expect { client.delete_channel(nil) }.to raise_error ArgumentError
       end
     end
   end
