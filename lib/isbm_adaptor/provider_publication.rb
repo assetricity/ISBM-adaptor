@@ -1,9 +1,8 @@
-require 'isbm_adaptor/service'
+require 'isbm_adaptor/client'
 require 'isbm_adaptor/duration'
 
 module IsbmAdaptor
-  class ProviderPublication
-    include IsbmAdaptor::Service
+  class ProviderPublication < IsbmAdaptor::Client
 
     # Creates a new ISBM ProviderPublication client.
     #
@@ -12,10 +11,7 @@ module IsbmAdaptor
     # @option options [Boolean] :log (true) specify whether requests are logged
     # @option options [Boolean] :pretty_print_xml (false) specify whether request and response XML are formatted
     def initialize(endpoint, options = {})
-      options[:wsdl] = wsdl_dir + 'ISBMProviderPublicationService.wsdl'
-      options[:endpoint] = endpoint
-      default_savon_options(options)
-      @client = Savon.client(options)
+      super('ISBMProviderPublicationService.wsdl', endpoint, options)
     end
 
     # Opens a publication session for a channel.
@@ -46,7 +42,7 @@ module IsbmAdaptor
       validate_presence_of topics, 'Topics'
       validate_xml content
 
-      topics = [topics] unless topics.is_a?(Array)
+      topics = [topics].flatten
 
       # Use Builder to generate XML body as we need to concatenate XML message content
       xml = Builder::XmlMarkup.new

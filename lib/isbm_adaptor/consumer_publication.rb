@@ -1,9 +1,7 @@
-require 'isbm_adaptor/service'
-require 'isbm_adaptor/message'
+require 'isbm_adaptor/client'
 
 module IsbmAdaptor
-  class ConsumerPublication
-    include IsbmAdaptor::Service
+  class ConsumerPublication < IsbmAdaptor::Client
 
     # Creates a new ISBM ConsumerPublication client.
     #
@@ -12,10 +10,7 @@ module IsbmAdaptor
     # @option options [Boolean] :log (true) specify whether requests are logged
     # @option options [Boolean] :pretty_print_xml (false) specify whether request and response XML are formatted
     def initialize(endpoint, options = {})
-      options[:wsdl] = wsdl_dir + 'ISBMConsumerPublicationService.wsdl'
-      options[:endpoint] = endpoint
-      default_savon_options(options)
-      @client = Savon.client(options)
+      super('ISBMConsumerPublicationService.wsdl', endpoint, options)
     end
 
     # Opens a subscription session for a channel.
@@ -55,30 +50,9 @@ module IsbmAdaptor
 
       message = { 'SessionID' => session_id }
       message['LastMessageID'] = last_message_id unless last_message_id.nil?
-
       response = @client.call(:read_publication, message: message)
 
-      hash = response.to_hash[:read_publication_response][:publication_message]
-      message = nil
-      if hash
-        id = hash[:message_id]
-        topics = hash[:topic]
-
-        # Extract the child element in message content
-        # //isbm:ReadPublicationResponse/isbm:PublicationMessage/isbm:MessageContent/child::*
-        content = response.doc.root.element_children.first.element_children.first.element_children.first.element_children[1].element_children.first
-
-        # Retain any ancestor namespaces in case they are applicable for the element and/or children
-        # This is because content#to_xml does not output ancestor namespaces
-        content.namespaces.each do |key, value|
-          prefix = key.gsub(/xmlns:?/, '')
-          prefix = nil if prefix.empty?
-          content.add_namespace_definition(prefix, value)
-        end
-
-        message = IsbmAdaptor::Message.new(id, content, topics)
-      end
-      message
+      extract_message(response)
     end
 
     # Closes a subscription session.

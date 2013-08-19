@@ -13,15 +13,11 @@ module IsbmAdaptor
     #
     # @param id [String] message id
     # @param content [String] XML content
-    # @param topics [Array<String>] collection of topics
+    # @param topics [Array<String>, String] collection of topics or single topic
     def initialize(id, content, topics)
-      @id = id.to_s
+      @id = id
       @content = content
-      if (topics.is_a?(Array))
-        @topics.each { |t| t.to_s }
-      else
-        @topics = [topics.to_s]
-      end
+      @topics = [topics].flatten
     end
   end
 end
