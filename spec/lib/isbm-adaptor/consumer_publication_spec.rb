@@ -34,12 +34,10 @@ describe IsbmAdaptor::ConsumerPublication, :vcr do
     let(:uri) { 'Test' }
     let(:type) { :publication }
     let(:topics) { ['topic'] }
-    let(:content) { '<CCOMData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.mimosa.org/osa-eai/v3-2-3/xml/CCOM-ML"><Entity xsi:type="Asset"><GUID>C013C740-19F5-11E1-92B7-6B8E4824019B</GUID></Entity></CCOMData>' }
-    let(:provider_publication_client) { IsbmAdaptor::ProviderPublication.new(ENDPOINTS['provider_publication'], OPTIONS) }
-    let(:channel_management_client) { IsbmAdaptor::ChannelManagement.new(ENDPOINTS['channel_management'], OPTIONS) }
-    before { channel_management_client.create_channel(uri, type) }
+    let(:content) { File.read(File.expand_path(File.dirname(__FILE__)) + '/../../fixtures/ccom.xml') }
+    let(:channel_client) { IsbmAdaptor::ChannelManagement.new(ENDPOINTS['channel_management'], OPTIONS) }
+    before { channel_client.create_channel(uri, type) }
 
-    let(:provider_session_id) { provider_publication_client.open_session(uri) }
     let(:consumer_session_id) { client.open_session(uri, topics) }
 
     describe '#open_session' do
@@ -48,29 +46,34 @@ describe IsbmAdaptor::ConsumerPublication, :vcr do
       end
     end
 
-    describe '#read_publication' do
-      before do
-        provider_publication_client.post_publication(provider_session_id, content, topics)
+    context 'with provider' do
+      let(:provider_client) { IsbmAdaptor::ProviderPublication.new(ENDPOINTS['provider_publication'], OPTIONS) }
+      let(:provider_session_id) { provider_client.open_session(uri) }
+
+      describe '#read_publication' do
+        before { provider_client.post_publication(provider_session_id, content, topics) }
+
+        let(:message) { client.read_publication(consumer_session_id, nil) }
+
+        it 'returns a valid message' do
+          message.id.should_not be_nil
+          message.topics.first.should == topics.first
+          message.content.name.should == 'CCOMData'
+        end
+
+        let(:message2) { client.read_publication(consumer_session_id, message.id) }
+
+        it 'returns nil when there are no more messages' do
+          message2.should be_nil
+        end
       end
 
-      let(:message) { client.read_publication(consumer_session_id, nil) }
-
-      it 'returns a valid message' do
-        message.id.should_not be_nil
-        message.topics.first.should == topics.first
-        message.content.name.should == 'CCOMData'
-      end
-
-      let(:message2) { client.read_publication(consumer_session_id, message.id) }
-
-      it 'returns nil when there are no more messages' do
-        message2.should be_nil
-      end
+      after { provider_client.close_session(provider_session_id) }
     end
 
     after do
-      provider_publication_client.close_session(provider_session_id)
-      channel_management_client.delete_channel(uri)
+      client.close_session(consumer_session_id)
+      channel_client.delete_channel(uri)
     end
   end
 end

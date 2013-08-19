@@ -54,10 +54,10 @@ describe IsbmAdaptor::ProviderPublication, :vcr do
   end
 
   context 'with valid arguments' do
-    let(:uri) { 'Test#{Time.now.to_i}' }
+    let(:uri) { 'Test' }
     let(:type) { :publication }
-    let(:channel_management_client) { IsbmAdaptor::ChannelManagement.new(ENDPOINTS['channel_management'], OPTIONS) }
-    before { channel_management_client.create_channel(uri, type) }
+    let(:channel_client) { IsbmAdaptor::ChannelManagement.new(ENDPOINTS['channel_management'], OPTIONS) }
+    before { channel_client.create_channel(uri, type) }
 
     let(:session_id) { client.open_session(uri) }
 
@@ -67,30 +67,40 @@ describe IsbmAdaptor::ProviderPublication, :vcr do
       end
     end
 
-    describe '#post_publication' do
-      let(:content) { '<test/>' }
-      let(:topic_string) { 'topic' }
-      let(:topic_array) { [topic_string] }
+    describe 'posting' do
+      let(:content) { File.read(File.expand_path(File.dirname(__FILE__)) + '/../../fixtures/ccom.xml') }
+      let(:topics) { ['topic'] }
+      let(:message_id) { client.post_publication(session_id, content, topics) }
 
-      let(:message_id) { client.post_publication(session_id, content, topic_array) }
+      describe '#post_publication' do
+        it 'returns a message id' do
+          message_id.should_not be_nil
+        end
 
-      it 'returns a message id' do
-        message_id.should_not be_nil
+        it 'can use a single topic string' do
+          expect { client.post_publication(session_id, content, topics.first) }.not_to raise_error
+        end
+
+        it 'can use a multiple topic array' do
+          expect { client.post_publication(session_id, content, topics) }.not_to raise_error
+        end
+
+        let(:expiry) { IsbmAdaptor::Duration.new(hours: 1) }
+        it 'raises no error with expiry' do
+          expect { client.post_publication(session_id, content, topics, expiry) }.not_to raise_error
+        end
       end
 
-      it 'raises no error with single topic string' do
-        expect { client.post_publication(session_id, content, topic_string)}.not_to raise_error
-      end
-
-      let(:expiry) { IsbmAdaptor::Duration.new(hours: 1) }
-      it 'raises no error with expiry' do
-        expect { client.post_publication(session_id, content, topic_string, expiry) }.not_to raise_error
+      describe '#expire_publication' do
+        it 'raises no error' do
+          expect { client.expire_publication(session_id, message_id) }.not_to raise_error
+        end
       end
     end
 
     after do
       client.close_session(session_id)
-      channel_management_client.delete_channel(uri)
+      channel_client.delete_channel(uri)
     end
   end
 end

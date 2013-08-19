@@ -1,0 +1,6 @@
+<CCOMData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.mimosa.org/osa-eai/v3-2-3/xml/CCOM-ML">
+  <Entity xsi:type="Asset">
+    <GUID>C013C740-19F5-11E1-92B7-6B8E4824019B</GUID>
+  </Entity>
+</CCOMData>
