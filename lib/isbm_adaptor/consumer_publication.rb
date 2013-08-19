@@ -20,7 +20,9 @@ module IsbmAdaptor
 
     # Opens a subscription session for a channel.
     #
+    # @param uri [String] the channel URI
     # @param topics [Array<String>] an array of topics
+    # @param listener_uri [String] the URI for notification callbacks
     # @return [String] the session id
     # @raise [ArgumentError] if uri or topics are nil/empty
     def open_session(uri, topics, listener_uri = nil)

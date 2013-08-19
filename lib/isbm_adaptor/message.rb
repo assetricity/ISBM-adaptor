@@ -1,6 +1,13 @@
 module IsbmAdaptor
   class Message
-    attr_accessor :id, :content, :topics
+    # @return [String] the id of the message
+    attr_accessor :id
+
+    # @return [String] the XML content of the message
+    attr_accessor :content
+
+    # @return [Array<String>] topics associated with the message
+    attr_accessor :topics
 
     # Creates a new ISBM Message container.
     #

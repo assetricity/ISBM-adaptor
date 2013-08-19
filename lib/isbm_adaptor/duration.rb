@@ -1,6 +1,22 @@
 module IsbmAdaptor
   class Duration
-    attr_accessor :years, :months, :days, :hours, :minutes, :seconds
+    # @return [Numeric] the years component of the duration
+    attr_accessor :years
+
+    # @return [Numeric] the months component of the duration
+    attr_accessor :months
+
+    # @return [Numeric] the days component of the duration
+    attr_accessor :days
+
+    # @return [Numeric] the hours component of the duration
+    attr_accessor :hours
+
+    # @return [Numeric] the minutes component of the duration
+    attr_accessor :minutes
+
+    # @return [Numeric] the seconds component of the duration
+    attr_accessor :seconds
 
     # Creates a new Duration based on specified time components.
     #

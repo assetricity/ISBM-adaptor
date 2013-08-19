@@ -2,7 +2,14 @@ module IsbmAdaptor
   class Channel
     TYPES = ['Publication', 'Request']
 
-    attr_accessor :uri, :type, :description
+    # @return [String] the channel URI
+    attr_accessor :uri
+
+    # @return [String] the channel type, either 'Publication' or 'Request'
+    attr_accessor :type
+
+    # @return [String] the channel description
+    attr_accessor :description
 
     # Creates a new Channel.
     #

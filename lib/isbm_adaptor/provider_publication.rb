@@ -20,7 +20,7 @@ module IsbmAdaptor
 
     # Opens a publication session for a channel.
     #
-    # @param [String] uri the channel URI
+    # @param uri [String] the channel URI
     # @return [String] the session id
     # @raise [ArgumentError] if uri is nil/empty
     def open_session(uri)
@@ -33,11 +33,13 @@ module IsbmAdaptor
 
     # Posts a publication message.
     #
+    # @param session_id [String] the session id
     # @param content [String] a valid XML string as message contents
     # @param topics [Array<String>, String] a collection of topics or single topic
     # @param expiry [Duration] when the message should expire
     # @return [String] the message id
-    # @raise [ArgumentError] if session_id, content, topics is nil/empty or content is not valid XML
+    # @raise [ArgumentError] if session_id, content or topics are nil/empty, or
+    #   content is not valid XML
     def post_publication(session_id, content, topics, expiry = nil)
       validate_presence_of session_id, 'Session Id'
       validate_presence_of content, 'Content'
