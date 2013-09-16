@@ -54,6 +54,6 @@ client.get_channels
 
 ## License
 
-Copyright 2013 Assetricity, LLC
+Copyright 2013 [Assetricity, LLC](http://assetricity.com)
 
 ISBM Adaptor is released under the MIT License. See [LICENSE](https://github.com/assetricity/isbm_adaptor/blob/master/LICENSE) for details.
