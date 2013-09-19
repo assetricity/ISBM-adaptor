@@ -40,10 +40,10 @@ Create a client object by specifying an endpoint. For example:
 client = IsbmAdaptor::ChannelManagement.new('http://example.com/ChannelManagement')
 ```
 
-The standard Savon options can also be passed to the client upon creation. For example:
+The standard [Savon options](http://savonrb.com/version2/globals.html) can also be passed to the client upon creation. For example:
 
 ```ruby
-client = IsbmAdaptor::ChannelManagement.new('http://example.com/ChannelManagement', log: false)
+client = IsbmAdaptor::ChannelManagement.new('http://example.com/ChannelManagement', log: true)
 ```
 
 Use the client methods to directly send SOAP messages to the server. For example:

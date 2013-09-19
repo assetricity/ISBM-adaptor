@@ -78,9 +78,9 @@ module IsbmAdaptor
     # @param options [Hash] the options to set defaults on
     # @return [Hash] options hash with defaults set
     def default_savon_options(options)
-      options[:logger] = Rails.logger if defined?(Rails)
-      options[:log] ||= true
-      options[:pretty_print_xml] ||= false
+      options[:logger] = Rails.logger if options[:logger].nil? && defined?(Rails)
+      options[:log] = false if options[:log].nil?
+      options[:pretty_print_xml] = true if options[:pretty_print_xml].nil?
     end
   end
 end
