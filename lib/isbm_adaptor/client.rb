@@ -21,7 +21,7 @@ module IsbmAdaptor
     # @param value [Object] presence of object to validate
     # @param name [String] name of value to include in error message if not present
     # @return [void]
-    # @raises [ArgumentError] if value is not present
+    # @raise [ArgumentError] if value is not present
     def validate_presence_of(value, name)
       if value.blank?
         raise ArgumentError, "#{name} must be specified"

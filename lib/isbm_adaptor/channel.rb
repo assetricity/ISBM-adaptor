@@ -1,5 +1,6 @@
 module IsbmAdaptor
   class Channel
+    # Channel types permitted by the ISBM specification
     TYPES = ['Publication', 'Request']
 
     # @return [String] the channel URI
@@ -24,9 +25,9 @@ module IsbmAdaptor
 
     # Creates a new Channel based on a hash.
     #
-    # @options hash [String] :channel_uri the channel URI
-    # @options hash [String] :channel_type the channel type, either 'Publication' or 'Request'
-    # @options hash [String] :channel_description the channel description
+    # @option hash [String] :channel_uri the channel URI
+    # @option hash [String] :channel_type the channel type, either 'Publication' or 'Request'
+    # @option hash [String] :channel_description the channel description
     def self.from_hash(hash)
       uri = hash[:channel_uri]
       type = hash[:channel_type]

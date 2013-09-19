@@ -82,7 +82,7 @@ module IsbmAdaptor
     end
 
     private
-
+    # Valid time components in a duration 
     VALID_SYMBOLS = [:years, :months, :days, :hours, :minutes, :seconds]
   end
 end
