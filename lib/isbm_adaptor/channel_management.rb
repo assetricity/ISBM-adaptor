@@ -10,7 +10,7 @@ module IsbmAdaptor
     # @option options [Boolean] :log (true) specify whether requests are logged
     # @option options [Boolean] :pretty_print_xml (false) specify whether request and response XML are formatted
     def initialize(endpoint, options = {})
-      super('ISBMChannelManagementService.wsdl', endpoint, options)
+      super('ChannelManagementService.wsdl', endpoint, options)
     end
 
     # Creates a new channel.

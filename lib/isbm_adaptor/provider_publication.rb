@@ -11,7 +11,7 @@ module IsbmAdaptor
     # @option options [Boolean] :log (true) specify whether requests are logged
     # @option options [Boolean] :pretty_print_xml (false) specify whether request and response XML are formatted
     def initialize(endpoint, options = {})
-      super('ISBMProviderPublicationService.wsdl', endpoint, options)
+      super('ProviderPublicationService.wsdl', endpoint, options)
     end
 
     # Opens a publication session for a channel.

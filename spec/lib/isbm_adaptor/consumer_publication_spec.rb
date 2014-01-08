@@ -15,11 +15,15 @@ describe IsbmAdaptor::ConsumerPublication, :vcr do
       it 'raises error with no topics' do
         expect { client.open_session(uri, nil) }.to raise_error ArgumentError
       end
+
+      it 'raises error when XPath namespace but no expression' do
+        expect { client.open_session(uri, topics, nil, nil, {prefix: 'name'}) }.to raise_error ArgumentError
+      end
     end
 
     describe '#read_publication' do
       it 'raises error with no session id' do
-        expect { client.read_publication(nil, nil) }.to raise_error ArgumentError
+        expect { client.read_publication(nil) }.to raise_error ArgumentError
       end
     end
 
@@ -38,7 +42,7 @@ describe IsbmAdaptor::ConsumerPublication, :vcr do
     let(:channel_client) { IsbmAdaptor::ChannelManagement.new(ENDPOINTS['channel_management'], OPTIONS) }
     before { channel_client.create_channel(uri, type) }
 
-    let(:consumer_session_id) { client.open_session(uri, topics) }
+    let!(:consumer_session_id) { client.open_session(uri, topics) }
 
     describe '#open_session' do
       it 'returns a session id' do
@@ -53,7 +57,7 @@ describe IsbmAdaptor::ConsumerPublication, :vcr do
       describe '#read_publication' do
         before { provider_client.post_publication(provider_session_id, content, topics) }
 
-        let(:message) { client.read_publication(consumer_session_id, nil) }
+        let(:message) { client.read_publication(consumer_session_id) }
 
         it 'returns a valid message' do
           message.id.should_not be_nil
@@ -68,10 +72,13 @@ describe IsbmAdaptor::ConsumerPublication, :vcr do
           doc.namespaces.values.should include 'http://www.mimosa.org/osa-eai/v3-2-3/xml/CCOM-ML'
         end
 
-        let(:message2) { client.read_publication(consumer_session_id, message.id) }
+        describe '#remove_publication' do
+          before { client.remove_publication(consumer_session_id) }
+          let(:message2) { client.read_publication(consumer_session_id) }
 
-        it 'returns nil when there are no more messages' do
-          message2.should be_nil
+          it 'returns nil when there are no more messages' do
+            message2.should be_nil
+          end
         end
       end
 

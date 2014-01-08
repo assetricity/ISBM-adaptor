@@ -15,6 +15,10 @@ describe IsbmAdaptor::ProviderRequest, :vcr do
       it 'raises error with no topics' do
         expect { client.open_session(uri, nil) }.to raise_error ArgumentError
       end
+
+      it 'raises error when XPath namespace but no expression' do
+        expect { client.open_session(uri, topics, nil, nil, {prefix: 'name'}) }.to raise_error ArgumentError
+      end
     end
 
     describe '#read_request' do

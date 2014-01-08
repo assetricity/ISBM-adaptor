@@ -10,7 +10,7 @@ module IsbmAdaptor
     # @option options [Boolean] :log (true) specify whether requests are logged
     # @option options [Boolean] :pretty_print_xml (false) specify whether request and response XML are formatted
     def initialize(endpoint, options = {})
-      super('ISBMProviderRequestService.wsdl', endpoint, options)
+      super('ProviderRequestService.wsdl', endpoint, options)
     end
 
     # Opens a provider request session for a channel for reading requests and
@@ -18,12 +18,17 @@ module IsbmAdaptor
     #
     # @param uri [String] the channel URI
     # @param topics [Array<String>] an array of topics
-    # @param listener_uri [String] the URI for notification callbacks
+    # @param listener_url [String] the URL for notification callbacks
+    # @param xpath_expression [String] the XPath filter expression
+    # @param xpath_namespaces [Array<Hash>] the prefixes and namespaces used by the XPath expression. The hash key
+    #   represents the namespace prefix while the value represents the namespace name. For example,
+    #   ["xs" => "http://www.w3.org/2001/XMLSchema", "isbm" => "http://www.openoandm.org/xml/ISBM/"]
     # @return [String] the session id
     # @raise [ArgumentError] if uri or topics are blank
-    def open_session(uri, topics, listener_uri = nil)
+    def open_session(uri, topics, listener_url = nil, xpath_expression = nil, xpath_namespaces = [])
       validate_presence_of uri, 'Channel URI'
       validate_presence_of topics, 'Topics'
+      validate_presence_of xpath_expression, 'XPath Expression' if xpath_namespaces.present?
 
       # Use Builder to generate XML body as we may have multiple Topic elements
       xml = Builder::XmlMarkup.new
@@ -31,7 +36,14 @@ module IsbmAdaptor
       topics.each do |topic|
         xml.isbm :Topic, topic
       end
-      xml.isbm :ListenerURI, listener_uri unless listener_uri.nil?
+      xml.isbm :ListenerURL, listener_url unless listener_url.nil?
+      xml.isbm :XPathExpression, xpath_expression unless xpath_expression.nil?
+      xpath_namespaces.each do |prefix, name|
+        xml.isbm :XPathNamespace do
+          xml.isbm :NamespacePrefix, prefix
+          xml.isbm :NamespaceName, name
+        end
+      end
 
       response = @client.call(:open_provider_request_session, message: xml.target!)
 

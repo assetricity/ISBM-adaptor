@@ -33,6 +33,19 @@ describe IsbmAdaptor::ConsumerRequest, :vcr do
       end
     end
 
+    describe '#expire_request' do
+      let(:session_id) { 'session id' }
+      let(:message_id) { 'message id' }
+
+      it 'raises error with no session id' do
+        expect { client.expire_request(nil, message_id) }.to raise_error ArgumentError
+      end
+
+      it 'raises error with no message id' do
+        expect { client.expire_request(session_id, nil) }.to raise_error ArgumentError
+      end
+    end
+
     describe '#read_response' do
       let(:session_id) { 'session id' }
       let(:request_message_id) { 'request message id' }
@@ -69,7 +82,7 @@ describe IsbmAdaptor::ConsumerRequest, :vcr do
   context 'with valid arguments' do
     let(:uri) { 'Test' }
     let(:type) { :request }
-    let(:topics) { ['topic'] }
+    let(:topic) { 'topic' }
     let(:content) { File.read(File.expand_path(File.dirname(__FILE__)) + '/../../fixtures/ccom.xml') }
     let(:channel_client) { IsbmAdaptor::ChannelManagement.new(ENDPOINTS['channel_management'], OPTIONS) }
     before { channel_client.create_channel(uri, type) }
@@ -83,17 +96,30 @@ describe IsbmAdaptor::ConsumerRequest, :vcr do
     end
 
     describe '#post_request' do
-      let(:request_message_id) { client.post_request(consumer_session_id, content, topics.first) }
+      let(:request_message_id) { client.post_request(consumer_session_id, content, topic) }
 
       it 'returns a request message id' do
         request_message_id.should_not be_nil
+      end
+
+      let(:expiry) { IsbmAdaptor::Duration.new(hours: 1) }
+      it 'raises no error with expiry' do
+        expect { client.post_request(consumer_session_id, content, topic, expiry) }.not_to raise_error
+      end
+    end
+
+    describe '#expire_request' do
+      let(:request_message_id) { client.post_request(consumer_session_id, content, topic) }
+
+      it 'raises no error' do
+        expect { client.expire_request(consumer_session_id, request_message_id) }.not_to raise_error
       end
     end
 
     context 'with provider' do
       let(:provider_request_client) { IsbmAdaptor::ProviderRequest.new(ENDPOINTS['provider_request'], OPTIONS) }
-      let!(:provider_session_id) { provider_request_client.open_session(uri, topics) }
-      let!(:request_message_id) { client.post_request(consumer_session_id, content, topics.first) }
+      let!(:provider_session_id) { provider_request_client.open_session(uri, [topic]) }
+      let!(:request_message_id) { client.post_request(consumer_session_id, content, topic) }
       before { provider_request_client.post_response(provider_session_id, request_message_id, content) }
       let(:response) { client.read_response(consumer_session_id, request_message_id) }
 
