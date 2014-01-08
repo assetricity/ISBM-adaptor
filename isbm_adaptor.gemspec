@@ -14,10 +14,11 @@ Gem::Specification.new do |s|
 
   s.add_development_dependency 'rake', '~> 10.1.0'
   s.add_development_dependency 'rspec', '~> 2.14.0'
-  s.add_development_dependency 'vcr', '~> 2.5.0'
-  s.add_development_dependency 'webmock', '~> 1.13.0'
+  s.add_development_dependency 'vcr', '~> 2.8.0'
+  s.add_development_dependency 'webmock', '~> 1.16.0'
 
-  s.add_runtime_dependency 'activesupport', '>= 3.0.0'
-  s.add_runtime_dependency 'builder', '>= 3.0.0'
+  s.add_runtime_dependency 'activesupport', '>= 1.0.0'
+  s.add_runtime_dependency 'builder', '>= 2.1.2'
+  s.add_runtime_dependency 'nokogiri', '>= 1.4.0'
   s.add_runtime_dependency 'savon', '>= 2.0.0'
 end
