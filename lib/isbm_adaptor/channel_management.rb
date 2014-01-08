@@ -19,7 +19,7 @@ module IsbmAdaptor
     # @param type [Symbol] the channel type, either publication or request (symbol or titleized string)
     # @param description [String] the channel description, defaults to nil
     # @return [void]
-    # @raise [ArgumentError] if uri or type are nil/empty or type is not a valid Symbol
+    # @raise [ArgumentError] if uri or type are blank or type is not a valid Symbol
     def create_channel(uri, type, description = nil)
       validate_presence_of uri, 'Channel URI'
       validate_presence_of type, 'Channel Type'
@@ -39,7 +39,7 @@ module IsbmAdaptor
     #
     # @param uri [String] the channel URI
     # @return [void]
-    # @raise [ArgumentError] if uri is nil/empty
+    # @raise [ArgumentError] if uri is blank
     def delete_channel(uri)
       validate_presence_of uri, 'Channel URI'
 
@@ -52,7 +52,7 @@ module IsbmAdaptor
     #
     # @param uri [String] the channel URI
     # @return [Channel] the queried channel
-    # @raise [ArgumentError] if uri is nil/empty
+    # @raise [ArgumentError] if uri is blank
     def get_channel(uri)
       validate_presence_of uri, 'Channel URI'
 

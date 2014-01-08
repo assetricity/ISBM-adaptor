@@ -19,7 +19,7 @@ module IsbmAdaptor
     # @param topics [Array<String>] an array of topics
     # @param listener_uri [String] the URI for notification callbacks
     # @return [String] the session id
-    # @raise [ArgumentError] if uri or topics are nil/empty
+    # @raise [ArgumentError] if uri or topics are blank
     def open_session(uri, topics, listener_uri = nil)
       validate_presence_of uri, 'Channel URI'
       validate_presence_of topics, 'Topics'
@@ -44,7 +44,7 @@ module IsbmAdaptor
     # @param last_message_id [String] the id of the last message. When set to
     #   nil, returns the first publication in the message queue
     # @return [Message] first message after specified last message. nil if no message.
-    # @raise [ArgumentError] if session_id is nil/empty
+    # @raise [ArgumentError] if session_id is blank
     def read_publication(session_id, last_message_id)
       validate_presence_of session_id, 'Session Id'
 
@@ -59,7 +59,7 @@ module IsbmAdaptor
     #
     # @param session_id [String] the session id
     # @return [void]
-    # @raise [ArgumentError] if session_id is nil/empty
+    # @raise [ArgumentError] if session_id is blank
     def close_session(session_id)
       validate_presence_of session_id, 'Session Id'
 

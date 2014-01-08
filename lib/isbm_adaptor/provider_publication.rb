@@ -18,7 +18,7 @@ module IsbmAdaptor
     #
     # @param uri [String] the channel URI
     # @return [String] the session id
-    # @raise [ArgumentError] if uri is nil/empty
+    # @raise [ArgumentError] if uri is blank
     def open_session(uri)
       validate_presence_of uri, 'Channel URI'
 
@@ -34,7 +34,7 @@ module IsbmAdaptor
     # @param topics [Array<String>, String] a collection of topics or single topic
     # @param expiry [Duration] when the message should expire
     # @return [String] the message id
-    # @raise [ArgumentError] if session_id, content or topics are nil/empty, or
+    # @raise [ArgumentError] if session_id, content or topics are blank, or
     #   content is not valid XML
     def post_publication(session_id, content, topics, expiry = nil)
       validate_presence_of session_id, 'Session Id'
@@ -66,7 +66,7 @@ module IsbmAdaptor
     # @param session_id [String] the session id used to post the publication
     # @param message_id [String] the message id received after posting the publication
     # @return [void]
-    # @raise [ArgumentError] if session_id or message_id are nil/empty
+    # @raise [ArgumentError] if session_id or message_id are blank
     def expire_publication(session_id, message_id)
       validate_presence_of session_id, 'Session Id'
       validate_presence_of message_id, 'Message Id'
@@ -80,7 +80,7 @@ module IsbmAdaptor
     #
     # @param session_id [String] the session id
     # @return [void]
-    # @raise [ArgumentError] if session_id is nil/empty
+    # @raise [ArgumentError] if session_id is blank
     def close_session(session_id)
       validate_presence_of session_id, 'Session Id'
 

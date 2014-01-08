@@ -20,7 +20,7 @@ module IsbmAdaptor
     # @param topics [Array<String>] an array of topics
     # @param listener_uri [String] the URI for notification callbacks
     # @return [String] the session id
-    # @raise [ArgumentError] if uri or topics are nil/empty
+    # @raise [ArgumentError] if uri or topics are blank
     def open_session(uri, topics, listener_uri = nil)
       validate_presence_of uri, 'Channel URI'
       validate_presence_of topics, 'Topics'
@@ -44,7 +44,7 @@ module IsbmAdaptor
     # @param session_id [String] the session id
     # @return [Message] the first message in the queue for the session.
     #   nil if no message.
-    # @raise [ArgumentError] if session_id is nil/empty
+    # @raise [ArgumentError] if session_id is blank
     def read_request(session_id)
       validate_presence_of session_id, 'Session Id'
 
@@ -58,7 +58,7 @@ module IsbmAdaptor
     #
     # @param session_id [String] the session id
     # @return [void]
-    # @raise [ArgumentError] if session_id is nil/empty
+    # @raise [ArgumentError] if session_id is blank
     def remove_request(session_id)
       validate_presence_of session_id, 'Session Id'
 
@@ -74,7 +74,7 @@ module IsbmAdaptor
     # @param content [String] a valid XML string as message contents
     # @return [String] the response message id
     # @raise [ArgumentError] if session_id, request_message_id or content are
-    #   nil/empty, or content is not valid XML
+    #   blank, or content is not valid XML
     def post_response(session_id, request_message_id, content)
       validate_presence_of session_id, 'Session Id'
       validate_presence_of request_message_id, 'Request Message Id'
@@ -98,7 +98,7 @@ module IsbmAdaptor
     #
     # @param session_id [String] the session id
     # @return [void]
-    # @raise [ArgumentError] if session_id is nil/empty
+    # @raise [ArgumentError] if session_id is blank
     def close_session(session_id)
       validate_presence_of session_id, 'Session Id'
 
