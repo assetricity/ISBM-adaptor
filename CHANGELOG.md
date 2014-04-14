@@ -1,5 +1,11 @@
 # Changelog
 
+## v1.0.rc8.7 (2014-04-14)
+
+* Fix error with default options not being set
+* Replace "nil/empty" with "blank" for better readability
+* Message content is now a Nokogiri document rather than element to allow schema validation
+
 ## v1.0.rc8.6 (2013-09-09)
 
 ### Features
