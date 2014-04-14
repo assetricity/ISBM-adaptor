@@ -53,15 +53,22 @@ module IsbmAdaptor
       content = message.element_children[1].element_children.first
       topics = message.element_children[2..-1].map {|e| e.text}
 
-      # Retain any ancestor namespaces in case they are applicable for the element and/or children
-      # This is because content#to_xml does not output ancestor namespaces
+      # Retain any ancestor namespaces in case they are applicable for the element
+      # and/or children. This is because content.to_xml does not output ancestor
+      # namespaces.
+      # There may be unnecessary namespaces carried across (e.g. ISBM, SOAP), but we
+      # can't tell if the content uses them without parsing the content itself.
       content.namespaces.each do |key, value|
         prefix = key.gsub(/xmlns:?/, '')
         prefix = nil if prefix.empty?
         content.add_namespace_definition(prefix, value)
       end
 
-      IsbmAdaptor::Message.new(id, content, topics)
+      # Wrap content in a separate Nokogiri document. This allows the ability to
+      # validate the content against a schema.
+      doc = Nokogiri::XML(content.to_xml)
+
+      IsbmAdaptor::Message.new(id, doc, topics)
     end
 
     private

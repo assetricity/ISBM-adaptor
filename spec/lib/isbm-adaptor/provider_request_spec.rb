@@ -85,7 +85,7 @@ describe IsbmAdaptor::ProviderRequest, :vcr do
         it 'returns a valid request message' do
           request.id.should_not be_nil
           request.topics.first.should == topics.first
-          request.content.name.should == 'CCOMData'
+          request.content.root.name.should == 'CCOMData'
         end
       end
 

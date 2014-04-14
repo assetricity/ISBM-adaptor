@@ -58,7 +58,7 @@ describe IsbmAdaptor::ConsumerPublication, :vcr do
         it 'returns a valid message' do
           message.id.should_not be_nil
           message.topics.first.should == topics.first
-          message.content.name.should == 'CCOMData'
+          message.content.root.name.should == 'CCOMData'
         end
 
         let(:message2) { client.read_publication(consumer_session_id, message.id) }

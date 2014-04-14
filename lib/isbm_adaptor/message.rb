@@ -3,7 +3,7 @@ module IsbmAdaptor
     # @return [String] the id of the message
     attr_accessor :id
 
-    # @return [String] the XML content of the message
+    # @return [Nokogiri::XML::Document] the XML content of the message
     attr_accessor :content
 
     # @return [Array<String>] topics associated with the message
@@ -12,7 +12,7 @@ module IsbmAdaptor
     # Creates a new ISBM Message container.
     #
     # @param id [String] message id
-    # @param content [String] XML content
+    # @param content [Nokogiri::XML::Document] XML content
     # @param topics [Array<String>, String] collection of topics or single topic
     def initialize(id, content, topics)
       @id = id

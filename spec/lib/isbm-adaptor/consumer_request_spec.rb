@@ -100,7 +100,7 @@ describe IsbmAdaptor::ConsumerRequest, :vcr do
       describe '#read_response' do
         it 'returns a valid response message' do
           response.id.should_not be_nil
-          response.content.name.should == 'CCOMData'
+          response.content.root.name.should == 'CCOMData'
         end
       end
 
