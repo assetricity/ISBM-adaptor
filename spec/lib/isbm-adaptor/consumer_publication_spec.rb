@@ -61,6 +61,13 @@ describe IsbmAdaptor::ConsumerPublication, :vcr do
           message.content.root.name.should == 'CCOMData'
         end
 
+        # For IsbmAdaptor::Client#extract_message
+        it 'copies namespaces to content root' do
+          doc = Nokogiri::XML(message.content.to_xml)
+          doc.namespaces.values.should include 'http://www.w3.org/2001/XMLSchema-instance'
+          doc.namespaces.values.should include 'http://www.mimosa.org/osa-eai/v3-2-3/xml/CCOM-ML'
+        end
+
         let(:message2) { client.read_publication(consumer_session_id, message.id) }
 
         it 'returns nil when there are no more messages' do
