@@ -23,8 +23,16 @@ module IsbmAdaptor
     # @return [void]
     # @raise [ArgumentError] if value is not present
     def validate_presence_of(value, name)
-      if value.blank?
-        raise ArgumentError, "#{name} must be specified"
+      if value.respond_to?(:each)
+        value.each do |v|
+          if v.blank?
+            raise ArgumentError, "Values in #{name} must not be blank"
+          end
+        end
+      else
+        if value.blank?
+          raise ArgumentError, "#{name} must not be blank"
+        end
       end
     end
 
