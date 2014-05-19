@@ -6,6 +6,7 @@ module IsbmAdaptor
     # Creates a new ISBM ConsumerPublication client.
     #
     # @param endpoint [String] the SOAP endpoint URI
+    # @option options [Array<String>] :wsse_auth username and password, i.e. [username, password]
     # @option options [Object] :logger (Rails.logger or $stdout) location where log should be output
     # @option options [Boolean] :log (true) specify whether requests are logged
     # @option options [Boolean] :pretty_print_xml (false) specify whether request and response XML are formatted

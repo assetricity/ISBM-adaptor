@@ -18,6 +18,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'webmock', '~> 1.18.0'
 
   s.add_runtime_dependency 'activesupport', '>= 1.0.0'
+  s.add_runtime_dependency 'akami', '>= 1.0.0'
   s.add_runtime_dependency 'builder', '>= 2.1.2'
   s.add_runtime_dependency 'nokogiri', '>= 1.4.0'
   s.add_runtime_dependency 'savon', '>= 2.0.0'
