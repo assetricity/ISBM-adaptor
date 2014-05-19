@@ -45,12 +45,12 @@ module IsbmAdaptor
     def extract_message(response)
       # Extract the message element
       # e.g. /Envelope/Body/ReadPublicationResponse/PublicationMessage
-      message = response.doc.root.element_children.first.element_children.first.element_children.first
+      message = response.doc.root.first_element_child.first_element_child.first_element_child
 
       return nil unless message
 
       id = message.element_children[0].text
-      content = message.element_children[1].element_children.first
+      content = message.element_children[1].first_element_child
       topics = message.element_children[2..-1].map {|e| e.text}
 
       # Retain any ancestor namespaces in case they are applicable for the element
@@ -59,9 +59,9 @@ module IsbmAdaptor
       # There may be unnecessary namespaces carried across (e.g. ISBM, SOAP), but we
       # can't tell if the content uses them without parsing the content itself.
       content.namespaces.each do |key, value|
-        prefix = key.gsub(/xmlns:?/, '')
-        prefix = nil if prefix.empty?
-        content.add_namespace_definition(prefix, value)
+        # Don't replace default namespace if it already exists
+        next if key == 'xmlns' && content['xmlns']
+        content[key] = value
       end
 
       # Wrap content in a separate Nokogiri document. This allows the ability to
