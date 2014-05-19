@@ -12,10 +12,10 @@ Gem::Specification.new do |s|
 
   s.files    = Dir.glob('lib/**/*') + Dir.glob('wsdls/*') + %w(LICENSE README.md)
 
-  s.add_development_dependency 'rake', '~> 10.2.0'
+  s.add_development_dependency 'rake', '~> 10.3.0'
   s.add_development_dependency 'rspec', '~> 2.14.0'
   s.add_development_dependency 'vcr', '~> 2.9.0'
-  s.add_development_dependency 'webmock', '~> 1.17.0'
+  s.add_development_dependency 'webmock', '~> 1.18.0'
 
   s.add_runtime_dependency 'activesupport', '>= 1.0.0'
   s.add_runtime_dependency 'builder', '>= 2.1.2'
