@@ -18,7 +18,7 @@ module IsbmAdaptor
 
     # Validates the presence of the passed value.
     #
-    # @param value [Object] presence of object to validate
+    # @param value [Object] object to validate presence
     # @param name [String] name of value to include in error message if not present
     # @return [void]
     # @raise [ArgumentError] if value is not present
@@ -33,6 +33,19 @@ module IsbmAdaptor
         if value.blank?
           raise ArgumentError, "#{name} must not be blank"
         end
+      end
+    end
+
+    # Validates the inclusion of the passed value in a given set.
+    #
+    # @param value [Object] object to validate inclusion
+    # @param set [Array] set to validate inclusion
+    # @param name [String] name of value to include in error message if not present
+    # @return [void]
+    # @raise [ArgumentError] if value is not included
+    def validate_inclusion_in(value, set, name)
+      unless set.include?(value)
+        raise ArgumentError, "#{value} is not a valid #{name}. Must be #{set[0..-2].join(', ')} or #{set.last}."
       end
     end
 

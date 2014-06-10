@@ -26,7 +26,7 @@ module IsbmAdaptor
       validate_presence_of uri, 'Channel URI'
       validate_presence_of type, 'Channel Type'
       channel_type = type.to_s.downcase.capitalize
-      raise ArgumentError, "#{channel_type} is not a valid type. Must be either Publication or Request." unless IsbmAdaptor::Channel::TYPES.include?(channel_type)
+      validate_inclusion_in channel_type, IsbmAdaptor::Channel::TYPES, 'Channel Type'
 
       message = { 'ChannelURI' => uri,
                   'ChannelType' => channel_type }
