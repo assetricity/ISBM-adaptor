@@ -19,17 +19,15 @@
 	<wsdl:types>
 		<xs:schema elementFormDefault="qualified" targetNamespace="http://www.openoandm.org/ws-isbm/">
 			<!-- Types -->
-			<xs:element name="MessageContent">
-				<xs:complexType>
-					<xs:sequence>
-						<xs:any minOccurs="1" maxOccurs="1" namespace="##any" processContents="lax"/>
-					</xs:sequence>
-				</xs:complexType>
-			</xs:element>
+			<xs:complexType name="MessageContent">
+				<xs:sequence>
+					<xs:any minOccurs="1" maxOccurs="1" namespace="##any" processContents="lax"/>
+				</xs:sequence>
+			</xs:complexType>
 			<xs:complexType name="PublicationMessage">
 				<xs:sequence>
 					<xs:element minOccurs="1" maxOccurs="1" name="MessageID" type="xs:string"/>
-					<xs:element minOccurs="1" maxOccurs="1" ref="isbm:MessageContent"/>
+					<xs:element minOccurs="1" maxOccurs="1" name="MessageContent" type="isbm:MessageContent"/>
 					<xs:element minOccurs="1" maxOccurs="unbounded" name="Topic" type="xs:string"/>
 				</xs:sequence>
 			</xs:complexType>
@@ -140,23 +138,11 @@
 	<wsdl:message name="NamespaceFault">
 		<wsdl:part name="parameters" element="isbm:NamespaceFault"/>
 	</wsdl:message>
-	<wsdl:message name="InvalidListenerURLFault">
-		<wsdl:part name="parameters" element="isbm:InvalidListenerURLFault"/>
-	</wsdl:message>
 	<wsdl:message name="OperationFault">
 		<wsdl:part name="parameters" element="isbm:OperationFault"/>
 	</wsdl:message>
 	<wsdl:message name="SessionFault">
 		<wsdl:part name="parameters" element="isbm:SessionFault"/>
-	</wsdl:message>
-	<wsdl:message name="InvalidTopicFault">
-		<wsdl:part name="parameters" element="isbm:InvalidTopicFault"/>
-	</wsdl:message>
-	<wsdl:message name="InvalidXPathExpressionFault">
-		<wsdl:part name="parameters" element="isbm:InvalidXPathExpressionFault"/>
-	</wsdl:message>
-	<wsdl:message name="InvalidXPathNamespaceFault">
-		<wsdl:part name="parameters" element="isbm:InvalidXPathNamespaceFault"/>
 	</wsdl:message>
 
 	<wsdl:portType name="ConsumerPublicationService">
@@ -169,7 +155,7 @@
 			<wsdl:fault name="OperationFault" message="isbm:OperationFault"/>
 		</wsdl:operation>
 		<wsdl:operation name="ReadPublication">
-			<wsdl:documentation>Returns the first non-expired publication message (if any) after the specified last message (even if the specified last message has expired) for the session.</wsdl:documentation>
+			<wsdl:documentation>Returns the first non-expired publication message or a previously read expired message that satisfies the session message filters.</wsdl:documentation>
 			<wsdl:input message="isbm:ReadPublicationIn"/>
 			<wsdl:output message="isbm:ReadPublicationOut"/>
 			<wsdl:fault name="SessionFault" message="isbm:SessionFault"/>
