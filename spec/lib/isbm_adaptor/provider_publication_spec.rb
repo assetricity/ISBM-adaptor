@@ -14,18 +14,18 @@ describe IsbmAdaptor::ProviderPublication, :vcr do
       let(:session_id) { 'session id' }
       let(:content) { '<test/>' }
       let(:invalid_content) { '<test>' }
-      let(:topics) { ['topic'] }
+      let(:topic) { 'topic' }
 
       it 'raises error with no session id' do
-        expect { client.post_publication(nil, content, topics) }.to raise_error ArgumentError
+        expect { client.post_publication(nil, content, topic) }.to raise_error ArgumentError
       end
 
       it 'raises error with no content' do
-        expect { client.post_publication(session_id, nil, topics) }.to raise_error ArgumentError
+        expect { client.post_publication(session_id, nil, topic) }.to raise_error ArgumentError
       end
 
       it 'raises error with invalid content' do
-        expect { client.post_publication(session_id, invalid_content, topics) }.to raise_error ArgumentError
+        expect { client.post_publication(session_id, invalid_content, topic) }.to raise_error ArgumentError
       end
 
       it 'raises error with no topics' do
@@ -69,8 +69,8 @@ describe IsbmAdaptor::ProviderPublication, :vcr do
 
     describe 'posting' do
       let(:content) { File.read(File.expand_path(File.dirname(__FILE__)) + '/../../fixtures/ccom.xml') }
-      let(:topics) { ['topic'] }
-      let(:message_id) { client.post_publication(session_id, content, topics) }
+      let(:topic) { 'topic' }
+      let(:message_id) { client.post_publication(session_id, content, topic) }
 
       describe '#post_publication' do
         it 'returns a message id' do
@@ -78,16 +78,16 @@ describe IsbmAdaptor::ProviderPublication, :vcr do
         end
 
         it 'can use a single topic string' do
-          expect { client.post_publication(session_id, content, topics.first) }.not_to raise_error
+          expect { client.post_publication(session_id, content, topic) }.not_to raise_error
         end
 
         it 'can use a multiple topic array' do
-          expect { client.post_publication(session_id, content, topics) }.not_to raise_error
+          expect { client.post_publication(session_id, content, [topic]) }.not_to raise_error
         end
 
         let(:expiry) { IsbmAdaptor::Duration.new(hours: 1) }
         it 'raises no error with expiry' do
-          expect { client.post_publication(session_id, content, topics, expiry) }.not_to raise_error
+          expect { client.post_publication(session_id, content, topic, expiry) }.not_to raise_error
         end
       end
 

@@ -6,10 +6,10 @@ describe IsbmAdaptor::ProviderRequest, :vcr do
   context 'with invalid arguments' do
     describe '#open_session' do
       let(:uri) { 'Test' }
-      let(:topics) { ['topics'] }
+      let(:topic) { 'topics' }
 
       it 'raises error with no URI' do
-        expect { client.open_session(nil, topics) }.to raise_error ArgumentError
+        expect { client.open_session(nil, topic) }.to raise_error ArgumentError
       end
 
       it 'raises error with no topics' do
@@ -17,7 +17,7 @@ describe IsbmAdaptor::ProviderRequest, :vcr do
       end
 
       it 'raises error when XPath namespace but no expression' do
-        expect { client.open_session(uri, topics, nil, nil, {prefix: 'name'}) }.to raise_error ArgumentError
+        expect { client.open_session(uri, topic, nil, nil, {prefix: 'name'}) }.to raise_error ArgumentError
       end
     end
 
@@ -66,29 +66,36 @@ describe IsbmAdaptor::ProviderRequest, :vcr do
   context 'with valid arguments' do
     let(:uri) { 'Test' }
     let(:type) { :request }
-    let(:topics) { ['topic'] }
+    let(:topic) { 'topic' }
     let(:content) { File.read(File.expand_path(File.dirname(__FILE__)) + '/../../fixtures/ccom.xml') }
     let(:channel_client) { IsbmAdaptor::ChannelManagement.new(ENDPOINTS['channel_management'], OPTIONS) }
     before { channel_client.create_channel(uri, type) }
 
-    let!(:provider_session_id) { client.open_session(uri, topics) }
+    let!(:provider_session_id) { client.open_session(uri, topic) }
 
     describe '#open_session' do
       it 'returns a session id' do
         provider_session_id.should_not be_nil
+      end
+
+      context 'multiple topic array' do
+        let(:topic) { [topic, 'another topic'] }
+        it 'returns a session id' do
+          consumer_session_id.should_not be_nil
+        end
       end
     end
 
     context 'with consumer' do
       let(:consumer_client) { IsbmAdaptor::ConsumerRequest.new(ENDPOINTS['consumer_request'], OPTIONS) }
       let(:consumer_session_id) { consumer_client.open_session(uri) }
-      before { consumer_client.post_request(consumer_session_id, content, topics.first) }
+      before { consumer_client.post_request(consumer_session_id, content, topic) }
       let(:request) { client.read_request(provider_session_id) }
 
       describe '#read_request' do
         it 'returns a valid request message' do
           request.id.should_not be_nil
-          request.topics.first.should == topics.first
+          request.topics.first.should == topic
           request.content.root.name.should == 'CCOMData'
         end
       end

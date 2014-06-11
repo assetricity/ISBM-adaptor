@@ -18,7 +18,7 @@ module IsbmAdaptor
     # posting responses.
     #
     # @param uri [String] the channel URI
-    # @param topics [Array<String>] an array of topics
+    # @param topics [Array<String>, String] a collection of topics or single topic
     # @param listener_url [String] the URL for notification callbacks
     # @param xpath_expression [String] the XPath filter expression
     # @param xpath_namespaces [Array<Hash>] the prefixes and namespaces used by the XPath expression. The hash key
@@ -30,6 +30,8 @@ module IsbmAdaptor
       validate_presence_of uri, 'Channel URI'
       validate_presence_of topics, 'Topics'
       validate_presence_of xpath_expression, 'XPath Expression' if xpath_namespaces.present?
+
+      topics = [topics].flatten
 
       # Use Builder to generate XML body as we may have multiple Topic elements
       xml = Builder::XmlMarkup.new
