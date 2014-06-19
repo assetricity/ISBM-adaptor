@@ -50,7 +50,7 @@ describe IsbmAdaptor::ConsumerPublication, :vcr do
       end
 
       context 'multiple topic array' do
-        let(:topic) { [topic, 'another topic'] }
+        let(:topic) { ['topic', 'another topic'] }
         it 'returns a session id' do
           consumer_session_id.should_not be_nil
         end
@@ -68,7 +68,7 @@ describe IsbmAdaptor::ConsumerPublication, :vcr do
 
         it 'returns a valid message' do
           message.id.should_not be_nil
-          message.topics.first.should == topics.first
+          message.topics.first.should == topic
           message.content.root.name.should == 'CCOMData'
         end
 
