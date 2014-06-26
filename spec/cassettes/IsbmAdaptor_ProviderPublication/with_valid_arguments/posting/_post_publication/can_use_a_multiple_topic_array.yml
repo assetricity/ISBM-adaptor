@@ -1,0 +1,367 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: http://simpleisbm.assetricity.com/ChannelManagementService
+    body:
+      encoding: US-ASCII
+      string: <?xml version="1.0" encoding="UTF-8"?><env:Envelope xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:isbm="http://www.openoandm.org/ws-isbm/" xmlns:env="http://schemas.xmlsoap.org/soap/envelope/"><env:Body><isbm:CreateChannel><isbm:ChannelURI>Test</isbm:ChannelURI><isbm:ChannelType>Publication</isbm:ChannelType></isbm:CreateChannel></env:Body></env:Envelope>
+    headers:
+      Soapaction:
+      - '"http://www.openoandm.org/ws-isbm/CreateChannel"'
+      Content-Type:
+      - text/xml;charset=UTF-8
+      Content-Length:
+      - '416'
+      Accept:
+      - '*/*'
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - Apache-Coyote/1.1
+      Content-Type:
+      - text/xml;charset=utf-8
+      Transfer-Encoding:
+      - chunked
+      Date:
+      - Thu, 26 Jun 2014 23:35:55 GMT
+    body:
+      encoding: US-ASCII
+      string: <?xml version='1.0' encoding='UTF-8'?><S:Envelope xmlns:S="http://schemas.xmlsoap.org/soap/envelope/"><S:Body><CreateChannelResponse xmlns="http://www.openoandm.org/ws-isbm/"/></S:Body></S:Envelope>
+    http_version:
+  recorded_at: Thu, 26 Jun 2014 23:35:55 GMT
+- request:
+    method: post
+    uri: http://simpleisbm.assetricity.com/ProviderPublicationService
+    body:
+      encoding: US-ASCII
+      string: <?xml version="1.0" encoding="UTF-8"?><env:Envelope xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:isbm="http://www.openoandm.org/ws-isbm/" xmlns:env="http://schemas.xmlsoap.org/soap/envelope/"><env:Body><isbm:OpenPublicationSession><isbm:ChannelURI>Test</isbm:ChannelURI></isbm:OpenPublicationSession></env:Body></env:Envelope>
+    headers:
+      Soapaction:
+      - '"http://www.openoandm.org/ws-isbm/OpenPublicationSession"'
+      Content-Type:
+      - text/xml;charset=UTF-8
+      Content-Length:
+      - '386'
+      Accept:
+      - '*/*'
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - Apache-Coyote/1.1
+      Content-Type:
+      - text/xml;charset=utf-8
+      Transfer-Encoding:
+      - chunked
+      Date:
+      - Thu, 26 Jun 2014 23:35:55 GMT
+    body:
+      encoding: US-ASCII
+      string: <?xml version='1.0' encoding='UTF-8'?><S:Envelope xmlns:S="http://schemas.xmlsoap.org/soap/envelope/"><S:Body><OpenPublicationSessionResponse xmlns="http://www.openoandm.org/ws-isbm/"><SessionID>363f6d15-7701-416e-9c90-2694636300e8</SessionID></OpenPublicationSessionResponse></S:Body></S:Envelope>
+    http_version:
+  recorded_at: Thu, 26 Jun 2014 23:35:55 GMT
+- request:
+    method: post
+    uri: http://simpleisbm.assetricity.com/ProviderPublicationService
+    body:
+      encoding: US-ASCII
+      string: |-
+        <?xml version="1.0" encoding="UTF-8"?><env:Envelope xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:isbm="http://www.openoandm.org/ws-isbm/" xmlns:env="http://schemas.xmlsoap.org/soap/envelope/"><env:Body><isbm:PostPublication><isbm:SessionID>363f6d15-7701-416e-9c90-2694636300e8</isbm:SessionID><isbm:MessageContent><CCOMData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xmlns="http://www.mimosa.org/osa-eai/v3-2-3/xml/CCOM-ML">
+          <Entity xsi:type="Asset">
+            <GUID>C013C740-19F5-11E1-92B7-6B8E4824019B</GUID>
+          </Entity>
+        </CCOMData>
+        </isbm:MessageContent><isbm:Topic>topic</isbm:Topic><isbm:Expiry></isbm:Expiry></isbm:PostPublication></env:Body></env:Envelope>
+    headers:
+      Soapaction:
+      - '"http://www.openoandm.org/ws-isbm/PostPublication"'
+      Content-Type:
+      - text/xml;charset=UTF-8
+      Content-Length:
+      - '740'
+      Accept:
+      - '*/*'
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - Apache-Coyote/1.1
+      Content-Type:
+      - text/xml;charset=utf-8
+      Transfer-Encoding:
+      - chunked
+      Date:
+      - Thu, 26 Jun 2014 23:35:55 GMT
+    body:
+      encoding: US-ASCII
+      string: <?xml version='1.0' encoding='UTF-8'?><S:Envelope xmlns:S="http://schemas.xmlsoap.org/soap/envelope/"><S:Body><PostPublicationResponse xmlns="http://www.openoandm.org/ws-isbm/"><MessageID>5800a825-8647-4a05-b191-a5e911670743</MessageID></PostPublicationResponse></S:Body></S:Envelope>
+    http_version:
+  recorded_at: Thu, 26 Jun 2014 23:35:55 GMT
+- request:
+    method: post
+    uri: http://simpleisbm.assetricity.com/ProviderPublicationService
+    body:
+      encoding: US-ASCII
+      string: <?xml version="1.0" encoding="UTF-8"?><env:Envelope xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:isbm="http://www.openoandm.org/ws-isbm/" xmlns:env="http://schemas.xmlsoap.org/soap/envelope/"><env:Body><isbm:ClosePublicationSession><isbm:SessionID>363f6d15-7701-416e-9c90-2694636300e8</isbm:SessionID></isbm:ClosePublicationSession></env:Body></env:Envelope>
+    headers:
+      Soapaction:
+      - '"http://www.openoandm.org/ws-isbm/ClosePublicationSession"'
+      Content-Type:
+      - text/xml;charset=UTF-8
+      Content-Length:
+      - '418'
+      Accept:
+      - '*/*'
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - Apache-Coyote/1.1
+      Content-Type:
+      - text/xml;charset=utf-8
+      Transfer-Encoding:
+      - chunked
+      Date:
+      - Thu, 26 Jun 2014 23:35:55 GMT
+    body:
+      encoding: US-ASCII
+      string: <?xml version='1.0' encoding='UTF-8'?><S:Envelope xmlns:S="http://schemas.xmlsoap.org/soap/envelope/"><S:Body><ClosePublicationSessionResponse xmlns="http://www.openoandm.org/ws-isbm/"/></S:Body></S:Envelope>
+    http_version:
+  recorded_at: Thu, 26 Jun 2014 23:35:55 GMT
+- request:
+    method: post
+    uri: http://simpleisbm.assetricity.com/ChannelManagementService
+    body:
+      encoding: US-ASCII
+      string: <?xml version="1.0" encoding="UTF-8"?><env:Envelope xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:isbm="http://www.openoandm.org/ws-isbm/" xmlns:env="http://schemas.xmlsoap.org/soap/envelope/"><env:Body><isbm:DeleteChannel><isbm:ChannelURI>Test</isbm:ChannelURI></isbm:DeleteChannel></env:Body></env:Envelope>
+    headers:
+      Soapaction:
+      - '"http://www.openoandm.org/ws-isbm/DeleteChannel"'
+      Content-Type:
+      - text/xml;charset=UTF-8
+      Content-Length:
+      - '368'
+      Accept:
+      - '*/*'
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - Apache-Coyote/1.1
+      Content-Type:
+      - text/xml;charset=utf-8
+      Transfer-Encoding:
+      - chunked
+      Date:
+      - Thu, 26 Jun 2014 23:35:55 GMT
+    body:
+      encoding: US-ASCII
+      string: <?xml version='1.0' encoding='UTF-8'?><S:Envelope xmlns:S="http://schemas.xmlsoap.org/soap/envelope/"><S:Body><DeleteChannelResponse xmlns="http://www.openoandm.org/ws-isbm/"/></S:Body></S:Envelope>
+    http_version:
+  recorded_at: Thu, 26 Jun 2014 23:35:55 GMT
+- request:
+    method: post
+    uri: http://simpleisbm.assetricity.com/ChannelManagementService
+    body:
+      encoding: US-ASCII
+      string: <?xml version="1.0" encoding="UTF-8"?><env:Envelope xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:isbm="http://www.openoandm.org/ws-isbm/" xmlns:env="http://schemas.xmlsoap.org/soap/envelope/"><env:Body><isbm:CreateChannel><isbm:ChannelURI>Test</isbm:ChannelURI><isbm:ChannelType>Publication</isbm:ChannelType></isbm:CreateChannel></env:Body></env:Envelope>
+    headers:
+      Soapaction:
+      - '"http://www.openoandm.org/ws-isbm/CreateChannel"'
+      Content-Type:
+      - text/xml;charset=UTF-8
+      Content-Length:
+      - '416'
+      Accept:
+      - '*/*'
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - Apache-Coyote/1.1
+      Content-Type:
+      - text/xml;charset=utf-8
+      Transfer-Encoding:
+      - chunked
+      Date:
+      - Thu, 26 Jun 2014 23:39:01 GMT
+    body:
+      encoding: US-ASCII
+      string: <?xml version='1.0' encoding='UTF-8'?><S:Envelope xmlns:S="http://schemas.xmlsoap.org/soap/envelope/"><S:Body><CreateChannelResponse xmlns="http://www.openoandm.org/ws-isbm/"/></S:Body></S:Envelope>
+    http_version:
+  recorded_at: Thu, 26 Jun 2014 23:39:02 GMT
+- request:
+    method: post
+    uri: http://simpleisbm.assetricity.com/ProviderPublicationService
+    body:
+      encoding: US-ASCII
+      string: <?xml version="1.0" encoding="UTF-8"?><env:Envelope xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:isbm="http://www.openoandm.org/ws-isbm/" xmlns:env="http://schemas.xmlsoap.org/soap/envelope/"><env:Body><isbm:OpenPublicationSession><isbm:ChannelURI>Test</isbm:ChannelURI></isbm:OpenPublicationSession></env:Body></env:Envelope>
+    headers:
+      Soapaction:
+      - '"http://www.openoandm.org/ws-isbm/OpenPublicationSession"'
+      Content-Type:
+      - text/xml;charset=UTF-8
+      Content-Length:
+      - '386'
+      Accept:
+      - '*/*'
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - Apache-Coyote/1.1
+      Content-Type:
+      - text/xml;charset=utf-8
+      Transfer-Encoding:
+      - chunked
+      Date:
+      - Thu, 26 Jun 2014 23:39:01 GMT
+    body:
+      encoding: US-ASCII
+      string: <?xml version='1.0' encoding='UTF-8'?><S:Envelope xmlns:S="http://schemas.xmlsoap.org/soap/envelope/"><S:Body><OpenPublicationSessionResponse xmlns="http://www.openoandm.org/ws-isbm/"><SessionID>b381510f-7c84-437a-9dc9-4ac27392a801</SessionID></OpenPublicationSessionResponse></S:Body></S:Envelope>
+    http_version:
+  recorded_at: Thu, 26 Jun 2014 23:39:02 GMT
+- request:
+    method: post
+    uri: http://simpleisbm.assetricity.com/ProviderPublicationService
+    body:
+      encoding: US-ASCII
+      string: |-
+        <?xml version="1.0" encoding="UTF-8"?><env:Envelope xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:isbm="http://www.openoandm.org/ws-isbm/" xmlns:env="http://schemas.xmlsoap.org/soap/envelope/"><env:Body><isbm:PostPublication><isbm:SessionID>b381510f-7c84-437a-9dc9-4ac27392a801</isbm:SessionID><isbm:MessageContent><CCOMData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xmlns="http://www.mimosa.org/osa-eai/v3-2-3/xml/CCOM-ML">
+          <Entity xsi:type="Asset">
+            <GUID>C013C740-19F5-11E1-92B7-6B8E4824019B</GUID>
+          </Entity>
+        </CCOMData>
+        </isbm:MessageContent><isbm:Topic>topic</isbm:Topic><isbm:Expiry></isbm:Expiry></isbm:PostPublication></env:Body></env:Envelope>
+    headers:
+      Soapaction:
+      - '"http://www.openoandm.org/ws-isbm/PostPublication"'
+      Content-Type:
+      - text/xml;charset=UTF-8
+      Content-Length:
+      - '740'
+      Accept:
+      - '*/*'
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - Apache-Coyote/1.1
+      Content-Type:
+      - text/xml;charset=utf-8
+      Transfer-Encoding:
+      - chunked
+      Date:
+      - Thu, 26 Jun 2014 23:39:01 GMT
+    body:
+      encoding: US-ASCII
+      string: <?xml version='1.0' encoding='UTF-8'?><S:Envelope xmlns:S="http://schemas.xmlsoap.org/soap/envelope/"><S:Body><PostPublicationResponse xmlns="http://www.openoandm.org/ws-isbm/"><MessageID>c67ecf7e-e225-4453-8c4f-bf27f6097a7e</MessageID></PostPublicationResponse></S:Body></S:Envelope>
+    http_version:
+  recorded_at: Thu, 26 Jun 2014 23:39:02 GMT
+- request:
+    method: post
+    uri: http://simpleisbm.assetricity.com/ProviderPublicationService
+    body:
+      encoding: US-ASCII
+      string: <?xml version="1.0" encoding="UTF-8"?><env:Envelope xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:isbm="http://www.openoandm.org/ws-isbm/" xmlns:env="http://schemas.xmlsoap.org/soap/envelope/"><env:Body><isbm:ClosePublicationSession><isbm:SessionID>b381510f-7c84-437a-9dc9-4ac27392a801</isbm:SessionID></isbm:ClosePublicationSession></env:Body></env:Envelope>
+    headers:
+      Soapaction:
+      - '"http://www.openoandm.org/ws-isbm/ClosePublicationSession"'
+      Content-Type:
+      - text/xml;charset=UTF-8
+      Content-Length:
+      - '418'
+      Accept:
+      - '*/*'
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - Apache-Coyote/1.1
+      Content-Type:
+      - text/xml;charset=utf-8
+      Transfer-Encoding:
+      - chunked
+      Date:
+      - Thu, 26 Jun 2014 23:39:01 GMT
+    body:
+      encoding: US-ASCII
+      string: <?xml version='1.0' encoding='UTF-8'?><S:Envelope xmlns:S="http://schemas.xmlsoap.org/soap/envelope/"><S:Body><ClosePublicationSessionResponse xmlns="http://www.openoandm.org/ws-isbm/"/></S:Body></S:Envelope>
+    http_version:
+  recorded_at: Thu, 26 Jun 2014 23:39:02 GMT
+- request:
+    method: post
+    uri: http://simpleisbm.assetricity.com/ChannelManagementService
+    body:
+      encoding: US-ASCII
+      string: <?xml version="1.0" encoding="UTF-8"?><env:Envelope xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:isbm="http://www.openoandm.org/ws-isbm/" xmlns:env="http://schemas.xmlsoap.org/soap/envelope/"><env:Body><isbm:DeleteChannel><isbm:ChannelURI>Test</isbm:ChannelURI></isbm:DeleteChannel></env:Body></env:Envelope>
+    headers:
+      Soapaction:
+      - '"http://www.openoandm.org/ws-isbm/DeleteChannel"'
+      Content-Type:
+      - text/xml;charset=UTF-8
+      Content-Length:
+      - '368'
+      Accept:
+      - '*/*'
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - Apache-Coyote/1.1
+      Content-Type:
+      - text/xml;charset=utf-8
+      Transfer-Encoding:
+      - chunked
+      Date:
+      - Thu, 26 Jun 2014 23:39:02 GMT
+    body:
+      encoding: US-ASCII
+      string: <?xml version='1.0' encoding='UTF-8'?><S:Envelope xmlns:S="http://schemas.xmlsoap.org/soap/envelope/"><S:Body><DeleteChannelResponse xmlns="http://www.openoandm.org/ws-isbm/"/></S:Body></S:Envelope>
+    http_version:
+  recorded_at: Thu, 26 Jun 2014 23:39:02 GMT
+recorded_with: VCR 2.9.0
