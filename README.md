@@ -5,9 +5,9 @@
 [![Code Climate](https://codeclimate.com/github/assetricity/isbm_adaptor.png)](https://codeclimate.com/github/assetricity/isbm_adaptor)
 [![Dependency Status](https://gemnasium.com/assetricity/isbm_adaptor.png)](https://gemnasium.com/assetricity/isbm_adaptor)
 
-The ISBM Adaptor provides a Ruby API for the [OpenO&M ISBM specification](http://www.mimosa.org/?q=about/what-open-om).
+The ISBM Adaptor provides a Ruby API for the [OpenO&M ws-ISBM specification](http://www.openoandm.org/ws-isbm).
 
-It is based on the [Savon](http://savonrb.com) SOAP client and provides convenience methods for interaction with an ISBM Service Provider.
+It is based on the [Savon](http://savonrb.com) SOAP client and provides convenience methods for interaction with an ws-ISBM Service Provider.
 
 ## Install
 
@@ -19,10 +19,10 @@ Add to the isbm_adaptor gem to your Gemfile:
 gem 'isbm_adaptor'
 ```
 
-This gem uses a four part version, with the first three parts following the OpenO&M ISBM specification and last part specifying a patch number. To use the pessimistic version constraint, you will want to include the four part version in your Gemfile:
+This gem uses a three part version, with the first two parts following the OpenO&M ws-ISBM specification and last part specifying a patch number. To use the pessimistic version constraint, you will want to include the three part version in your Gemfile:
 
 ```ruby
-gem 'isbm_adaptor', '~> 1.0.0.0'
+gem 'isbm_adaptor', '~> 1.0.0'
 ```
 
 ### Other
@@ -128,6 +128,6 @@ channel_client.delete_channel(uri)
 
 ## License
 
-Copyright 2013 [Assetricity, LLC](http://assetricity.com)
+Copyright 2014 [Assetricity, LLC](http://assetricity.com)
 
 ISBM Adaptor is released under the MIT License. See [LICENSE](https://github.com/assetricity/isbm_adaptor/blob/master/LICENSE) for details.
