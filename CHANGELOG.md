@@ -1,5 +1,11 @@
 # Changelog
 
+## v1.0.1 (2014-02-09)
+
+### Bug fixes
+
+* Account for SOAP header when parsing messages
+
 ## v1.0.0 (2014-10-27)
 
 ### Features
