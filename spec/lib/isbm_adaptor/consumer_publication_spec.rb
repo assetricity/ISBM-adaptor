@@ -46,13 +46,13 @@ describe IsbmAdaptor::ConsumerPublication, :vcr do
 
     describe '#open_session' do
       it 'returns a session id' do
-        consumer_session_id.should_not be_nil
+        expect(consumer_session_id).not_to be_nil
       end
 
       context 'multiple topic array' do
         let(:topic) { ['topic', 'another topic'] }
         it 'returns a session id' do
-          consumer_session_id.should_not be_nil
+          expect(consumer_session_id).not_to be_nil
         end
       end
     end
@@ -67,16 +67,16 @@ describe IsbmAdaptor::ConsumerPublication, :vcr do
         let(:message) { client.read_publication(consumer_session_id) }
 
         it 'returns a valid message' do
-          message.id.should_not be_nil
-          message.topics.first.should == topic
-          message.content.root.name.should == 'CCOMData'
+          expect(message.id).not_to be_nil
+          expect(message.topics.first).to eq topic
+          expect(message.content.root.name).to eq 'CCOMData'
         end
 
         # For IsbmAdaptor::Client#extract_message
         it 'copies namespaces to content root' do
           doc = Nokogiri::XML(message.content.to_xml)
-          doc.namespaces.values.should include 'http://www.w3.org/2001/XMLSchema-instance'
-          doc.namespaces.values.should include 'http://www.mimosa.org/osa-eai/v3-2-3/xml/CCOM-ML'
+          expect(doc.namespaces.values).to include 'http://www.w3.org/2001/XMLSchema-instance'
+          expect(doc.namespaces.values).to include 'http://www.mimosa.org/osa-eai/v3-2-3/xml/CCOM-ML'
         end
 
         describe '#remove_publication' do
@@ -84,7 +84,7 @@ describe IsbmAdaptor::ConsumerPublication, :vcr do
           let(:message2) { client.read_publication(consumer_session_id) }
 
           it 'returns nil when there are no more messages' do
-            message2.should be_nil
+            expect(message2).to be_nil
           end
         end
       end

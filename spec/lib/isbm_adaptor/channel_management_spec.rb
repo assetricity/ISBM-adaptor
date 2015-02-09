@@ -77,18 +77,18 @@ describe IsbmAdaptor::ChannelManagement, :vcr do
     describe '#get_channel' do
       let(:channel) { client.get_channel(uri) }
       it 'returns a valid channel' do
-        channel.uri.should == uri
-        channel.type.should == type.to_s.capitalize
-        channel.description.should == description
+        expect(channel.uri).to eq uri
+        expect(channel.type).to eq type.to_s.capitalize
+        expect(channel.description).to eq description
       end
     end
 
     describe '#get_channels' do
       let(:channels) { client.get_channels }
       it 'returns an array of valid channels' do
-        (channel = channels.find { |channel| channel.uri == uri }).should_not be_nil
-        channel.type.should == type.to_s.capitalize
-        channel.description.should == description
+        expect(channel = channels.find { |channel| channel.uri == uri }).not_to be_nil
+        expect(channel.type).to eq type.to_s.capitalize
+        expect(channel.description).to eq description
       end
     end
 

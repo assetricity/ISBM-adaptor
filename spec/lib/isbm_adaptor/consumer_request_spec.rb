@@ -91,7 +91,7 @@ describe IsbmAdaptor::ConsumerRequest, :vcr do
 
     describe '#open_session' do
       it 'returns a session id' do
-        consumer_session_id.should_not be_nil
+        expect(consumer_session_id).not_to be_nil
       end
     end
 
@@ -99,7 +99,7 @@ describe IsbmAdaptor::ConsumerRequest, :vcr do
       let(:request_message_id) { client.post_request(consumer_session_id, content, topic) }
 
       it 'returns a request message id' do
-        request_message_id.should_not be_nil
+        expect(request_message_id).not_to be_nil
       end
 
       let(:expiry) { IsbmAdaptor::Duration.new(hours: 1) }
@@ -125,8 +125,8 @@ describe IsbmAdaptor::ConsumerRequest, :vcr do
 
       describe '#read_response' do
         it 'returns a valid response message' do
-          response.id.should_not be_nil
-          response.content.root.name.should == 'CCOMData'
+          expect(response.id).not_to be_nil
+          expect(response.content.root.name).to eq 'CCOMData'
         end
       end
 
@@ -134,7 +134,7 @@ describe IsbmAdaptor::ConsumerRequest, :vcr do
         before { client.remove_response(consumer_session_id, request_message_id) }
 
         it 'removes the response from the queue' do
-          response.should be_nil
+          expect(response).to be_nil
         end
       end
 

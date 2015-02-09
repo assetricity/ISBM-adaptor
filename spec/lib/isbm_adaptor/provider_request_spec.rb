@@ -75,13 +75,13 @@ describe IsbmAdaptor::ProviderRequest, :vcr do
 
     describe '#open_session' do
       it 'returns a session id' do
-        provider_session_id.should_not be_nil
+        expect(provider_session_id).not_to be_nil
       end
 
       context 'multiple topic array' do
         let(:topic) { ['topic', 'another topic'] }
         it 'returns a session id' do
-          provider_session_id.should_not be_nil
+          expect(provider_session_id).not_to be_nil
         end
       end
     end
@@ -94,9 +94,9 @@ describe IsbmAdaptor::ProviderRequest, :vcr do
 
       describe '#read_request' do
         it 'returns a valid request message' do
-          request.id.should_not be_nil
-          request.topics.first.should == topic
-          request.content.root.name.should == 'CCOMData'
+          expect(request.id).not_to be_nil
+          expect(request.topics.first).to eq topic
+          expect(request.content.root.name).to eq 'CCOMData'
         end
       end
 
@@ -104,7 +104,7 @@ describe IsbmAdaptor::ProviderRequest, :vcr do
         before { client.remove_request(provider_session_id) }
 
         it 'removes the request from the queue' do
-          request.should be_nil
+          expect(request).to be_nil
         end
       end
 
@@ -112,7 +112,7 @@ describe IsbmAdaptor::ProviderRequest, :vcr do
         let(:response_message_id) { client.post_response(provider_session_id, request.id, content) }
 
         it 'returns a response message id' do
-          response_message_id.should_not be_nil
+          expect(response_message_id).not_to be_nil
         end
       end
 

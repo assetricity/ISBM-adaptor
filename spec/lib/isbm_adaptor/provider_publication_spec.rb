@@ -63,7 +63,7 @@ describe IsbmAdaptor::ProviderPublication, :vcr do
 
     describe '#open_session' do
       it 'returns a session id' do
-        session_id.should_not be_nil
+        expect(session_id).not_to be_nil
       end
     end
 
@@ -74,7 +74,7 @@ describe IsbmAdaptor::ProviderPublication, :vcr do
 
       describe '#post_publication' do
         it 'returns a message id' do
-          message_id.should_not be_nil
+          expect(message_id).not_to be_nil
         end
 
         it 'can use a single topic string' do
