@@ -7,7 +7,7 @@ Gem::Specification.new do |s|
   s.authors  = ['Assetricity']
   s.email    = ['info@assetricity.com']
   s.homepage = 'https://github.com/assetricity/isbm_adaptor'
-  s.summary  = 'ISBM Adaptor provides a Ruby API for the OpenO&M ISBM specification'
+  s.summary  = 'ISBM Adaptor provides a Ruby API for the OpenO&M ws-ISBM specification'
   s.license  = 'MIT'
 
   s.files    = Dir.glob('lib/**/*') + Dir.glob('wsdls/*') + %w(LICENSE README.md)
