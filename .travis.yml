@@ -16,8 +16,7 @@ before_script:
 env:
   - COVERAGE=on
 notifications:
-  webhooks: http://jenkins.iom-og.com:8081/hubot/travis?room=38100_assetricity@conf.hipchat.com
   email:
     recipients:
-      - BMathis@assetricity.com
       - amathew@assetricity.com
+      - prawlings@assetricity.com
