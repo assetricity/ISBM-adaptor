@@ -66,7 +66,8 @@ module IsbmAdaptor
     def extract_message(response)
       # Extract the message element
       # e.g. /Envelope/Body/ReadPublicationResponse/PublicationMessage
-      message = response.doc.root.first_element_child.first_element_child.first_element_child
+      soap_ns = 'http://schemas.xmlsoap.org/soap/envelope/'
+      message = response.doc.xpath('s:Envelope/s:Body', s: soap_ns).first.first_element_child.first_element_child
 
       return nil unless message
 
