@@ -1,6 +1,6 @@
 # ISBM Adaptor
 
-[![Build Status](https://travis-ci.com/assetricity/isbm_adaptor.svg)](https://travis-ci.com/assetricity/isbm_adaptor)
+[![Build Status](https://app.travis-ci.com/assetricity/isbm_adaptor.svg?branch=master)](https://app.travis-ci.com/assetricity/isbm_adaptor)
 [![Coverage Status](https://coveralls.io/repos/assetricity/isbm_adaptor/badge.svg?branch=master)](https://coveralls.io/r/assetricity/isbm_adaptor?branch=master)
 [![Code Climate](https://codeclimate.com/github/assetricity/isbm_adaptor.svg)](https://codeclimate.com/github/assetricity/isbm_adaptor)
 [![Dependency Status](https://gemnasium.com/assetricity/isbm_adaptor.svg)](https://gemnasium.com/assetricity/isbm_adaptor)
