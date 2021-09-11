@@ -1,9 +1,9 @@
 # ISBM Adaptor
 
-[![Build Status](https://travis-ci.org/assetricity/isbm_adaptor.png)](https://travis-ci.org/assetricity/isbm_adaptor)
-[![Coverage Status](https://coveralls.io/repos/assetricity/isbm_adaptor/badge.png?branch=master)](https://coveralls.io/r/assetricity/isbm_adaptor?branch=master)
-[![Code Climate](https://codeclimate.com/github/assetricity/isbm_adaptor.png)](https://codeclimate.com/github/assetricity/isbm_adaptor)
-[![Dependency Status](https://gemnasium.com/assetricity/isbm_adaptor.png)](https://gemnasium.com/assetricity/isbm_adaptor)
+[![Build Status](https://travis-ci.com/assetricity/isbm_adaptor.svg)](https://travis-ci.com/assetricity/isbm_adaptor)
+[![Coverage Status](https://coveralls.io/repos/assetricity/isbm_adaptor/badge.svg?branch=master)](https://coveralls.io/r/assetricity/isbm_adaptor?branch=master)
+[![Code Climate](https://codeclimate.com/github/assetricity/isbm_adaptor.svg)](https://codeclimate.com/github/assetricity/isbm_adaptor)
+[![Dependency Status](https://gemnasium.com/assetricity/isbm_adaptor.svg)](https://gemnasium.com/assetricity/isbm_adaptor)
 
 The ISBM Adaptor provides a Ruby API for the [OpenO&M ws-ISBM specification](http://www.openoandm.org/ws-isbm).
 
