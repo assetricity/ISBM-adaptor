@@ -3,12 +3,13 @@ require 'active_support/inflector'
 require 'rspec'
 require 'webmock/rspec'
 require 'vcr'
-require 'isbm_adaptor'
 
 if ENV['COVERAGE'] == 'on'
   require 'coveralls'
   Coveralls.wear!
 end
+
+require 'isbm_adaptor'
 
 settings = YAML.load_file(File.expand_path(File.dirname(__FILE__)) + '/../config/settings.yml')['test']
 ENDPOINTS = settings['endpoints']
